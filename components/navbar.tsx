@@ -1,14 +1,27 @@
-import React from 'react'
+import { Clock4, MessageCircle } from 'lucide-react'
+import { SearchBar } from './searchbar'
+import { Button } from './ui/button'
 
-import { ComboBox } from './combobox'
-
-export function NavBar() {
+export function Navbar() {
   return (
-    <div className="h-screen">
-      <div className="mt-5 flex h-[95%] w-52 flex-col items-center space-y-6 rounded-xl border border-zinc-300 bg-zinc-50">
-        <div className="pt-5">
-          <ComboBox />
-        </div>
+    <div className="flex h-24 items-center justify-between border-b-2 border-b-zinc-100 pt-4">
+      <SearchBar />
+      <div className="flex items-center space-x-2">
+        <button>
+          <MessageCircle
+            size={20}
+            className="text-zinc-400 hover:text-purple-650"
+          />
+        </button>
+        <button>
+          <Clock4 size={20} className="text-zinc-400 hover:text-purple-650" />
+        </button>
+        <Button
+          variant="outline"
+          className="h-7 border-purple-650 text-purple-650 transition hover:bg-purple-650 hover:text-white"
+        >
+          <span className="text-xs">Share</span>
+        </Button>
       </div>
     </div>
   )

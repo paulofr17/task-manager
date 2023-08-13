@@ -11,7 +11,7 @@ import {
 
 export function Sidebar() {
   return (
-    <div className="flex h-screen flex-col items-center  px-4 pt-8">
+    <div className="flex h-screen flex-col items-center px-4 pt-8">
       <div className="flex flex-1 flex-col items-center space-y-8">
         <Circle size={34} color="rgba(106,14,255,255)" strokeWidth={3} />
         <button>
