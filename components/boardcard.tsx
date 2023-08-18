@@ -2,12 +2,19 @@ import { Clock, ListChecks } from 'lucide-react'
 
 interface BoardCardProps {
   priority: string
-  task: string
-  progress: string
+  description: string
+  completedSteps: number
+  numberOfSteps: number
   time: string
 }
 
-export function BoardCard({ priority, task, progress, time }: BoardCardProps) {
+export function BoardCard({
+  priority,
+  description,
+  completedSteps,
+  numberOfSteps,
+  time,
+}: BoardCardProps) {
   const priorityColor = () => {
     switch (priority) {
       case 'High':
@@ -27,11 +34,19 @@ export function BoardCard({ priority, task, progress, time }: BoardCardProps) {
       >
         {priority}
       </div>
-      <span>{task}</span>
+      <span>{description}</span>
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-1 rounded-md border border-zinc-400 p-1 text-xs text-zinc-700">
+        <div
+          className={`flex items-center space-x-1 rounded-md border p-1 text-xs ${
+            completedSteps === numberOfSteps
+              ? 'border-green-400 bg-green-300/10 text-green-600'
+              : 'border-zinc-400 bg-white text-zinc-700'
+          }`}
+        >
           <ListChecks size={15} />
-          <span>{progress}</span>
+          <span>
+            {completedSteps}/{numberOfSteps}
+          </span>
         </div>
         <div className="flex items-center space-x-1 text-xs text-zinc-700">
           <Clock size={14} />

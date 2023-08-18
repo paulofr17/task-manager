@@ -43,7 +43,7 @@ export function Sidebar() {
           ></FolderMinus>
         </button>
       </div>
-      <div className="flex flex-col items-center space-y-8 pb-6">
+      <div className="flex flex-col items-center space-y-8 pb-12">
         <button>
           <UserCircle2
             size={24}

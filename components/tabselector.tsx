@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { Plus } from 'lucide-react'
 import { Button } from './ui/button'
+import { AddTask } from './addTask'
 
 interface tabSelectorProps {
   activeTab: string
@@ -12,6 +14,7 @@ interface tabSelectorProps {
 const tabs = ['Overview', 'List', 'Board', 'Calendar', 'Timeline']
 
 export function TabSelector({ setActiveTab, activeTab }: tabSelectorProps) {
+  const [open, setOpen] = useState(false)
   return (
     <div className="ml-4 mt-4 flex h-12 items-center justify-between rounded-xl border border-zinc-300 bg-zinc-50/50 px-2 lg:h-12">
       <div className="flex space-x-10 pl-4 sm:space-x-12 md:space-x-14">
@@ -32,13 +35,18 @@ export function TabSelector({ setActiveTab, activeTab }: tabSelectorProps) {
           </button>
         ))}
       </div>
-      <Button
-        className="h-8 bg-purple-650 text-xs text-white hover:bg-purple-650/50"
-        size={'sm'}
-      >
-        Add new
-        <Plus size={15} className="ml-1" />
-      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button
+            className="h-8 bg-purple-650 text-xs text-white hover:bg-purple-650/50"
+            size={'sm'}
+          >
+            Add new
+            <Plus size={15} className="ml-1" />
+          </Button>
+        </DialogTrigger>
+        <AddTask openDialog={setOpen} />
+      </Dialog>
     </div>
   )
 }
