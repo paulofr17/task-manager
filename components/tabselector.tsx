@@ -4,16 +4,17 @@ import { useState } from 'react'
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { Plus } from 'lucide-react'
 import { Button } from './ui/button'
-import { AddTask } from './addTask'
+import { AddIssue } from './addIssue'
+import { useRouter } from 'next/navigation'
 
 interface tabSelectorProps {
   activeTab: string
-  setActiveTab: (tab: string) => void
 }
 
 const tabs = ['Overview', 'List', 'Board', 'Calendar', 'Timeline']
 
-export function TabSelector({ setActiveTab, activeTab }: tabSelectorProps) {
+export function TabSelector({ activeTab }: tabSelectorProps) {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   return (
     <div className="ml-4 mt-4 flex h-12 items-center justify-between rounded-xl border border-zinc-300 bg-zinc-50/50 px-2 lg:h-12">
@@ -28,7 +29,7 @@ export function TabSelector({ setActiveTab, activeTab }: tabSelectorProps) {
             } text-xs sm:text-sm lg:text-base 
             `}
             onClick={() => {
-              setActiveTab(tab)
+              router.push('/?tab=' + tab)
             }}
           >
             {tab}
@@ -41,11 +42,11 @@ export function TabSelector({ setActiveTab, activeTab }: tabSelectorProps) {
             className="h-8 bg-purple-650 text-xs text-white hover:bg-purple-650/50"
             size={'sm'}
           >
-            Add new
+            Add Issue
             <Plus size={15} className="ml-1" />
           </Button>
         </DialogTrigger>
-        <AddTask openDialog={setOpen} />
+        <AddIssue openDialog={setOpen} />
       </Dialog>
     </div>
   )

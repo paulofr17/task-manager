@@ -1,18 +1,19 @@
-'use client'
-
-import { useState } from 'react'
-
 import { TabSelector } from './tabselector'
 import { Board } from './board'
 
-export function HomeContent() {
-  const [activeTab, setActiveTab] = useState('Overview')
+interface HomeContentProps {
+  issues: Issue[]
+  activeTab: string
+}
 
+export async function HomeContent({ issues, activeTab }: HomeContentProps) {
   return (
     <div>
-      <TabSelector activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TabSelector activeTab={activeTab} />
       {activeTab === 'Overview' && <div>Overview</div>}
-      {activeTab === 'Board' && <Board />}
+      {(activeTab === 'Board' || activeTab === undefined) && (
+        <Board issues={issues} />
+      )}
     </div>
   )
 }

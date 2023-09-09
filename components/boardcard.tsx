@@ -1,20 +1,28 @@
-import { Clock, ListChecks } from 'lucide-react'
+'use client'
 
-interface BoardCardProps {
+import { Clock, ListChecks } from 'lucide-react'
+import BoardCardMenu from './boardcardmenu'
+import { useState } from 'react'
+import { TaskList } from './taskList'
+
+type BoardCardProps = {
+  id: string
   priority: string
   description: string
-  completedSteps: number
-  numberOfSteps: number
-  time: string
+  duration: string
+  tasks: Task[]
 }
 
 export function BoardCard({
+  id,
   priority,
   description,
-  completedSteps,
-  numberOfSteps,
-  time,
+  duration,
+  tasks,
 }: BoardCardProps) {
+  const [taskMenuOpen, setTaskMenuOpen] = useState(false)
+  const numberOfTasks = tasks.length
+  const completedTaks = tasks.filter((task) => task.completed).length
   const priorityColor = () => {
     switch (priority) {
       case 'High':
@@ -29,30 +37,35 @@ export function BoardCard({
   }
   return (
     <div className="flex flex-col space-y-4 rounded-lg border border-zinc-300 bg-white p-3">
-      <div
-        className={`${priorityColor()} h-5 w-14 items-center rounded-sm border text-center text-xs`}
-      >
-        {priority}
+      <div className="flex items-center justify-between">
+        <div
+          className={`${priorityColor()} h-5 w-14 items-center rounded-sm border text-center text-xs`}
+        >
+          {priority}
+        </div>
+        <BoardCardMenu />
       </div>
       <span>{description}</span>
       <div className="flex items-center justify-between">
-        <div
+        <button
           className={`flex items-center space-x-1 rounded-md border p-1 text-xs ${
-            completedSteps === numberOfSteps
-              ? 'border-green-400 bg-green-300/10 text-green-600'
-              : 'border-zinc-400 bg-white text-zinc-700'
+            completedTaks === numberOfTasks
+              ? 'border-green-400 bg-green-300/10 text-green-600 hover:border-green-600 hover:bg-green-300/30'
+              : 'border-zinc-400 bg-white text-zinc-700 hover:border-zinc-700 hover:bg-zinc-300/30'
           }`}
+          onClick={() => setTaskMenuOpen(!taskMenuOpen)}
         >
           <ListChecks size={15} />
           <span>
-            {completedSteps}/{numberOfSteps}
+            {completedTaks}/{numberOfTasks}
           </span>
-        </div>
+        </button>
         <div className="flex items-center space-x-1 text-xs text-zinc-700">
           <Clock size={14} />
-          <span>{time}</span>
+          <span>{duration}</span>
         </div>
       </div>
+      {taskMenuOpen && <TaskList issueId={id} taskList={tasks} />}
     </div>
   )
 }

@@ -7,11 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Task {
+model Issue {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   description String
-  priority    Priority
   duration    String
+  status      String   @default("To Do")
+  priority    Priority
+  tasks        Task[]
+}
+
+model Task {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  completed   Boolean @default(false)
+  issue       Issue   @relation(fields: [issueId], references: [id])
+  issueId     String  @db.ObjectId
 }
 
 enum Priority {

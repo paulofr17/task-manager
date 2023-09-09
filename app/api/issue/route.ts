@@ -2,22 +2,23 @@ import prisma from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
-  const a = await prisma.task.findMany()
-  console.log(a)
-  return NextResponse.json({ a })
+  const issues = await prisma.issue.findMany({
+    include: {
+      tasks: true,
+    },
+  })
+  return NextResponse.json(issues)
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const json = await request.json()
-
-    const task = await prisma.task.create({
+    const issue = await prisma.issue.create({
       data: json,
     })
-
     const jsonResponse = {
       status: 'success',
-      task,
+      issue,
     }
     return new NextResponse(JSON.stringify(jsonResponse), {
       status: 201,
