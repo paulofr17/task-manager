@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef, useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -27,58 +28,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select'
-import { revalidatePath } from 'next/cache'
-import { revalidateHome } from '@/actions/serverActions'
+import { createIssue } from '@/actions/serverActions'
+import { addIssueSchema } from '@/lib/addIssueSchema'
 
-export function AddIssue({
-  openDialog,
-}: {
+interface AddIssueProps {
   openDialog: (open: boolean) => void
-}) {
-  const formSchema = z.object({
-    description: z
-      .string()
-      .min(2, { message: 'Issue description is too short' }),
-    status: z.string({
-      required_error: 'Please select issue status',
-    }),
-    priority: z.string({
-      required_error: 'Please select issue priority',
-    }),
-    duration: z.coerce
-      .number({
-        required_error: 'Issue duration is required',
-      })
-      .min(1, { message: 'Must be greater than 0' }),
-    durationUnit: z.enum(['d', 'h']),
-  })
+  handleNewIssue: (status: string) => void
+}
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export function AddIssue({ openDialog, handleNewIssue }: AddIssueProps) {
+  const form = useForm<z.infer<typeof addIssueSchema>>({
+    resolver: zodResolver(addIssueSchema),
     defaultValues: {
       status: 'To Do',
       durationUnit: 'd',
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    openDialog(false)
-    const { description, status, priority, duration, durationUnit } = values
-    const issue = {
-      description,
-      status,
-      priority,
-      duration: `${duration}${durationUnit}`,
-    }
-    const response = await fetch('/api/issue', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(issue),
+  const [pending, setPending] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  // submit form
+  async function onSubmit(values: z.infer<typeof addIssueSchema>) {
+    // change button to pending status
+    setPending(true)
+    const issueFormData = new FormData()
+    Object.entries(values).forEach(([key, value]) => {
+      issueFormData.append(key, value.toString())
     })
-    const data = await response.json()
-    revalidateHome()
+    const result = await createIssue(issueFormData)
+
+    // emit server action result, reset form data and close dialog
+    result.status === 'success'
+      ? handleNewIssue('success')
+      : handleNewIssue('error')
+    form.reset({}, { keepDefaultValues: true })
+    setPending(false)
+    openDialog(false)
   }
 
   return (
@@ -90,6 +76,7 @@ export function AddIssue({
       </DialogHeader>
       <Form {...form}>
         <form
+          ref={formRef}
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4 text-zinc-600"
         >
@@ -114,6 +101,7 @@ export function AddIssue({
                 <FormLabel>Issue Status</FormLabel>
                 <FormControl>
                   <Select
+                    name="status"
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
@@ -142,6 +130,7 @@ export function AddIssue({
                 <FormLabel>Priority</FormLabel>
                 <FormControl>
                   <Select
+                    name="priority"
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
@@ -182,7 +171,11 @@ export function AddIssue({
                 <FormItem className="w-[50%]">
                   <FormLabel>Unit</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue="d">
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue="d"
+                      name="durationUnit"
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select issue duration unit" />
@@ -203,8 +196,9 @@ export function AddIssue({
             <Button
               type="submit"
               className="w-full bg-purple-650 hover:bg-purple-650/70"
+              disabled={pending}
             >
-              Create
+              {pending ? 'Creating...' : 'Create'}
             </Button>
           </DialogFooter>
         </form>

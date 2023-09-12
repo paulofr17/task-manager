@@ -9,6 +9,7 @@ export default async function RootPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
+  const activeTab = Array.isArray(searchParams.tab) ? 'Board' : searchParams.tab
   const issues = await prisma.issue.findMany({
     include: {
       tasks: true,
@@ -20,7 +21,7 @@ export default async function RootPage({
       <Filter />
       <div className="flex w-full flex-col">
         <Navbar />
-        <HomeContent issues={issues} activeTab={searchParams.tab} />
+        <HomeContent issues={issues} activeTab={activeTab || 'Board'} />
       </div>
     </div>
   )

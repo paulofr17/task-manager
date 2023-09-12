@@ -5,7 +5,7 @@ import BoardCardMenu from './boardcardmenu'
 import { useState } from 'react'
 import { TaskList } from './taskList'
 
-type BoardCardProps = {
+interface BoardCardProps {
   id: string
   priority: string
   description: string
@@ -43,7 +43,7 @@ export function BoardCard({
         >
           {priority}
         </div>
-        <BoardCardMenu />
+        <BoardCardMenu issueId={id} />
       </div>
       <span>{description}</span>
       <div className="flex items-center justify-between">

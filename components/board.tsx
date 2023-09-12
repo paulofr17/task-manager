@@ -41,7 +41,7 @@ export function Board({ issues }: BoardProps) {
               .filter((issue) => issue.status === status)
               .map((issue) => (
                 <BoardCard
-                  key={issue.description}
+                  key={issue.id}
                   id={issue.id}
                   priority={issue.priority}
                   description={issue.description}

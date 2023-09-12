@@ -2,16 +2,22 @@
 
 import { Plus } from 'lucide-react'
 import { Task } from './task'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 type taskMenuProps = {
   issueId: string
   taskList: Task[]
 }
 
+const handleNotification = (message: string) => toast.success(message)
+
 export function TaskList({ issueId, taskList }: taskMenuProps) {
   const [tasks, setTasks] = useState(taskList)
-  const resetState = () => setTasks(taskList)
+  useEffect(() => {
+    setTasks(taskList)
+  }, [taskList])
+
   return (
     <div className="flex flex-col space-y-1">
       <button
@@ -31,7 +37,7 @@ export function TaskList({ issueId, taskList }: taskMenuProps) {
           key={task.id}
           issueId={issueId}
           task={task}
-          setTasks={resetState}
+          handleNotification={handleNotification}
         />
       ))}
     </div>

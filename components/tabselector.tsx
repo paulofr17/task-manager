@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { Plus } from 'lucide-react'
 import { Button } from './ui/button'
@@ -9,6 +10,14 @@ import { useRouter } from 'next/navigation'
 
 interface tabSelectorProps {
   activeTab: string
+}
+
+function handleNewIssue(status: string) {
+  if (status === 'success') {
+    toast.success('Issue successfully created')
+  } else {
+    toast.error('Error creating issue')
+  }
 }
 
 const tabs = ['Overview', 'List', 'Board', 'Calendar', 'Timeline']
@@ -46,8 +55,9 @@ export function TabSelector({ activeTab }: tabSelectorProps) {
             <Plus size={15} className="ml-1" />
           </Button>
         </DialogTrigger>
-        <AddIssue openDialog={setOpen} />
+        <AddIssue openDialog={setOpen} handleNewIssue={handleNewIssue} />
       </Dialog>
+      <Toaster />
     </div>
   )
 }
