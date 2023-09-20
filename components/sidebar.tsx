@@ -1,5 +1,6 @@
+'use client'
+
 import {
-  Circle,
   FolderMinus,
   ListTodo,
   LogOut,
@@ -8,12 +9,17 @@ import {
   UserCircle2,
   Users2,
 } from 'lucide-react'
+import tm from '@/assets/tm.png'
+import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
 
 export function Sidebar() {
+  const { data: session, status } = useSession()
+
   return (
     <div className="flex h-screen flex-col items-center px-4 pt-8">
       <div className="flex flex-1 flex-col items-center space-y-8">
-        <Circle size={34} color="rgba(106,14,255,255)" strokeWidth={3} />
+        <Image src={tm.src} width={52} height={52} alt="Task Manager icon" />
         <button>
           <ListTodo
             size={24}
@@ -45,11 +51,21 @@ export function Sidebar() {
       </div>
       <div className="flex flex-col items-center space-y-8 pb-12">
         <button>
-          <UserCircle2
-            size={24}
-            strokeWidth={2}
-            className="hover:text-purple-650"
-          ></UserCircle2>
+          {status === 'authenticated' && session?.user?.image ? (
+            <img
+              src={session?.user?.image}
+              alt=""
+              width={28}
+              height={28}
+              className="rounded-2xl hover:opacity-40"
+            />
+          ) : (
+            <UserCircle2
+              size={24}
+              strokeWidth={2}
+              className="hover:text-purple-650"
+            ></UserCircle2>
+          )}
         </button>
         <button>
           <Settings
@@ -58,7 +74,7 @@ export function Sidebar() {
             className="hover:text-purple-650"
           ></Settings>
         </button>
-        <button>
+        <button onClick={() => signOut()}>
           <LogOut
             size={24}
             strokeWidth={2}
