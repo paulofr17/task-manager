@@ -9,7 +9,6 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Edit2, Save, Trash2 } from 'lucide-react'
 import { useRef, useState } from 'react'
-import toast from 'react-hot-toast'
 
 type TaskProps = {
   issueId: string

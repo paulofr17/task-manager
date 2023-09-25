@@ -91,3 +91,22 @@ export async function deleteTask(taskId: string) {
     return { status: 'error' }
   }
 }
+
+export async function createUser(
+  name: string,
+  email: string,
+  password: string,
+) {
+  try {
+    const newUser = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password,
+      },
+    })
+    return { status: 'success' }
+  } catch (error: any) {
+    return { status: 'error' }
+  }
+}

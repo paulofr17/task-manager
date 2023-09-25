@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import prisma from '@/lib/prisma'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -20,9 +21,18 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'password', type: 'password' },
       },
       async authorize(credentials, req) {
-        console.log(credentials)
-        if (credentials?.email === '' && credentials.password === '') {
-          return credentials
+        if (
+          credentials?.email === undefined ||
+          credentials?.password === undefined
+        )
+          return null
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        })
+        if (user && user.password === credentials.password) {
+          return user
         }
         return null
       },
@@ -34,6 +44,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/signin',
+    error: '/signin',
   },
 }
 

@@ -13,7 +13,9 @@ model Issue {
   duration    String
   status      String   @default("To Do")
   priority    Priority
-  tasks        Task[]
+  tasks       Task[]
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?  @db.ObjectId
 }
 
 model Task {
@@ -28,4 +30,12 @@ enum Priority {
   High
   Medium
   Low
+}
+
+model User {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
+  name     String?
+  password String
+  issues   Issue[]
 }
