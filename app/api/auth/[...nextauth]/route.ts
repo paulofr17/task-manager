@@ -1,4 +1,5 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
+import { compareSync } from 'bcrypt-ts'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -31,10 +32,10 @@ export const authOptions: NextAuthOptions = {
             email: credentials.email,
           },
         })
-        if (user && user.password === credentials.password) {
+        if (user && compareSync(credentials.password, user.password)) {
           return user
         }
-        return null
+        throw new Error('Invalid email or password')
       },
     }),
   ],

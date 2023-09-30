@@ -4,6 +4,7 @@ import { addIssueSchema } from '@/lib/addIssueSchema'
 import prisma from '@/lib/prisma'
 import { Priority } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { genSaltSync, hashSync } from 'bcrypt-ts'
 
 export async function revalidateHome() {
   revalidatePath('/')
@@ -12,7 +13,7 @@ export async function revalidateHome() {
 export async function createIssue(issueFormData: FormData) {
   try {
     const issue = addIssueSchema.parse(Object.fromEntries(issueFormData))
-    const newIssue = await prisma.issue.create({
+    await prisma.issue.create({
       data: {
         description: issue.description,
         status: issue.status,
@@ -29,7 +30,7 @@ export async function createIssue(issueFormData: FormData) {
 
 export async function deleteIssue(issueId: string) {
   try {
-    const deletedIssue = await prisma.issue.delete({
+    await prisma.issue.delete({
       where: {
         id: issueId,
       },
@@ -43,7 +44,7 @@ export async function deleteIssue(issueId: string) {
 
 export async function createTask(issueId: string, description: string) {
   try {
-    const newTask = await prisma.task.create({
+    await prisma.task.create({
       data: {
         description,
         issueId,
@@ -62,7 +63,7 @@ export async function updateTask(
   completed: boolean,
 ) {
   try {
-    const updatedTask = await prisma.task.update({
+    await prisma.task.update({
       where: {
         id: taskId,
       },
@@ -80,7 +81,7 @@ export async function updateTask(
 
 export async function deleteTask(taskId: string) {
   try {
-    const deletedTask = await prisma.task.delete({
+    await prisma.task.delete({
       where: {
         id: taskId,
       },
@@ -98,15 +99,26 @@ export async function createUser(
   password: string,
 ) {
   try {
-    const newUser = await prisma.user.create({
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    })
+    if (user)
+      return {
+        status: 'error',
+        message: `This email is already associated with an account.`,
+      }
+    password = hashSync(password, genSaltSync(10))
+    await prisma.user.create({
       data: {
         name,
         email,
         password,
       },
     })
-    return { status: 'success' }
+    return { status: 'success', message: 'Successfully registered' }
   } catch (error: any) {
-    return { status: 'error' }
+    return { status: 'error', message: 'Error creating user' }
   }
 }

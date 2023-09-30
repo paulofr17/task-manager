@@ -9,7 +9,6 @@ import { signIn } from 'next-auth/react'
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 import toast, { Toaster } from 'react-hot-toast'
-import email from 'next-auth/providers/email'
 import * as z from 'zod'
 
 import tm from '@/assets/tm.png'
@@ -34,9 +33,9 @@ export default function Signup() {
   async function onSubmit(data: FormData) {
     createUser(data.name, data.email, data.password).then((response) => {
       if (response.status === 'error') {
-        toast.error('Error creating user')
+        toast.error(response.message)
       } else {
-        toast.success('Successfully registered')
+        toast.success(response.message)
         // Sign in user after successful registration
         signIn('credentials', {
           email: data.email,
@@ -155,7 +154,7 @@ export default function Signup() {
           </Link>
         </div>
       </div>
-      <Toaster />
+      <Toaster toastOptions={{ className: 'text-center' }} />
     </div>
   )
 }

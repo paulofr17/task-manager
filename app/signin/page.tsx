@@ -36,6 +36,7 @@ export default function Signin() {
       password: data.password,
       redirect: false,
     }).then((response) => {
+      console.log(response)
       if (response?.error) {
         toast.error(response.error)
       } else {
