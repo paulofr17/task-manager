@@ -17,9 +17,9 @@ export function Sidebar() {
   const { data: session, status } = useSession()
 
   return (
-    <div className="flex h-screen flex-col items-center px-4 pt-8">
+    <div className="flex h-screen flex-col items-center border-r-2 border-r-zinc-100 px-1 pt-8 min-[400px]:px-3 lg:border-none">
       <div className="flex flex-1 flex-col items-center space-y-8">
-        <Image src={tm.src} width={52} height={52} alt="Task Manager icon" />
+        <Image src={tm.src} width={44} height={44} alt="Task Manager icon" />
         <button>
           <ListTodo
             size={24}

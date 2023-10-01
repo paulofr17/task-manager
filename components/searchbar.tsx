@@ -27,7 +27,7 @@ export function SearchBar() {
   const [searchText, setSearchText] = useState('')
 
   return (
-    <div className="pl-5">
+    <div className="pl-2 md:pl-5">
       {search ? (
         <Command className="rounded-lg border shadow-md">
           <CommandInput placeholder="Type a command or search..." />
@@ -68,7 +68,7 @@ export function SearchBar() {
           </CommandList>
         </Command>
       ) : (
-        <div className="group flex w-60 items-center justify-between rounded-xl border border-zinc-300 px-2">
+        <div className="group flex w-32 items-center justify-between rounded-xl border border-zinc-300 px-2 min-[400px]:w-44 sm:w-52 md:w-60">
           <input
             className="w-[87%] border-none py-2 text-sm text-zinc-800 focus:outline-none"
             placeholder="Search"

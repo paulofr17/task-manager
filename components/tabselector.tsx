@@ -37,7 +37,7 @@ export function TabSelector({ activeTab }: tabSelectorProps) {
   }
 
   return (
-    <div className="ml-4 mt-4 flex h-12 items-center justify-between rounded-xl border border-zinc-300 bg-zinc-50/50 px-2 lg:h-12">
+    <div className="flex h-12 items-center justify-between rounded-xl border border-zinc-300 bg-zinc-50/50 px-2 lg:h-12">
       <div className="flex space-x-10 pl-4 sm:space-x-12 md:space-x-14">
         {tabs.map((tab) => (
           <button

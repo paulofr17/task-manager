@@ -11,10 +11,10 @@ export function Board({ issues }: BoardProps) {
   const issueStatus = ['To Do', 'In Progress', 'In Review', 'Done']
   return (
     <div>
-      <div className="ml-4 mt-4 grid grid-cols-4 justify-start gap-4">
+      <div className="mt-4 grid grid-cols-4 justify-start gap-1 sm:gap-2 md:gap-4">
         {issueStatus.map((status) => (
           <div
-            className="mb-auto flex flex-col gap-2 rounded-lg bg-zinc-100 px-2 py-2"
+            className="mb-auto flex w-72 flex-col gap-2 rounded-lg bg-zinc-100 px-2 py-2 xl:w-auto"
             key={status}
           >
             <div className="flex items-center justify-between">

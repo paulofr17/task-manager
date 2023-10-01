@@ -26,13 +26,20 @@ export default async function RootPage({
     redirect('/api/auth/signin')
   }
 
+  //
   return (
-    <div className="flex pr-4">
+    <div className="mx-auto flex h-screen max-w-[1920px] overflow-hidden py-1 pr-1 lg:pr-2">
       <Sidebar />
       <Filter />
-      <div className="flex w-full flex-col">
+      <div className="flex flex-col">
         <Navbar />
-        <HomeContent issues={issues} activeTab={activeTab || 'Board'} />
+        <div className="ml-1 flex h-full w-[calc(100vw_-_64px)] max-w-[1630px] overflow-auto min-[400px]:w-[calc(100vw_-_80px)] lg:w-[calc(100vw_-_288px)]">
+          <div className="w-full">
+            <div className="min-w-max xl:min-w-fit">
+              <HomeContent issues={issues} activeTab={activeTab || 'Board'} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

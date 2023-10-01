@@ -36,7 +36,7 @@ export function BoardCard({
     }
   }
   return (
-    <div className="flex flex-col space-y-4 rounded-lg border border-zinc-300 bg-white p-3">
+    <div className="flex flex-col justify-stretch space-y-4 rounded-lg border border-zinc-300 bg-white p-3">
       <div className="flex items-center justify-between">
         <div
           className={`${priorityColor()} h-5 w-14 items-center rounded-sm border text-center text-xs`}
@@ -45,7 +45,7 @@ export function BoardCard({
         </div>
         <BoardCardMenu issueId={id} />
       </div>
-      <span>{description}</span>
+      <p className="break-all text-xs lg:text-base">{description}</p>
       <div className="flex items-center justify-between">
         <button
           className={`flex items-center space-x-1 rounded-md border p-1 text-xs ${
