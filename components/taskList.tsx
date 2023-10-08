@@ -10,7 +10,10 @@ type taskMenuProps = {
   taskList: Task[]
 }
 
-const handleNotification = (message: string) => toast.success(message)
+const handleNotification = (status: string, message: string) => {
+  if (status === 'success') toast.success(message)
+  else if (status === 'error') toast.error(message)
+}
 
 export function TaskList({ issueId, taskList }: taskMenuProps) {
   const [tasks, setTasks] = useState(taskList)

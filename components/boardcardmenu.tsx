@@ -17,7 +17,6 @@ interface BoardCardMenuProps {
 }
 
 async function deleteItem(issueId: string) {
-  console.log('aqui2')
   const result = await deleteIssue(issueId)
   if (result.status === 'success') {
     toast.success('Issue successfully deleted')
@@ -37,9 +36,7 @@ export function BoardCardMenu({ issueId }: BoardCardMenuProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-24">
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            onClick={() => startTransition(() => deleteItem(issueId))}
-          >
+          <DropdownMenuItem onClick={() => startTransition(() => deleteItem(issueId))}>
             <Trash2 className="mr-2 h-4 w-4" />
             <span>Delete</span>
           </DropdownMenuItem>

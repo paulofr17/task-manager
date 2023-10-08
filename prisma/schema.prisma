@@ -16,14 +16,23 @@ model Issue {
   tasks       Task[]
   User        User?    @relation(fields: [userId], references: [id])
   userId      String?  @db.ObjectId
+  Project     Project @relation(fields: [projectId], references: [id])
+  projectId   String  @db.ObjectId
 }
 
 model Task {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   description String
   completed   Boolean @default(false)
-  issue       Issue   @relation(fields: [issueId], references: [id])
+  issue       Issue   @relation(fields: [issueId], references: [id], onDelete: Cascade)
   issueId     String  @db.ObjectId
+}
+
+model Project {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  issuesOrder IssuesOrder
+  issues      Issue[]
 }
 
 enum Priority {
@@ -38,4 +47,15 @@ model User {
   name     String?
   password String
   issues   Issue[]
+}
+
+type IssuesOrder {
+  columns     Columns[]
+  columnOrder String[]
+}
+
+type Columns {
+  id       String
+  title    String
+  issueIds String[]
 }

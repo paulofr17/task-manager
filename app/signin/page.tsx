@@ -54,10 +54,7 @@ export default function Signin() {
           <p className="text-xl font-semibold">Sign in to your account </p>
         </div>
         <div className="mx-auto mt-8 w-full max-w-md rounded-lg border border-gray-200 bg-white p-10 shadow-sm">
-          <form
-            className="flex flex-col gap-6"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-1">
               <Label htmlFor="email">Email address</Label>
               <Input
@@ -67,9 +64,7 @@ export default function Signin() {
                 className="focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-purple-650 focus-visible:ring-offset-0"
                 {...register('email', { required: true })}
               />
-              {errors?.email && (
-                <p className="text-sm text-red-600">{errors?.email?.message}</p>
-              )}
+              {errors?.email && <p className="text-sm text-red-600">{errors?.email?.message}</p>}
             </div>
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
@@ -81,9 +76,7 @@ export default function Signin() {
                 {...register('password', { required: true })}
               />
               {errors?.password && (
-                <p className="text-sm text-red-600">
-                  {errors?.password?.message}
-                </p>
+                <p className="text-sm text-red-600">{errors?.password?.message}</p>
               )}
             </div>
             <div className="flex items-center justify-between">
@@ -99,10 +92,7 @@ export default function Signin() {
                   Remember me
                 </label>
               </div>
-              <a
-                href="#"
-                className="text-xs font-medium leading-none text-purple-650"
-              >
+              <a href="#" className="text-xs font-medium leading-none text-purple-650">
                 Forgot password?
               </a>
             </div>
@@ -139,12 +129,7 @@ export default function Signin() {
             <button
               className="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-800 p-1 text-white decoration-inherit hover:bg-zinc-800/80"
               onClick={() => {
-                console.log('clicked')
-                signIn('github', {
-                  email: '',
-                  password: '',
-                  callbackUrl: '/',
-                })
+                signIn('github', { email: '', password: '', callbackUrl: '/' })
               }}
             >
               <AiFillGithub size={24}></AiFillGithub>

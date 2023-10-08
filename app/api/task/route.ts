@@ -51,7 +51,6 @@ export async function PUT(request: NextRequest) {
       headers: { 'Content-Type': 'application/json' },
     })
   } catch (error: any) {
-    console.log(error)
     const errorResponse = {
       status: 'error',
       message: error.message,

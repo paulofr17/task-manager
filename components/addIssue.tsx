@@ -3,40 +3,23 @@
 import { useRef, useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
 import { useForm } from 'react-hook-form'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from './ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
 import { Button } from './ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { createIssue } from '@/actions/serverActions'
 import { addIssueSchema } from '@/lib/addIssueSchema'
 
 interface AddIssueProps {
+  project: Project
   openDialog: (open: boolean) => void
-  handleNewIssue: (status: string) => void
+  handleNotification: (status: string) => void
 }
 
-export function AddIssue({ openDialog, handleNewIssue }: AddIssueProps) {
+export function AddIssue({ project, openDialog, handleNotification }: AddIssueProps) {
   const form = useForm<z.infer<typeof addIssueSchema>>({
     resolver: zodResolver(addIssueSchema),
     defaultValues: {
@@ -44,7 +27,6 @@ export function AddIssue({ openDialog, handleNewIssue }: AddIssueProps) {
       durationUnit: 'd',
     },
   })
-
   const [pending, setPending] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -56,12 +38,9 @@ export function AddIssue({ openDialog, handleNewIssue }: AddIssueProps) {
     Object.entries(values).forEach(([key, value]) => {
       issueFormData.append(key, value.toString())
     })
-    const result = await createIssue(issueFormData)
-
-    // emit server action result, reset form data and close dialog
-    result.status === 'success'
-      ? handleNewIssue('success')
-      : handleNewIssue('error')
+    const result = await createIssue(project, issueFormData)
+    setTimeout(() => handleNotification(result.status), 500)
+    // reset form data and close dialog
     form.reset({}, { keepDefaultValues: true })
     setPending(false)
     openDialog(false)
@@ -70,9 +49,7 @@ export function AddIssue({ openDialog, handleNewIssue }: AddIssueProps) {
   return (
     <DialogContent className="w-full max-w-sm">
       <DialogHeader>
-        <DialogTitle className="text-center text-black">
-          Create Issue
-        </DialogTitle>
+        <DialogTitle className="text-center text-black">Create Issue</DialogTitle>
       </DialogHeader>
       <Form {...form}>
         <form
@@ -100,11 +77,7 @@ export function AddIssue({ openDialog, handleNewIssue }: AddIssueProps) {
               <FormItem>
                 <FormLabel>Issue Status</FormLabel>
                 <FormControl>
-                  <Select
-                    name="status"
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select name="status" onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select issue status" />
@@ -129,11 +102,7 @@ export function AddIssue({ openDialog, handleNewIssue }: AddIssueProps) {
               <FormItem>
                 <FormLabel>Priority</FormLabel>
                 <FormControl>
-                  <Select
-                    name="priority"
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select name="priority" onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select issue priority" />
@@ -171,11 +140,7 @@ export function AddIssue({ openDialog, handleNewIssue }: AddIssueProps) {
                 <FormItem className="w-[50%]">
                   <FormLabel>Unit</FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue="d"
-                      name="durationUnit"
-                    >
+                    <Select onValueChange={field.onChange} defaultValue="d" name="durationUnit">
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select issue duration unit" />

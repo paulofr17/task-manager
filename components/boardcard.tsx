@@ -13,24 +13,18 @@ interface BoardCardProps {
   tasks: Task[]
 }
 
-export function BoardCard({
-  id,
-  priority,
-  description,
-  duration,
-  tasks,
-}: BoardCardProps) {
+export function BoardCard({ id, priority, description, duration, tasks }: BoardCardProps) {
   const [taskMenuOpen, setTaskMenuOpen] = useState(false)
   const numberOfTasks = tasks.length
   const completedTaks = tasks.filter((task) => task.completed).length
   const priorityColor = () => {
     switch (priority) {
       case 'High':
-        return 'border-purple-300 bg-purple-300/10 text-purple-650'
+        return 'border-red-300 bg-red-300/10 text-red-600'
       case 'Medium':
-        return 'border-emerald-300 bg-emerald-300/10 text-green-700'
-      case 'Low':
         return 'border-yellow-500 bg-yellow-300/10 text-yellow-700'
+      case 'Low':
+        return 'border-emerald-300 bg-emerald-300/10 text-green-700'
       default:
         return 'border-blue-300 bg-blue-300/10 text-blue-700'
     }
@@ -45,7 +39,7 @@ export function BoardCard({
         </div>
         <BoardCardMenu issueId={id} />
       </div>
-      <p className="break-all text-xs lg:text-base">{description}</p>
+      <p className="break-all text-xs lg:text-sm">{description}</p>
       <div className="flex items-center justify-between">
         <button
           className={`flex items-center space-x-1 rounded-md border p-1 text-xs ${

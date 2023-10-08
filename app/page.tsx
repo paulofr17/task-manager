@@ -20,15 +20,29 @@ export default async function RootPage({
       tasks: true,
     },
   })
-  console.log('Session', JSON.stringify(session, null, 2))
+  const project = await prisma.project.findFirst({
+    include: {
+      issues: {
+        include: {
+          tasks: true,
+        },
+      },
+    },
+  })
+
+  // const issues = await fetch('http://localhost:3000/api/issue', {
+  //   next: { tags: ['issues'] },
+  // }).then((res) => res.json())
+
+  // console.log(issues.json())
+  // console.log('Session', JSON.stringify(session, null, 2))
 
   if (!session) {
     redirect('/api/auth/signin')
   }
 
-  //
   return (
-    <div className="mx-auto flex h-screen max-w-[1920px] overflow-hidden py-1 pr-1 lg:pr-2">
+    <div className="mx-auto flex h-screen max-w-[1920px] overflow-hidden py-1 pr-1">
       <Sidebar />
       <Filter />
       <div className="flex flex-col">
@@ -36,7 +50,11 @@ export default async function RootPage({
         <div className="ml-1 flex h-full w-[calc(100vw_-_64px)] max-w-[1630px] overflow-auto min-[400px]:w-[calc(100vw_-_80px)] lg:w-[calc(100vw_-_288px)]">
           <div className="w-full">
             <div className="min-w-max xl:min-w-fit">
-              <HomeContent issues={issues} activeTab={activeTab || 'Board'} />
+              {project ? (
+                <HomeContent project={project} activeTab={activeTab || 'Board'} />
+              ) : (
+                <p>Loading project...</p>
+              )}
             </div>
           </div>
         </div>
