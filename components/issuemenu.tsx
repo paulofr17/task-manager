@@ -12,7 +12,7 @@ import { useTransition } from 'react'
 import { deleteIssue } from '@/actions/serverActions'
 import toast, { Toaster } from 'react-hot-toast'
 
-interface BoardCardMenuProps {
+interface IssueMenuProps {
   issueId: string
 }
 
@@ -25,7 +25,7 @@ async function deleteItem(issueId: string) {
   }
 }
 
-export function BoardCardMenu({ issueId }: BoardCardMenuProps) {
+export function IssueMenu({ issueId }: IssueMenuProps) {
   const [isPending, startTransition] = useTransition()
   return (
     <DropdownMenu>
@@ -46,5 +46,3 @@ export function BoardCardMenu({ issueId }: BoardCardMenuProps) {
     </DropdownMenu>
   )
 }
-
-export default BoardCardMenu

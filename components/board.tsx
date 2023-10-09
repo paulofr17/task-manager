@@ -1,16 +1,9 @@
 'use client'
 
-import { MoreHorizontal, Plus } from 'lucide-react'
-import { BoardCard } from './boardcard'
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-  resetServerContext,
-} from 'react-beautiful-dnd'
-import { changeIssueOrder, revalidateHome } from '@/actions/serverActions'
+import { DragDropContext, Droppable, DropResult, resetServerContext } from 'react-beautiful-dnd'
+import { changeColumnOrder, changeIssueOrder } from '@/actions/serverActions'
 import { useEffect, useState } from 'react'
+import { Column } from './column'
 
 interface BoardProps {
   project: Project
@@ -19,115 +12,91 @@ interface BoardProps {
 export function Board({ project }: BoardProps) {
   resetServerContext()
 
-  useEffect(() => setBoard(project), [project])
-  const [board, setBoard] = useState(project)
+  useEffect(() => setProjectState(project), [project])
+  const [projectState, setProjectState] = useState(project)
 
-  const onDragEnd = async (dropResult: DropResult) => {
-    const { destination, source, draggableId } = dropResult
-    console.log(dropResult)
+  const handleOnDragEnd = async (dropResult: DropResult) => {
+    const { destination, source, type } = dropResult
+
     if (!destination) return
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
+
+    if (type === 'issue') onDragIssue(dropResult)
+    else if (type === 'column') onDragColumn(dropResult)
+  }
+
+  const onDragIssue = async (dropResult: DropResult) => {
+    const { destination, draggableId } = dropResult
     // Clone [object] to avoid mutating state
-    const newColumnOrder = board.issuesOrder.columns.map((column) => {
+    const newIssueOrder = projectState.issuesOrder.columns.map((column) => {
       return {
         ...column,
         issueIds: [...column.issueIds],
       }
     })
     // Change issue order
-    newColumnOrder.forEach((column) => {
+    newIssueOrder.forEach((column) => {
       column.issueIds = column.issueIds.filter((issueId) => issueId !== draggableId)
-      if (column.id === destination.droppableId) {
+      if (column.id === destination?.droppableId) {
         column.issueIds.splice(destination.index, 0, draggableId)
       }
     })
     // Construct new state
     const newState = {
-      ...board,
+      ...projectState,
       issuesOrder: {
-        ...board.issuesOrder,
-        columns: newColumnOrder,
+        ...projectState.issuesOrder,
+        columns: newIssueOrder,
       },
     }
     // Set UI state and update DB
-    setBoard(newState)
-    await changeIssueOrder(dropResult, board.id)
+    setProjectState(newState)
+    await changeIssueOrder(dropResult, projectState.id)
+  }
+
+  const onDragColumn = async (dropResult: DropResult) => {
+    const { destination, source, draggableId } = dropResult
+
+    if (!destination) return
+    // Clone [object] to avoid mutating state
+    const oldColumnOrder = [...projectState.issuesOrder.columnOrder]
+    const newColumnOrder = [...projectState.issuesOrder.columnOrder]
+    newColumnOrder.splice(source.index, 1)
+    newColumnOrder.splice(destination.index, 0, draggableId)
+
+    // Construct new state
+    const newState = {
+      ...projectState,
+      issuesOrder: {
+        ...projectState.issuesOrder,
+        columnOrder: newColumnOrder,
+      },
+    }
+    // Set UI state and update DB
+    setProjectState(newState)
+    await changeColumnOrder(dropResult, projectState.id, oldColumnOrder)
   }
 
   return (
-    <DragDropContext
-      onDragStart={async () => await revalidateHome()}
-      onDragEnd={(dropResult) => onDragEnd(dropResult)}
-    >
-      <div>
-        <div className="mt-4 grid grid-cols-4 justify-start gap-1 sm:gap-2 md:gap-4">
-          {board.issuesOrder.columnOrder.map((statusId) =>
-            board.issuesOrder.columns
-              .filter((column) => column.id === statusId)
-              .map((status) => (
-                <Droppable droppableId={status.id} key={status.id}>
-                  {(provided) => (
-                    <div
-                      className="mb-auto flex w-72 flex-col gap-2 rounded-lg bg-zinc-100 px-2 py-2 xl:w-auto"
-                      key={status.id}
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-1 text-xs text-zinc-500">
-                          <span className="pl-2 text-base font-medium text-black">
-                            {status.title}
-                          </span>
-                          <div className="flex h-5 w-5 rounded-full bg-zinc-500 text-xs font-bold text-white">
-                            <p className="m-auto">
-                              {
-                                project.issues.filter((issue) => issue.status === status.title)
-                                  .length
-                              }
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex space-x-1 text-xs text-zinc-500">
-                          <button>
-                            <Plus size={18} />
-                          </button>
-                          <button className="text-xl">
-                            <MoreHorizontal size={18} />
-                          </button>
-                        </div>
-                      </div>
-                      {status.issueIds.map((issueId, index) =>
-                        board.issues
-                          .filter((issue) => issue.id === issueId)
-                          .map((issue) => (
-                            <Draggable key={issue.id} draggableId={issue.id} index={index}>
-                              {(provided) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                >
-                                  <BoardCard
-                                    key={issue.id}
-                                    id={issue.id}
-                                    priority={issue.priority}
-                                    description={issue.description}
-                                    duration={issue.duration}
-                                    tasks={issue.tasks}
-                                  />
-                                </div>
-                              )}
-                            </Draggable>
-                          )),
-                      )}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              )),
-          )}
-        </div>
-      </div>
+    <DragDropContext onDragEnd={(dropResult) => handleOnDragEnd(dropResult)}>
+      <Droppable droppableId="column" direction="horizontal" type="column">
+        {(provided) => (
+          <div
+            className="mt-4 grid grid-cols-4 items-start justify-start gap-1 sm:gap-2 md:gap-4"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {projectState.issuesOrder.columnOrder.map((statusId, index) =>
+              projectState.issuesOrder.columns
+                .filter((column) => column.id === statusId)
+                .map((column) => (
+                  <Column key={column.id} column={column} index={index} project={projectState} />
+                )),
+            )}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </DragDropContext>
   )
 }

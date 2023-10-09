@@ -111,23 +111,14 @@ export default function Signup() {
           <div className="mt-6 flex w-full space-x-2">
             <button
               className="flex w-full items-center justify-center gap-2 rounded-md border border-zinc-400 bg-white p-1 text-black hover:bg-zinc-100"
-              onClick={() =>
-                signIn('google', {
-                  email: '',
-                  password: '',
-                  callbackUrl: '/',
-                })
-              }
+              onClick={() => signIn('google', { email: '', password: '', callbackUrl: '/' })}
             >
               <FcGoogle size={24}></FcGoogle>
               <span className="text-sm font-semibold">Google</span>
             </button>
             <button
               className="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-800 p-1 text-white decoration-inherit hover:bg-zinc-800/80"
-              onClick={() => {
-                console.log('clicked')
-                signIn('github', { email: '', password: '', callbackUrl: '/' })
-              }}
+              onClick={() => signIn('github', { email: '', password: '', callbackUrl: '/' })}
             >
               <AiFillGithub size={24}></AiFillGithub>
               <span className="text-sm font-semibold">Github</span>

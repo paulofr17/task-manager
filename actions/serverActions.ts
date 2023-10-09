@@ -52,16 +52,14 @@ export async function changeIssueOrder(dropResult: DropResult, projectId: string
     const project = await prisma.project.findUnique({ where: { id: projectId } })
 
     if (!project) return { status: 'error' }
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-    console.log(project.issuesOrder)
-    console.log('#################################')
+
     project.issuesOrder.columns.forEach((column) => {
       column.issueIds = column.issueIds.filter((issueId) => issueId !== draggableId)
       if (column.id === destination?.droppableId) {
         column.issueIds.splice(destination.index, 0, draggableId)
       }
     })
-    console.log(project.issuesOrder)
+
     if (source.droppableId !== destination?.droppableId) {
       const newStatus = project.issuesOrder.columns.find(
         (status) => status.id === destination?.droppableId,
@@ -89,6 +87,48 @@ export async function changeIssueOrder(dropResult: DropResult, projectId: string
     return { status: 'success' }
   } catch (error: any) {
     return { status: 'error' }
+  }
+}
+
+export async function changeColumnOrder(
+  dropResult: DropResult,
+  projectId: string,
+  columnOrder: string[],
+) {
+  try {
+    const { destination, source, draggableId } = dropResult
+
+    if (!destination) return { status: 'error' }
+
+    const project = await prisma.project.findUnique({ where: { id: projectId } })
+
+    if (!project) throw new Error('Project is not synchronized with database')
+
+    // Check if the columnOrder in UI is synchronized with database
+    const equalColumnOrder = project.issuesOrder.columnOrder.every(
+      (value, index) => value === columnOrder[index],
+    )
+    if (!equalColumnOrder || project.issuesOrder.columnOrder.length !== columnOrder.length) {
+      throw new Error('Column order is not synchronized with database')
+    }
+
+    project.issuesOrder.columnOrder.splice(source.index, 1)
+    project.issuesOrder.columnOrder.splice(destination?.index, 0, draggableId)
+
+    await prisma.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        issuesOrder: project.issuesOrder,
+      },
+    })
+
+    revalidatePath('/')
+    return { status: 'success' }
+  } catch (error: any) {
+    revalidatePath('/')
+    return { status: 'error', message: 'Error processing request, please retry...' }
   }
 }
 

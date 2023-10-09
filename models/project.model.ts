@@ -1,11 +1,11 @@
-type Columns = {
+type Column = {
   id: string
   title: string
   issueIds: string[]
 }
 
 type IssuesOrder = {
-  columns: Columns[]
+  columns: Column[]
   columnOrder: string[]
 }
 

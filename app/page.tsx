@@ -30,13 +30,6 @@ export default async function RootPage({
     },
   })
 
-  // const issues = await fetch('http://localhost:3000/api/issue', {
-  //   next: { tags: ['issues'] },
-  // }).then((res) => res.json())
-
-  // console.log(issues.json())
-  // console.log('Session', JSON.stringify(session, null, 2))
-
   if (!session) {
     redirect('/api/auth/signin')
   }
