@@ -1,6 +1,8 @@
 import { Plus, MoreHorizontal } from 'lucide-react'
 import { Droppable, Draggable, DroppableStateSnapshot } from 'react-beautiful-dnd'
 import { Issue } from './issue'
+import { useState } from 'react'
+import { AddIssue } from './addIssue'
 
 interface ColumnProps {
   column: Column
@@ -9,6 +11,7 @@ interface ColumnProps {
 }
 
 export function Column({ column, index, project }: ColumnProps) {
+  const [dialogOpen, setDialogOpen] = useState(false)
   const columnColor = (snapshot: DroppableStateSnapshot) => {
     return snapshot.isDraggingOver ? 'bg-zinc-200' : 'bg-zinc-100'
   }
@@ -28,7 +31,7 @@ export function Column({ column, index, project }: ColumnProps) {
               <div
                 className={`${columnColor(
                   snapshot,
-                )} mb-auto flex w-72 flex-col gap-2 rounded-lg px-2 py-2 xl:w-auto`}
+                )} mb-auto flex w-72 flex-col gap-2 rounded-lg px-2 py-2`}
                 key={column.id}
                 {...provided.droppableProps}
                 ref={provided.innerRef}
@@ -43,9 +46,14 @@ export function Column({ column, index, project }: ColumnProps) {
                     </div>
                   </div>
                   <div className="flex space-x-1 text-xs text-zinc-500">
-                    <button>
+                    <button onClick={() => setDialogOpen(true)}>
                       <Plus size={18} />
                     </button>
+                    <AddIssue
+                      project={project}
+                      dialogOpen={dialogOpen}
+                      setDialogOpen={setDialogOpen}
+                    />
                     <button className="text-xl">
                       <MoreHorizontal size={18} />
                     </button>

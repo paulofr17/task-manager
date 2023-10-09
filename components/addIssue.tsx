@@ -3,7 +3,13 @@
 import { useRef, useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
 import { useForm } from 'react-hook-form'
@@ -12,14 +18,23 @@ import { Button } from './ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { createIssue } from '@/actions/serverActions'
 import { addIssueSchema } from '@/lib/addIssueSchema'
+import toast from 'react-hot-toast'
 
 interface AddIssueProps {
   project: Project
-  openDialog: (open: boolean) => void
-  handleNotification: (status: string) => void
+  dialogOpen: boolean
+  setDialogOpen: (open: boolean) => void
 }
 
-export function AddIssue({ project, openDialog, handleNotification }: AddIssueProps) {
+const handleNotification = (status: string) => {
+  if (status === 'success') {
+    toast.success('Issue successfully created')
+  } else if (status === 'error') {
+    toast.error('Error creating issue')
+  }
+}
+
+export function AddIssue({ project, dialogOpen, setDialogOpen }: AddIssueProps) {
   const form = useForm<z.infer<typeof addIssueSchema>>({
     resolver: zodResolver(addIssueSchema),
     defaultValues: {
@@ -43,91 +58,29 @@ export function AddIssue({ project, openDialog, handleNotification }: AddIssuePr
     // reset form data and close dialog
     form.reset({}, { keepDefaultValues: true })
     setPending(false)
-    openDialog(false)
+    setDialogOpen(false)
   }
 
   return (
-    <DialogContent className="w-full max-w-sm">
-      <DialogHeader>
-        <DialogTitle className="text-center text-black">Create Issue</DialogTitle>
-      </DialogHeader>
-      <Form {...form}>
-        <form
-          ref={formRef}
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 text-zinc-600"
-        >
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Issue description" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Issue Status</FormLabel>
-                <FormControl>
-                  <Select name="status" onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select issue status" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="To Do">To Do</SelectItem>
-                      <SelectItem value="In Progress">In Progress</SelectItem>
-                      <SelectItem value="In Review">In Review</SelectItem>
-                      <SelectItem value="Done">Done</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="priority"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Priority</FormLabel>
-                <FormControl>
-                  <Select name="priority" onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select issue priority" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Low">Low</SelectItem>
-                      <SelectItem value="Medium">Medium</SelectItem>
-                      <SelectItem value="High">High</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex gap-2">
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogContent className="w-full max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="text-center text-black">Create Issue</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form
+            ref={formRef}
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 text-zinc-600"
+          >
             <FormField
               control={form.control}
-              name="duration"
+              name="description"
               render={({ field }) => (
-                <FormItem className="w-[50%]">
-                  <FormLabel>Time to fix</FormLabel>
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Ex: 7" {...field} />
+                    <Textarea placeholder="Issue description" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -135,20 +88,22 @@ export function AddIssue({ project, openDialog, handleNotification }: AddIssuePr
             />
             <FormField
               control={form.control}
-              name="durationUnit"
+              name="status"
               render={({ field }) => (
-                <FormItem className="w-[50%]">
-                  <FormLabel>Unit</FormLabel>
+                <FormItem>
+                  <FormLabel>Issue Status</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue="d" name="durationUnit">
+                    <Select name="status" onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select issue duration unit" />
+                          <SelectValue placeholder="Select issue status" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="d">Days</SelectItem>
-                        <SelectItem value="h">Hours</SelectItem>
+                        <SelectItem value="To Do">To Do</SelectItem>
+                        <SelectItem value="In Progress">In Progress</SelectItem>
+                        <SelectItem value="In Review">In Review</SelectItem>
+                        <SelectItem value="Done">Done</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -156,18 +111,84 @@ export function AddIssue({ project, openDialog, handleNotification }: AddIssuePr
                 </FormItem>
               )}
             />
-          </div>
-          <DialogFooter>
-            <Button
-              type="submit"
-              className="w-full bg-purple-650 hover:bg-purple-650/70"
-              disabled={pending}
-            >
-              {pending ? 'Creating...' : 'Create'}
-            </Button>
-          </DialogFooter>
-        </form>
-      </Form>
-    </DialogContent>
+            <FormField
+              control={form.control}
+              name="priority"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Priority</FormLabel>
+                  <FormControl>
+                    <Select
+                      name="priority"
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select issue priority" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Low">Low</SelectItem>
+                        <SelectItem value="Medium">Medium</SelectItem>
+                        <SelectItem value="High">High</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="duration"
+                render={({ field }) => (
+                  <FormItem className="w-[50%]">
+                    <FormLabel>Time to fix</FormLabel>
+                    <FormControl>
+                      <Input type="number" placeholder="Ex: 7" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="durationUnit"
+                render={({ field }) => (
+                  <FormItem className="w-[50%]">
+                    <FormLabel>Unit</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} defaultValue="d" name="durationUnit">
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select issue duration unit" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="d">Days</SelectItem>
+                          <SelectItem value="h">Hours</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <DialogFooter>
+              <Button
+                type="submit"
+                className="w-full bg-purple-650 hover:bg-purple-650/70"
+                disabled={pending}
+              >
+                {pending ? 'Creating...' : 'Create'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   )
 }

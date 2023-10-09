@@ -8,10 +8,7 @@ export function Navbar() {
       <SearchBar />
       <div className="flex items-center space-x-2">
         <button>
-          <MessageCircle
-            size={20}
-            className="text-zinc-400 hover:text-purple-650"
-          />
+          <MessageCircle size={20} className="text-zinc-400 hover:text-purple-650" />
         </button>
         <button>
           <Clock4 size={20} className="text-zinc-400 hover:text-purple-650" />

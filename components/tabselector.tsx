@@ -1,8 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import toast from 'react-hot-toast'
-import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { Plus } from 'lucide-react'
 import { Button } from './ui/button'
 import { AddIssue } from './addIssue'
@@ -14,19 +12,11 @@ interface tabSelectorProps {
   activeTab: string
 }
 
-const handleNotification = (status: string) => {
-  if (status === 'success') {
-    toast.success('Issue successfully created')
-  } else if (status === 'error') {
-    toast.error('Error creating issue')
-  }
-}
-
 const tabs = ['Overview', 'List', 'Board', 'Calendar', 'Timeline']
 
 export function TabSelector({ project, activeTab }: tabSelectorProps) {
   const router = useRouter()
-  const [open, setOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
   const { data: session, status } = useSession()
 
   if (status === 'loading') {
@@ -57,18 +47,15 @@ export function TabSelector({ project, activeTab }: tabSelectorProps) {
           </button>
         ))}
       </div>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button
-            className="h-8 bg-purple-650 text-xs text-white hover:bg-purple-650/50"
-            size={'sm'}
-          >
-            Add Issue
-            <Plus size={15} className="ml-1" />
-          </Button>
-        </DialogTrigger>
-        <AddIssue project={project} openDialog={setOpen} handleNotification={handleNotification} />
-      </Dialog>
+      <Button
+        className="h-8 bg-purple-650 text-xs text-white hover:bg-purple-650/50"
+        size={'sm'}
+        onClick={() => setDialogOpen(true)}
+      >
+        Add Issue
+        <Plus size={15} className="ml-1" />
+      </Button>
+      <AddIssue project={project} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
     </div>
   )
 }

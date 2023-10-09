@@ -81,19 +81,30 @@ export function Board({ project }: BoardProps) {
     <DragDropContext onDragEnd={(dropResult) => handleOnDragEnd(dropResult)}>
       <Droppable droppableId="column" direction="horizontal" type="column">
         {(provided) => (
-          <div
-            className="mt-4 grid grid-cols-4 items-start justify-start gap-1 sm:gap-2 md:gap-4"
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {projectState.issuesOrder.columnOrder.map((statusId, index) =>
-              projectState.issuesOrder.columns
-                .filter((column) => column.id === statusId)
-                .map((column) => (
-                  <Column key={column.id} column={column} index={index} project={projectState} />
-                )),
-            )}
-            {provided.placeholder}
+          <div className="flex h-full w-[calc(100vw_-_62px)] max-w-[1630px] overflow-auto pb-2 md:w-[calc(100vw_-_82px)] lg:w-[calc(100vw_-_296px)]">
+            <div className="w-full">
+              <div className="min-w-max">
+                <div
+                  className="mt-4 grid w-fit grid-cols-4 items-start justify-start gap-1 sm:gap-2"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {projectState.issuesOrder.columnOrder.map((statusId, index) =>
+                    projectState.issuesOrder.columns
+                      .filter((column) => column.id === statusId)
+                      .map((column) => (
+                        <Column
+                          key={column.id}
+                          column={column}
+                          index={index}
+                          project={projectState}
+                        />
+                      )),
+                  )}
+                  {provided.placeholder}
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </Droppable>
