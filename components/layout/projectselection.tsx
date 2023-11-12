@@ -29,7 +29,6 @@ export function ProjectSelection({ projects }: ProjectSelectionProps) {
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString())
       params.set(name, value)
-
       return params.toString()
     },
     [searchParams],
@@ -58,9 +57,10 @@ export function ProjectSelection({ projects }: ProjectSelectionProps) {
                 key={project.id}
                 value={project.name}
                 onSelect={() => {
-                  setValue(value === project.id ? '' : project.id)
+                  const newValue = value === project.id ? '' : project.id
+                  setValue(newValue)
                   setOpen(false)
-                  router.push(pathname + '?' + createQueryString('project', project.id))
+                  router.push(pathname + '?' + createQueryString('project', newValue))
                 }}
               >
                 <Check

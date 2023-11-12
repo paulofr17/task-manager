@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '../../components/ui/button'
 import { AddIssue } from './addIssue'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 interface tabSelectorProps {
@@ -16,8 +16,18 @@ const tabs = ['Overview', 'Board', 'Timeline']
 
 export function TabSelector({ project, activeTab }: tabSelectorProps) {
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [dialogOpen, setDialogOpen] = useState(false)
   const { data: session, status } = useSession()
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+      return params.toString()
+    },
+    [searchParams],
+  )
 
   if (status === 'loading') {
     return <p>Loading...</p>
@@ -40,7 +50,7 @@ export function TabSelector({ project, activeTab }: tabSelectorProps) {
             } text-xs sm:text-sm lg:text-base 
             `}
             onClick={() => {
-              router.push('/?tab=' + tab)
+              router.push(pathname + '?' + createQueryString('tab', tab))
             }}
           >
             {tab}
