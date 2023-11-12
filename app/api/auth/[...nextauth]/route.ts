@@ -21,12 +21,8 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'email', type: 'text' },
         password: { label: 'password', type: 'password' },
       },
-      async authorize(credentials, req) {
-        if (
-          credentials?.email === undefined ||
-          credentials?.password === undefined
-        )
-          return null
+      async authorize(credentials) {
+        if (credentials?.email === undefined || credentials?.password === undefined) return null
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
@@ -40,9 +36,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET as string,
-  theme: {
-    colorScheme: 'dark',
-  },
   pages: {
     signIn: '/signin',
     error: '/signin',

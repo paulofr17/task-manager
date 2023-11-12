@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
-import { Button } from './ui/button'
+import { Button } from '../../components/ui/button'
 import { AddIssue } from './addIssue'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
@@ -12,7 +12,7 @@ interface tabSelectorProps {
   activeTab: string
 }
 
-const tabs = ['Overview', 'List', 'Board', 'Calendar', 'Timeline']
+const tabs = ['Overview', 'Board', 'Timeline']
 
 export function TabSelector({ project, activeTab }: tabSelectorProps) {
   const router = useRouter()
@@ -29,7 +29,7 @@ export function TabSelector({ project, activeTab }: tabSelectorProps) {
 
   return (
     <div className="flex h-12 items-center justify-between rounded-xl border border-zinc-300 bg-zinc-50/50 px-2 lg:h-12">
-      <div className="flex space-x-10 pl-4 sm:space-x-12 md:space-x-14">
+      <div className="flex space-x-8 pl-4 sm:space-x-12 md:space-x-14">
         {tabs.map((tab) => (
           <button
             key={tab}

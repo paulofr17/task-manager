@@ -1,11 +1,6 @@
 'use client'
 
-import {
-  createTask,
-  updateTask,
-  deleteTask,
-  revalidateHome,
-} from '@/actions/serverActions'
+import { createTask, updateTask, deleteTask, revalidateHome } from '@/actions/serverActions'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Edit2, Save, Trash2 } from 'lucide-react'
 import { useRef, useState } from 'react'
@@ -34,8 +29,7 @@ async function handleTaskDescriptionChange(
   } else if (description !== task.description) {
     task.description = description
     const response = await updateTask(task.id, task.description, undefined)
-    if (response.status === 'success')
-      handleNotification('success', 'Task successfully updated')
+    if (response.status === 'success') handleNotification('success', 'Task successfully updated')
     else handleNotification('error', 'This task has already been deleted')
   } else revalidateHome()
 }
@@ -46,8 +40,7 @@ async function handleUpdateTaskCheckbox(
 ) {
   task.completed = !task.completed
   const response = await updateTask(task.id, undefined, task.completed)
-  if (response.status === 'success')
-    handleNotification('success', 'Task successfully updated')
+  if (response.status === 'success') handleNotification('success', 'Task successfully updated')
   else handleNotification('error', 'This task has already been deleted')
 }
 
@@ -71,9 +64,7 @@ export function Task({ issueId, task, handleNotification }: TaskProps) {
         <Checkbox
           className="border-purple-650 text-purple-650 data-[state=checked]:bg-purple-650 data-[state=checked]:text-white"
           checked={task.completed}
-          onCheckedChange={() =>
-            handleUpdateTaskCheckbox(task, handleNotification)
-          }
+          onCheckedChange={() => handleUpdateTaskCheckbox(task, handleNotification)}
         />
         <input
           autoFocus={description === ''}
@@ -83,12 +74,7 @@ export function Task({ issueId, task, handleNotification }: TaskProps) {
           onChange={(event) => setDescription(event.target.value)}
           onBlur={() => {
             setInputFocus(false)
-            handleTaskDescriptionChange(
-              issueId,
-              description,
-              task,
-              handleNotification,
-            )
+            handleTaskDescriptionChange(issueId, description, task, handleNotification)
           }}
           onFocus={() => setInputFocus(true)}
         ></input>
@@ -98,9 +84,7 @@ export function Task({ issueId, task, handleNotification }: TaskProps) {
         >
           <Edit2 size={18} />
         </button>
-        <button
-          className={`${!inputFocus ? 'hidden' : 'hidden group-hover:block'}`}
-        >
+        <button className={`${!inputFocus ? 'hidden' : 'hidden group-hover:block'}`}>
           <Save size={18} />
         </button>
         <button

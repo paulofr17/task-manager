@@ -12,6 +12,6 @@ type IssuesOrder = {
 type Project = {
   id: string
   name: string
-  issues: Issue[]
+  // issues: Issue[]
   issuesOrder: IssuesOrder
 }

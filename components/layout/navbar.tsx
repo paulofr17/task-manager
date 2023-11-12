@@ -1,6 +1,6 @@
 import { Clock4, MessageCircle } from 'lucide-react'
 import { SearchBar } from './searchbar'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 
 export function Navbar() {
   return (

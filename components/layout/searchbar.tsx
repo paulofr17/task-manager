@@ -2,15 +2,7 @@
 
 import { useState } from 'react'
 
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Search,
-  Settings,
-  Smile,
-  User,
-} from 'lucide-react'
+import { Calculator, Calendar, CreditCard, Search, Settings, Smile, User } from 'lucide-react'
 import {
   Command,
   CommandEmpty,
@@ -77,10 +69,7 @@ export function SearchBar() {
             onChange={(e) => setSearchText(e.target.value)}
             autoComplete="on"
           ></input>
-          <Search
-            size={18}
-            className="text-zinc-300 group-hover:text-zinc-700"
-          />
+          <Search size={18} className="text-zinc-300 group-hover:text-zinc-700" />
         </div>
       )}
     </div>

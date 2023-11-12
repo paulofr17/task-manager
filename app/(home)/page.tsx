@@ -1,11 +1,11 @@
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
-import { authOptions } from './api/auth/[...nextauth]/route'
-import { Filter } from '@/components/filter'
-import { HomeContent } from '@/components/homecontent'
-import { Navbar } from '@/components/navbar'
-import { Sidebar } from '@/components/sidebar'
+import { authOptions } from '../api/auth/[...nextauth]/route'
+import { Filter } from '@/components/layout/filter'
+import { HomeContent } from '@/app/(home)/homecontent'
+import { Navbar } from '@/components/layout/navbar'
+import { Sidebar } from '@/components/layout/sidebar'
 import prisma from '@/lib/prisma'
 
 export default async function RootPage({
@@ -15,12 +15,7 @@ export default async function RootPage({
 }) {
   const session = await getServerSession(authOptions)
   const activeTab = Array.isArray(searchParams.tab) ? 'Board' : searchParams.tab
-  const issues = await prisma.issue.findMany({
-    include: {
-      tasks: true,
-    },
-  })
-  const project = await prisma.project.findFirst({
+  const project = await prisma.project.findMany({
     include: {
       issues: {
         include: {
@@ -29,6 +24,9 @@ export default async function RootPage({
       },
     },
   })
+  const activeProject = searchParams.project
+    ? project.find((project) => project.id === searchParams.project)
+    : null
 
   if (!session) {
     redirect('/api/auth/signin')
@@ -40,10 +38,10 @@ export default async function RootPage({
       <Filter />
       <div className="flex grow flex-col">
         <Navbar />
-        {project ? (
-          <HomeContent project={project} activeTab={activeTab || 'Board'} />
+        {activeProject ? (
+          <HomeContent project={activeProject} activeTab={activeTab || 'Board'} />
         ) : (
-          <p>Loading project...</p>
+          <p className="mx-auto mt-2 text-xl">Please select one project</p>
         )}
       </div>
     </div>
