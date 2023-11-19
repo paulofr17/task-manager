@@ -1,6 +1,6 @@
 'use client'
 
-import { DragDropContext, Droppable, DropResult, resetServerContext } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd'
 import { useEffect, useState } from 'react'
 import { Column } from './column'
 import { BoardWithColumns } from '@/models/types'
@@ -19,8 +19,6 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 }
 
 export function Board({ board }: BoardProps) {
-  resetServerContext()
-
   useEffect(() => setBoardState(board), [board])
   const [boardState, setBoardState] = useState(board)
 

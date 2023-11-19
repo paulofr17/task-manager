@@ -4,7 +4,7 @@ import { Clock, ListChecks } from 'lucide-react'
 import { IssueMenu } from './issuemenu'
 import { useState } from 'react'
 import { TaskList } from './taskList'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import { IssueWithTasks } from '@/models/types'
 
 interface IssueProps {

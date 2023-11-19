@@ -1,5 +1,5 @@
 import { Plus, MoreHorizontal } from 'lucide-react'
-import { Droppable, Draggable, DroppableStateSnapshot } from 'react-beautiful-dnd'
+import { Droppable, Draggable, DroppableStateSnapshot } from '@hello-pangea/dnd'
 import { Issue } from './issue'
 import { useState } from 'react'
 import { AddIssue } from './addIssue'

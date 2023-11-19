@@ -3,6 +3,10 @@
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
+export async function revalidateRoute(path: string) {
+  revalidatePath(path)
+}
+
 export async function createTask(issueId: string, description: string) {
   try {
     await prisma.task.create({

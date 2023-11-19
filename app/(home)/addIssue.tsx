@@ -108,7 +108,7 @@ export function AddIssue({ columns, dialogOpen, setDialogOpen }: AddIssueProps) 
                   <FormControl>
                     <Select name="column" onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger aria-controls="radix-:R1mcq:">
                           <SelectValue placeholder="Select column" />
                         </SelectTrigger>
                       </FormControl>
@@ -138,7 +138,7 @@ export function AddIssue({ columns, dialogOpen, setDialogOpen }: AddIssueProps) 
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger aria-controls="radix-:R1mcq:">
                           <SelectValue placeholder="Select issue priority" />
                         </SelectTrigger>
                       </FormControl>
@@ -176,7 +176,7 @@ export function AddIssue({ columns, dialogOpen, setDialogOpen }: AddIssueProps) 
                     <FormControl>
                       <Select onValueChange={field.onChange} defaultValue="d" name="durationUnit">
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger aria-controls="radix-:R1mcq:">
                             <SelectValue placeholder="Select issue duration unit" />
                           </SelectTrigger>
                         </FormControl>

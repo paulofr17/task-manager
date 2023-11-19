@@ -1,18 +1,15 @@
 'use client'
 
-import { createTask, updateTask, deleteTask } from '@/actions/task'
+import { createTask, updateTask, deleteTask, revalidateRoute } from '@/actions/task'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Task } from '@prisma/client'
 import { Edit2, Save, Trash2 } from 'lucide-react'
 import { revalidatePath } from 'next/cache'
 import { useRef, useState } from 'react'
 
 type TaskProps = {
   issueId: string
-  task: {
-    id: string
-    description: string
-    completed: boolean
-  }
+  task: Task
   handleNotification: (status: string, message: string) => void
 }
 
@@ -32,7 +29,7 @@ async function handleTaskDescriptionChange(
     const response = await updateTask(task.id, task.description, undefined)
     if (response.status === 'success') handleNotification('success', 'Task successfully updated')
     else handleNotification('error', 'This task has already been deleted')
-  } else revalidatePath('/')
+  } else revalidateRoute('/')
 }
 
 async function handleUpdateTaskCheckbox(

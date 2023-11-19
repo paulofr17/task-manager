@@ -18,7 +18,7 @@ interface IssueMenuProps {
 
 async function deleteItem(issueId: string) {
   const result = await deleteIssue(issueId)
-  if (result.status === 'success') {
+  if (result.data) {
     toast.success('Issue successfully deleted')
   } else {
     toast.error('Error deleting issue')
