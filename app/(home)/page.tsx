@@ -7,6 +7,7 @@ import { HomeContent } from '@/app/(home)/homecontent'
 import { Navbar } from '@/components/layout/navbar'
 import { Sidebar } from '@/components/layout/sidebar'
 import prisma from '@/lib/prisma'
+import { BoardWithColumns } from '@/models/types'
 
 export default async function RootPage({
   searchParams,
@@ -15,17 +16,28 @@ export default async function RootPage({
 }) {
   const session = await getServerSession(authOptions)
   const activeTab = Array.isArray(searchParams.tab) ? 'Board' : searchParams.tab
-  const project = await prisma.project.findMany({
+  const boards: BoardWithColumns[] = await prisma.board.findMany({
     include: {
-      issues: {
+      columns: {
+        orderBy: {
+          order: 'asc',
+        },
         include: {
-          tasks: true,
+          issues: {
+            orderBy: {
+              order: 'asc',
+            },
+            include: {
+              tasks: true,
+            },
+          },
         },
       },
     },
   })
-  const activeProject = searchParams.project
-    ? project.find((project) => project.id === searchParams.project)
+
+  const activeBoard = searchParams.board
+    ? boards.find((board) => board.id === searchParams.board)
     : null
 
   if (!session) {
@@ -38,8 +50,8 @@ export default async function RootPage({
       <Filter />
       <div className="flex grow flex-col">
         <Navbar />
-        {activeProject ? (
-          <HomeContent project={activeProject} activeTab={activeTab || 'Board'} />
+        {activeBoard ? (
+          <HomeContent board={activeBoard} activeTab={activeTab || 'Board'} />
         ) : (
           <p className="mx-auto mt-2 text-xl">Please select one project</p>
         )}

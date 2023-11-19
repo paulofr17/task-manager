@@ -5,9 +5,10 @@ import { IssueMenu } from './issuemenu'
 import { useState } from 'react'
 import { TaskList } from './taskList'
 import { Draggable } from 'react-beautiful-dnd'
+import { IssueWithTasks } from '@/models/types'
 
 interface IssueProps {
-  issue: Issue
+  issue: IssueWithTasks
   index: number
 }
 

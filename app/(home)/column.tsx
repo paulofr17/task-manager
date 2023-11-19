@@ -3,14 +3,15 @@ import { Droppable, Draggable, DroppableStateSnapshot } from 'react-beautiful-dn
 import { Issue } from './issue'
 import { useState } from 'react'
 import { AddIssue } from './addIssue'
+import { BoardWithColumns, ColumnWithIssues } from '@/models/types'
 
 interface ColumnProps {
-  column: Column
+  column: ColumnWithIssues
   index: number
-  project: Project
+  board: BoardWithColumns
 }
 
-export function Column({ column, index, project }: ColumnProps) {
+export function Column({ column, index, board }: ColumnProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const columnColor = (snapshot: DroppableStateSnapshot) => {
     return snapshot.isDraggingOver ? 'bg-zinc-200' : 'bg-zinc-100'
@@ -38,11 +39,9 @@ export function Column({ column, index, project }: ColumnProps) {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-1 text-xs text-zinc-500">
-                    <span className="pl-2 text-base font-medium text-black">{column.title}</span>
+                    <span className="pl-2 text-base font-medium text-black">{column.name}</span>
                     <div className="flex h-5 w-5 rounded-full bg-zinc-500 text-xs font-bold text-white">
-                      <p className="m-auto">
-                        {project.issues.filter((issue) => issue.status === column.title).length}
-                      </p>
+                      <p className="m-auto">{column.issues.length}</p>
                     </div>
                   </div>
                   <div className="flex space-x-1 text-xs text-zinc-500">
@@ -50,7 +49,7 @@ export function Column({ column, index, project }: ColumnProps) {
                       <Plus size={18} />
                     </button>
                     <AddIssue
-                      project={project}
+                      columns={board.columns}
                       dialogOpen={dialogOpen}
                       setDialogOpen={setDialogOpen}
                     />
@@ -59,11 +58,9 @@ export function Column({ column, index, project }: ColumnProps) {
                     </button>
                   </div>
                 </div>
-                {column.issueIds.map((issueId, index) =>
-                  project.issues
-                    .filter((issue) => issue.id === issueId)
-                    .map((issue) => <Issue key={issue.id} issue={issue} index={index} />),
-                )}
+                {column.issues.map((issue, index) => (
+                  <Issue key={issue.id} issue={issue} index={index} />
+                ))}
                 {provided.placeholder}
               </div>
             )}

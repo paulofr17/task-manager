@@ -1,19 +1,28 @@
 'use client'
 
 import { DragDropContext, Droppable, DropResult, resetServerContext } from 'react-beautiful-dnd'
-import { changeColumnOrder, changeIssueOrder } from '@/actions/serverActions'
 import { useEffect, useState } from 'react'
 import { Column } from './column'
+import { BoardWithColumns } from '@/models/types'
+import { changeColumnsOrder } from '@/actions/column'
+import { changeIssuesOrder } from '@/actions/issue'
 
 interface BoardProps {
-  project: Project
+  board: BoardWithColumns
 }
 
-export function Board({ project }: BoardProps) {
+function reorder<T>(list: T[], startIndex: number, endIndex: number) {
+  const result = Array.from(list)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(endIndex, 0, removed)
+  return result
+}
+
+export function Board({ board }: BoardProps) {
   resetServerContext()
 
-  useEffect(() => setProjectState(project), [project])
-  const [projectState, setProjectState] = useState(project)
+  useEffect(() => setBoardState(board), [board])
+  const [boardState, setBoardState] = useState(board)
 
   const handleOnDragEnd = async (dropResult: DropResult) => {
     const { destination, source, type } = dropResult
@@ -26,55 +35,61 @@ export function Board({ project }: BoardProps) {
   }
 
   const onDragIssue = async (dropResult: DropResult) => {
-    const { destination, draggableId } = dropResult
+    const { source, destination } = dropResult
+
+    if (!destination) return
+
     // Clone [object] to avoid mutating state
-    const newIssueOrder = projectState.issuesOrder.columns.map((column) => {
-      return {
-        ...column,
-        issueIds: [...column.issueIds],
-      }
-    })
-    // Change issue order
-    newIssueOrder.forEach((column) => {
-      column.issueIds = column.issueIds.filter((issueId) => issueId !== draggableId)
-      if (column.id === destination?.droppableId) {
-        column.issueIds.splice(destination.index, 0, draggableId)
-      }
-    })
-    // Construct new state
-    const newState = {
-      ...projectState,
-      issuesOrder: {
-        ...projectState.issuesOrder,
-        columns: newIssueOrder,
-      },
+    const columns = [...boardState.columns]
+
+    // Source and destination list
+    const sourceColumn = columns.find((list) => list.id === source.droppableId)
+    const destColumn = columns.find((list) => list.id === destination.droppableId)
+
+    if (!sourceColumn || !destColumn) {
+      return
     }
-    // Set UI state and update DB
-    setProjectState(newState)
-    await changeIssueOrder(dropResult, projectState.id)
+
+    // Move to the same column
+    if (source.droppableId === destination?.droppableId) {
+      // Update order
+      sourceColumn.issues = reorder(sourceColumn.issues, source.index, destination.index).map(
+        (issue, index) => ({
+          ...issue,
+          order: index,
+        }),
+      )
+      // Set UI state and update DB
+      const newBoardState = { ...boardState, columns }
+      setBoardState(newBoardState)
+      await changeIssuesOrder(sourceColumn.issues)
+    }
+    // Move to another column
+    else {
+      const [removed] = sourceColumn.issues.splice(source.index, 1)
+      removed.columnId = destColumn.id
+      destColumn.issues.splice(destination.index, 0, removed)
+      // Update order
+      sourceColumn.issues = sourceColumn.issues.map((issue, index) => ({ ...issue, order: index }))
+      destColumn.issues = destColumn.issues.map((issue, index) => ({ ...issue, order: index }))
+      // Set UI state and update DB
+      const newBoardState = { ...boardState, columns }
+      setBoardState(newBoardState)
+      await changeIssuesOrder(destColumn.issues)
+    }
   }
 
   const onDragColumn = async (dropResult: DropResult) => {
     const { destination, source, draggableId } = dropResult
 
     if (!destination) return
-    // Clone [object] to avoid mutating state
-    const oldColumnOrder = [...projectState.issuesOrder.columnOrder]
-    const newColumnOrder = [...projectState.issuesOrder.columnOrder]
-    newColumnOrder.splice(source.index, 1)
-    newColumnOrder.splice(destination.index, 0, draggableId)
 
-    // Construct new state
-    const newState = {
-      ...projectState,
-      issuesOrder: {
-        ...projectState.issuesOrder,
-        columnOrder: newColumnOrder,
-      },
-    }
+    const newColumnOrder = reorder(boardState.columns, source.index, destination.index).map(
+      (column, index) => ({ ...column, order: index }),
+    )
     // Set UI state and update DB
-    setProjectState(newState)
-    await changeColumnOrder(dropResult, projectState.id, oldColumnOrder)
+    setBoardState({ ...boardState, columns: newColumnOrder })
+    await changeColumnsOrder(newColumnOrder)
   }
 
   return (
@@ -89,18 +104,9 @@ export function Board({ project }: BoardProps) {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  {projectState.issuesOrder.columnOrder.map((statusId, index) =>
-                    projectState.issuesOrder.columns
-                      .filter((column) => column.id === statusId)
-                      .map((column) => (
-                        <Column
-                          key={column.id}
-                          column={column}
-                          index={index}
-                          project={projectState}
-                        />
-                      )),
-                  )}
+                  {boardState.columns.map((column, index) => (
+                    <Column key={column.id} column={column} index={index} board={boardState} />
+                  ))}
                   {provided.placeholder}
                 </div>
               </div>

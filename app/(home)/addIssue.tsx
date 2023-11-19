@@ -29,12 +29,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../components/ui/select'
-import { createIssue } from '@/actions/serverActions'
+import { createIssue } from '@/actions/issue'
 import { addIssueSchema } from '@/lib/addIssueSchema'
 import toast from 'react-hot-toast'
+import { ColumnWithIssues } from '@/models/types'
 
 interface AddIssueProps {
-  project: Project
+  columns: ColumnWithIssues[]
   dialogOpen: boolean
   setDialogOpen: (open: boolean) => void
 }
@@ -47,11 +48,10 @@ const handleNotification = (status: string) => {
   }
 }
 
-export function AddIssue({ project, dialogOpen, setDialogOpen }: AddIssueProps) {
+export function AddIssue({ columns, dialogOpen, setDialogOpen }: AddIssueProps) {
   const form = useForm<z.infer<typeof addIssueSchema>>({
     resolver: zodResolver(addIssueSchema),
     defaultValues: {
-      status: 'To Do',
       durationUnit: 'd',
     },
   })
@@ -66,7 +66,7 @@ export function AddIssue({ project, dialogOpen, setDialogOpen }: AddIssueProps) 
     Object.entries(values).forEach(([key, value]) => {
       issueFormData.append(key, value.toString())
     })
-    const result = await createIssue(project, issueFormData)
+    const result = await createIssue(issueFormData)
     setTimeout(() => handleNotification(result.status), 500)
     // reset form data and close dialog
     form.reset({}, { keepDefaultValues: true })
@@ -101,22 +101,23 @@ export function AddIssue({ project, dialogOpen, setDialogOpen }: AddIssueProps) 
             />
             <FormField
               control={form.control}
-              name="status"
+              name="column"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Issue Status</FormLabel>
+                  <FormLabel>Issue Column</FormLabel>
                   <FormControl>
-                    <Select name="status" onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select name="column" onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select issue status" />
+                          <SelectValue placeholder="Select column" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="To Do">To Do</SelectItem>
-                        <SelectItem value="In Progress">In Progress</SelectItem>
-                        <SelectItem value="In Review">In Review</SelectItem>
-                        <SelectItem value="Done">Done</SelectItem>
+                        {columns.map((column) => (
+                          <SelectItem key={column.id} value={column.id}>
+                            {column.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>

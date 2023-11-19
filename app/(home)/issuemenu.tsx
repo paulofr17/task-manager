@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { MoreHorizontal, Trash2 } from 'lucide-react'
 import { useTransition } from 'react'
-import { deleteIssue } from '@/actions/serverActions'
+import { deleteIssue } from '@/actions/issue'
 import toast, { Toaster } from 'react-hot-toast'
 
 interface IssueMenuProps {

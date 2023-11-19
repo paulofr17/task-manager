@@ -13,18 +13,18 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState, useCallback } from 'react'
-import { Project } from '@prisma/client'
+import { Board } from '@prisma/client'
 
-interface ProjectSelectionProps {
-  projects: Project[]
+interface BoardSelectionProps {
+  boards: Board[]
 }
 
-export function ProjectSelection({ projects }: ProjectSelectionProps) {
+export function BoardSelection({ boards }: BoardSelectionProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(searchParams?.get('project') || '')
+  const [value, setValue] = useState(searchParams?.get('board') || '')
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString())
@@ -43,33 +43,33 @@ export function ProjectSelection({ projects }: ProjectSelectionProps) {
           aria-expanded={open}
           className="w-[180px] justify-between border border-purple-200 text-purple-650"
         >
-          {value ? projects.find((project) => project.id === value)?.name : 'Select app'}
+          {value ? boards.find((board) => board.id === value)?.name : 'Select Board'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-purple-650 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[180px] p-0">
         <Command>
           <CommandInput placeholder="Search App..." />
-          <CommandEmpty>No Project found.</CommandEmpty>
+          <CommandEmpty>No Board found.</CommandEmpty>
           <CommandGroup>
-            {projects.map((project) => (
+            {boards.map((board) => (
               <CommandItem
-                key={project.id}
-                value={project.name}
+                key={board.id}
+                value={board.name}
                 onSelect={() => {
-                  const newValue = value === project.id ? '' : project.id
+                  const newValue = value === board.id ? '' : board.id
                   setValue(newValue)
                   setOpen(false)
-                  router.push(pathname + '?' + createQueryString('project', newValue))
+                  router.push(pathname + '?' + createQueryString('board', newValue))
                 }}
               >
                 <Check
                   className={cn(
                     'mr-2 h-4 w-4 text-purple-650',
-                    value === project.id ? 'opacity-100' : 'opacity-0',
+                    value === board.id ? 'opacity-100' : 'opacity-0',
                   )}
                 />
-                {project.name}
+                {board.name}
               </CommandItem>
             ))}
           </CommandGroup>

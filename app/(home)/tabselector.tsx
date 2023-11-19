@@ -6,15 +6,16 @@ import { Button } from '../../components/ui/button'
 import { AddIssue } from './addIssue'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { BoardWithColumns } from '@/models/types'
 
 interface tabSelectorProps {
-  project: Project
+  board: BoardWithColumns
   activeTab: string
 }
 
 const tabs = ['Overview', 'Board', 'Timeline']
 
-export function TabSelector({ project, activeTab }: tabSelectorProps) {
+export function TabSelector({ board, activeTab }: tabSelectorProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -65,7 +66,7 @@ export function TabSelector({ project, activeTab }: tabSelectorProps) {
         Add Issue
         <Plus size={15} className="ml-1" />
       </Button>
-      <AddIssue project={project} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
+      <AddIssue columns={board.columns} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
     </div>
   )
 }

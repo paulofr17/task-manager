@@ -2,8 +2,8 @@ import { z } from 'zod'
 
 export const addIssueSchema = z.object({
   description: z.string().min(2, { message: 'Issue description is too short' }),
-  status: z.string({
-    required_error: 'Please select issue status',
+  column: z.string({
+    required_error: 'Please select column',
   }),
   priority: z.string({
     required_error: 'Please select issue priority',

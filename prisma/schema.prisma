@@ -7,19 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Issue {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  description String
-  duration    String
-  status      String   @default("To Do")
-  priority    Priority
-  tasks       Task[]
-  User        User?    @relation(fields: [userId], references: [id])
-  userId      String?  @db.ObjectId
-  Project     Project @relation(fields: [projectId], references: [id])
-  projectId   String  @db.ObjectId
-}
-
 model Task {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   description String
@@ -28,17 +15,34 @@ model Task {
   issueId     String  @db.ObjectId
 }
 
-model Project {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  issuesOrder IssuesOrder
-  issues      Issue[]
+model Issue {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  duration    String
+  order       Int
+  priority    Priority
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?  @db.ObjectId
+  Column      Column   @relation(fields: [columnId], references: [id])
+  columnId    String   @db.ObjectId
+  tasks       Task[]
 }
 
-enum Priority {
-  High
-  Medium
-  Low
+model Column {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  order   Int
+  board   Board   @relation(fields: [boardId], references: [id])
+  boardId String  @db.ObjectId
+  issues  Issue[]
+}
+
+model Board {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  columns Column[]
+  user    User?    @relation(fields: [userId], references: [id])
+  userId  String?  @db.ObjectId
 }
 
 model User {
@@ -47,15 +51,11 @@ model User {
   name     String?
   password String
   issues   Issue[]
+  Board    Board[]
 }
 
-type IssuesOrder {
-  columns     Columns[]
-  columnOrder String[]
-}
-
-type Columns {
-  id       String
-  title    String
-  issueIds String[]
+enum Priority {
+  High
+  Medium
+  Low
 }
