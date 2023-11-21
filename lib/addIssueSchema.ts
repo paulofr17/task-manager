@@ -12,6 +12,6 @@ export const addIssueSchema = z.object({
     .number({
       required_error: 'Issue duration is required',
     })
-    .min(1, { message: 'Must be greater than 0' }),
+    .min(0, { message: 'Must be greater than 0' }),
   durationUnit: z.enum(['d', 'h']),
 })

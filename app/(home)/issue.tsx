@@ -31,7 +31,7 @@ export function Issue({ issue, index }: IssueProps) {
   return (
     <Draggable key={issue.id} draggableId={issue.id} index={index}>
       {(provided) => (
-        <div
+        <li
           className="flex flex-col justify-stretch space-y-4 rounded-lg border border-zinc-300 bg-white p-3"
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -66,7 +66,7 @@ export function Issue({ issue, index }: IssueProps) {
             </div>
           </div>
           {taskMenuOpen && <TaskList issueId={issue.id} taskList={issue.tasks} />}
-        </div>
+        </li>
       )}
     </Draggable>
   )

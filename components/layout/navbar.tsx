@@ -4,7 +4,7 @@ import { Button } from '../ui/button'
 
 export function Navbar() {
   return (
-    <div className="flex h-24 items-center justify-between border-b-2 border-b-zinc-100 pt-4">
+    <div className="flex h-20 items-center justify-between border-b-2 border-b-zinc-100 pr-1 pt-4">
       <SearchBar />
       <div className="flex items-center space-x-2">
         <button>

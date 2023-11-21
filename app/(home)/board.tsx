@@ -89,27 +89,58 @@ export function Board({ board }: BoardProps) {
     setBoardState({ ...boardState, columns: newColumnOrder })
     await changeColumnsOrder(newColumnOrder)
   }
-
+  const list = ['1', '2']
   return (
+    // <div className="relative flex h-full flex-col">
+    //   <div className="relative block grow">
+    //     <div className="absolute bottom-0 left-0 right-0 top-0 flex gap-8">
+    //       {list.map((item) => (
+    //         <div key={item} className="flex flex-col">
+    //           <div>Header - {item}</div>
+    //           <div className="overflow-y-auto">
+    //             Magna ullamco excepteur ad nisi. Deserunt nisi minim in consectetur quis aliqua
+    //             officia consequat. Consectetur ut cillum et nulla deserunt id Lorem id minim. Lorem
+    //             laborum tempor nisi cillum cupidatat fugiat ea laboris. Amet in veniam laboris
+    //             fugiat pariatur nostrud pariatur cupidatat. Non qui sit culpa duis. Proident laborum
+    //             mollit velit nostrud adipisicing labore enim officia non consequat. Commodo eiusmod
+    //             tempor enim consectetur fugiat eu. Quis enim consequat aliqua consectetur minim
+    //             dolore occaecat laborum elit ipsum. Excepteur non fugiat ea adipisicing aliqua anim
+    //             duis esse ut fugiat. Esse aliquip cupidatat est nulla et aliqua ipsum laboris aute.
+    //             Tempor eu ut duis consequat sunt eiusmod nostrud in minim aute elit et. Sint nulla
+    //             in sunt id incididunt. Sint et incididunt mollit fugiat esse. Do incididunt nisi
+    //             consectetur dolor cillum ad culpa mollit id enim nostrud ipsum mollit sit. Fugiat
+    //             voluptate deserunt tempor ut reprehenderit ullamco veniam dolore veniam. Laborum
+    //             anim adipisicing exercitation nulla incididunt esse voluptate proident aliqua
+    //             eiusmod eiusmod exercitation. Voluptate exercitation cupidatat deserunt aliquip
+    //             officia eiusmod. Proident cupidatat veniam nulla ipsum quis sit. Ut velit id quis
+    //             adipisicing ullamco Lorem aute culpa aliquip eiusmod id consectetur. Adipisicing
+    //             cillum quis reprehenderit incididunt irure nulla non proident culpa Lorem nulla
+    //             minim qui. Consectetur dolore anim deserunt ad voluptate anim commodo. Dolore
+    //             occaecat aute occaecat reprehenderit Lorem non labore quis occaecat pariatur tempor
+    //             et enim et. Quis id eu ut enim et reprehenderit ut do sint proident dolor deserunt
+    //             quis.
+    //           </div>
+    //           <div>footer</div>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   </div>
+    // </div>
     <DragDropContext onDragEnd={(dropResult) => handleOnDragEnd(dropResult)}>
       <Droppable droppableId="column" direction="horizontal" type="column">
         {(provided) => (
-          <div className="flex h-full w-[calc(100vw_-_62px)] max-w-[1630px] overflow-auto pb-2 md:w-[calc(100vw_-_82px)] lg:w-[calc(100vw_-_296px)]">
-            <div className="w-full">
-              <div className="min-w-max">
-                <div
-                  className="mt-4 grid w-fit grid-cols-4 items-start justify-start gap-1 sm:gap-2"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {boardState.columns.map((column, index) => (
-                    <Column key={column.id} column={column} index={index} board={boardState} />
-                  ))}
-                  {provided.placeholder}
-                </div>
-              </div>
-            </div>
-          </div>
+          // <div className="flex h-full w-[calc(100vw_-_62px)] max-w-[1630px] overflow-auto pb-2 md:w-[calc(100vw_-_82px)] lg:w-[calc(100vw_-_296px)]">
+          // <div className="flex h-[calc(100vh_-_148px)] w-[calc(100vw_-_62px)] overflow-x-auto overflow-y-hidden md:w-[calc(100vw_-_82px)] lg:w-[calc(100vw_-_296px)]">
+          <ol
+            className="firefoxScroll mt-4 flex flex-1 gap-1 overflow-auto sm:gap-2"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {boardState.columns.map((column, index) => (
+              <Column key={column.id} column={column} index={index} board={boardState} />
+            ))}
+            {provided.placeholder}
+          </ol>
         )}
       </Droppable>
     </DragDropContext>

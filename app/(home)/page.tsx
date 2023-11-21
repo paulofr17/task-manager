@@ -45,10 +45,10 @@ export default async function RootPage({
   }
 
   return (
-    <div className="mx-auto flex h-screen max-w-[1920px] overflow-hidden py-1 pr-1">
+    <div className="mx-auto flex h-screen max-w-[1920px] overflow-hidden pt-1">
       <Sidebar />
       <Filter />
-      <div className="flex grow flex-col">
+      <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar />
         {activeBoard ? (
           <HomeContent board={activeBoard} activeTab={activeTab || 'Board'} />

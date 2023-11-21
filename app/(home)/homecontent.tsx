@@ -9,7 +9,7 @@ interface HomeContentProps {
 
 export async function HomeContent({ board, activeTab }: HomeContentProps) {
   return (
-    <div className="ml-1 mt-4 flex h-full flex-col md:ml-2 lg:ml-4">
+    <div className="ml-1 mt-4 flex flex-1 flex-col overflow-hidden md:ml-2 lg:ml-4">
       <TabSelector board={board} activeTab={activeTab} />
       {activeTab === 'Overview' && <div>Overview</div>}
       {(activeTab === 'Board' || activeTab === undefined) && <Board board={board} />}

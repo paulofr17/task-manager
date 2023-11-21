@@ -19,11 +19,11 @@ export function Column({ column, index, board }: ColumnProps) {
   return (
     <Draggable key={column.id} draggableId={column.id} index={index}>
       {(provided, snapshot) => (
-        <div
+        <li
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`${
+          className={`h-fit ${
             snapshot.isDragging ? 'rounded-lg bg-zinc-200 opacity-80 shadow-lg' : 'opacity-100'
           }`}
         >
@@ -37,7 +37,7 @@ export function Column({ column, index, board }: ColumnProps) {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                <div className="flex items-center justify-between">
+                <div className="flex flex-shrink-0 items-center justify-between ">
                   <div className="flex items-center space-x-1 text-xs text-zinc-500">
                     <span className="pl-2 text-base font-medium text-black">{column.name}</span>
                     <div className="flex h-5 w-5 rounded-full bg-zinc-500 text-xs font-bold text-white">
@@ -58,14 +58,16 @@ export function Column({ column, index, board }: ColumnProps) {
                     </button>
                   </div>
                 </div>
-                {column.issues.map((issue, index) => (
-                  <Issue key={issue.id} issue={issue} index={index} />
-                ))}
+                <ol className="flex flex-auto flex-col gap-2">
+                  {column.issues.map((issue, index) => (
+                    <Issue key={issue.id} issue={issue} index={index} />
+                  ))}
+                </ol>
                 {provided.placeholder}
               </div>
             )}
           </Droppable>
-        </div>
+        </li>
       )}
     </Draggable>
   )
