@@ -6,6 +6,7 @@ import { Column } from './column'
 import { BoardWithColumns } from '@/models/types'
 import { changeColumnsOrder } from '@/actions/column'
 import { changeIssuesOrder } from '@/actions/issue'
+import { AddColumn } from './addColumn'
 
 interface BoardProps {
   board: BoardWithColumns
@@ -21,6 +22,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 export function Board({ board }: BoardProps) {
   useEffect(() => setBoardState(board), [board])
   const [boardState, setBoardState] = useState(board)
+  // Set Board State with board fetched from DB is different from boardState
 
   const handleOnDragEnd = async (dropResult: DropResult) => {
     const { destination, source, type } = dropResult
@@ -89,43 +91,7 @@ export function Board({ board }: BoardProps) {
     setBoardState({ ...boardState, columns: newColumnOrder })
     await changeColumnsOrder(newColumnOrder)
   }
-  const list = ['1', '2']
   return (
-    // <div className="relative flex h-full flex-col">
-    //   <div className="relative block grow">
-    //     <div className="absolute bottom-0 left-0 right-0 top-0 flex gap-8">
-    //       {list.map((item) => (
-    //         <div key={item} className="flex flex-col">
-    //           <div>Header - {item}</div>
-    //           <div className="overflow-y-auto">
-    //             Magna ullamco excepteur ad nisi. Deserunt nisi minim in consectetur quis aliqua
-    //             officia consequat. Consectetur ut cillum et nulla deserunt id Lorem id minim. Lorem
-    //             laborum tempor nisi cillum cupidatat fugiat ea laboris. Amet in veniam laboris
-    //             fugiat pariatur nostrud pariatur cupidatat. Non qui sit culpa duis. Proident laborum
-    //             mollit velit nostrud adipisicing labore enim officia non consequat. Commodo eiusmod
-    //             tempor enim consectetur fugiat eu. Quis enim consequat aliqua consectetur minim
-    //             dolore occaecat laborum elit ipsum. Excepteur non fugiat ea adipisicing aliqua anim
-    //             duis esse ut fugiat. Esse aliquip cupidatat est nulla et aliqua ipsum laboris aute.
-    //             Tempor eu ut duis consequat sunt eiusmod nostrud in minim aute elit et. Sint nulla
-    //             in sunt id incididunt. Sint et incididunt mollit fugiat esse. Do incididunt nisi
-    //             consectetur dolor cillum ad culpa mollit id enim nostrud ipsum mollit sit. Fugiat
-    //             voluptate deserunt tempor ut reprehenderit ullamco veniam dolore veniam. Laborum
-    //             anim adipisicing exercitation nulla incididunt esse voluptate proident aliqua
-    //             eiusmod eiusmod exercitation. Voluptate exercitation cupidatat deserunt aliquip
-    //             officia eiusmod. Proident cupidatat veniam nulla ipsum quis sit. Ut velit id quis
-    //             adipisicing ullamco Lorem aute culpa aliquip eiusmod id consectetur. Adipisicing
-    //             cillum quis reprehenderit incididunt irure nulla non proident culpa Lorem nulla
-    //             minim qui. Consectetur dolore anim deserunt ad voluptate anim commodo. Dolore
-    //             occaecat aute occaecat reprehenderit Lorem non labore quis occaecat pariatur tempor
-    //             et enim et. Quis id eu ut enim et reprehenderit ut do sint proident dolor deserunt
-    //             quis.
-    //           </div>
-    //           <div>footer</div>
-    //         </div>
-    //       ))}
-    //     </div>
-    //   </div>
-    // </div>
     <DragDropContext onDragEnd={(dropResult) => handleOnDragEnd(dropResult)}>
       <Droppable droppableId="column" direction="horizontal" type="column">
         {(provided) => (
@@ -140,6 +106,7 @@ export function Board({ board }: BoardProps) {
               <Column key={column.id} column={column} index={index} board={boardState} />
             ))}
             {provided.placeholder}
+            <AddColumn boardId={boardState.id} />
           </ol>
         )}
       </Droppable>

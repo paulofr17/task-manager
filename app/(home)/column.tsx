@@ -4,6 +4,7 @@ import { Issue } from './issue'
 import { useState } from 'react'
 import { AddIssue } from './addIssue'
 import { BoardWithColumns, ColumnWithIssues } from '@/models/types'
+import { ColumnMenu } from './columnMenu'
 
 interface ColumnProps {
   column: ColumnWithIssues
@@ -53,9 +54,7 @@ export function Column({ column, index, board }: ColumnProps) {
                       dialogOpen={dialogOpen}
                       setDialogOpen={setDialogOpen}
                     />
-                    <button className="text-xl">
-                      <MoreHorizontal size={18} />
-                    </button>
+                    <ColumnMenu columnId={column.id} />
                   </div>
                 </div>
                 <ol className="flex flex-auto flex-col gap-2">
