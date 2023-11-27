@@ -10,7 +10,7 @@ import {
 import { MoreHorizontal, Trash2 } from 'lucide-react'
 import { useTransition } from 'react'
 import { deleteIssue } from '@/actions/issue'
-import toast, { Toaster } from 'react-hot-toast'
+import { toaster } from '@/lib/toaster'
 
 interface IssueMenuProps {
   issueId: string
@@ -19,9 +19,9 @@ interface IssueMenuProps {
 async function deleteItem(issueId: string) {
   const result = await deleteIssue(issueId)
   if (result.data) {
-    toast.success('Issue successfully deleted')
+    toaster('success', 'Issue successfully deleted')
   } else {
-    toast.error('Error deleting issue')
+    toaster('error', 'Error deleting issue')
   }
 }
 
@@ -42,7 +42,6 @@ export function IssueMenu({ issueId }: IssueMenuProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
-      <Toaster />
     </DropdownMenu>
   )
 }

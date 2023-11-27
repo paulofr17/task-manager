@@ -4,11 +4,11 @@ import { createColumn } from '@/actions/column'
 import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { toaster } from '@/lib/toaster'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Plus, X } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { z } from 'zod'
 
 interface AddColumnProps {
@@ -34,9 +34,9 @@ export function AddColumn({ boardId }: AddColumnProps) {
   async function onSubmit(data: z.infer<typeof AddColumnSchema>) {
     const column = await createColumn(data.column, boardId)
     if (column.data) {
-      toast.success(`Column ${column.data?.name} successfully created`)
+      toaster('success', `Column ${column.data?.name} successfully created`)
     } else {
-      toast.error(`Error creating column`)
+      toaster('error', `Error creating column`)
     }
     form.reset()
     setEdit(false)

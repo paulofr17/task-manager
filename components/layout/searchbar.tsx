@@ -19,7 +19,7 @@ export function SearchBar() {
   const [searchText, setSearchText] = useState('')
 
   return (
-    <div className="pl-2 md:pl-5">
+    <div>
       {search ? (
         <Command className="rounded-lg border shadow-md">
           <CommandInput placeholder="Type a command or search..." />

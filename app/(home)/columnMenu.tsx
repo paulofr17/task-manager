@@ -8,9 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { toaster } from '@/lib/toaster'
 import { MoreHorizontal, Trash2 } from 'lucide-react'
 import { useTransition } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
 
 interface ColumnMenuProps {
   columnId: string
@@ -19,9 +19,9 @@ interface ColumnMenuProps {
 async function deleteItem(issueId: string) {
   const result = await deleteColumn(issueId)
   if (result.data) {
-    toast.success('Column successfully deleted')
+    toaster('success', 'Column successfully deleted')
   } else {
-    toast.error('Error deleting column')
+    toaster('error', 'Error deleting column')
   }
 }
 

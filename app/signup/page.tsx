@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
-import toast, { Toaster } from 'react-hot-toast'
 import * as z from 'zod'
 
 import tm from '@/assets/tm.png'
@@ -17,6 +16,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { registerSchema } from '@/lib/registerSchema'
 import { createUser } from '@/actions/user'
+import { toaster } from '@/lib/toaster'
 
 type FormData = z.infer<typeof registerSchema>
 
@@ -33,9 +33,9 @@ export default function Signup() {
   async function onSubmit(data: FormData) {
     createUser(data.name, data.email, data.password).then((response) => {
       if (response.status === 'error') {
-        toast.error(response.message)
+        toaster('error', response.message)
       } else {
-        toast.success(response.message)
+        toaster('success', response.message)
         // Sign in user after successful registration
         signIn('credentials', {
           email: data.email,
@@ -132,7 +132,6 @@ export default function Signup() {
           </Link>
         </div>
       </div>
-      <Toaster toastOptions={{ className: 'text-center' }} />
     </div>
   )
 }

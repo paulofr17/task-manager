@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button'
 import { loginSchema } from '@/lib/loginSchema'
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
-import toast, { Toaster } from 'react-hot-toast'
+import { toaster } from '@/lib/toaster'
 
 type FormData = z.infer<typeof loginSchema>
 
@@ -36,10 +36,11 @@ export default function Signin() {
       password: data.password,
       redirect: false,
     }).then((response) => {
+      console.log(response)
       if (response?.error) {
-        toast.error(response.error)
+        toaster('error', response.error)
       } else {
-        toast.success('Successfully signed in')
+        toaster('success', 'Successfully signed in')
         router.push('/')
       }
     })
@@ -143,7 +144,6 @@ export default function Signin() {
           </Link>
         </div>
       </div>
-      <Toaster />
     </div>
   )
 }

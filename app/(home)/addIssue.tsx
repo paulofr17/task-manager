@@ -31,8 +31,8 @@ import {
 } from '../../components/ui/select'
 import { createIssue } from '@/actions/issue'
 import { addIssueSchema } from '@/lib/addIssueSchema'
-import toast from 'react-hot-toast'
 import { ColumnWithIssues } from '@/models/types'
+import { toaster } from '@/lib/toaster'
 
 interface AddIssueProps {
   columns: ColumnWithIssues[]
@@ -42,9 +42,9 @@ interface AddIssueProps {
 
 const handleNotification = (status: string) => {
   if (status === 'success') {
-    toast.success('Issue successfully created')
+    toaster('success', 'Issue successfully created')
   } else if (status === 'error') {
-    toast.error('Error creating issue')
+    toaster('error', 'Error creating issue')
   }
 }
 

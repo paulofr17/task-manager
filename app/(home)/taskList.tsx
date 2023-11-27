@@ -3,8 +3,8 @@
 import { Plus } from 'lucide-react'
 import { Task } from './task'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import { Task as TaskType } from '@prisma/client'
+import { toaster } from '@/lib/toaster'
 
 type taskMenuProps = {
   issueId: string
@@ -12,8 +12,8 @@ type taskMenuProps = {
 }
 
 const handleNotification = (status: string, message: string) => {
-  if (status === 'success') toast.success(message)
-  else if (status === 'error') toast.error(message)
+  if (status === 'success') toaster('success', message)
+  else if (status === 'error') toaster('error', message)
 }
 
 export function TaskList({ issueId, taskList }: taskMenuProps) {
