@@ -68,12 +68,12 @@ export function AddColumn({ boardId }: AddColumnProps) {
           <div className="flex w-full gap-2">
             <Button
               type="submit"
-              className="h-9 w-24 bg-purple-650 text-sm text-white hover:bg-purple-650/50"
+              className="h-8 w-24 bg-purple-650 text-sm text-white hover:bg-purple-650/50"
             >
               Create
             </Button>
             <button
-              className="h-9 rounded-2xl hover:bg-zinc-200"
+              className="flex h-8 w-7 items-center justify-center rounded-md hover:bg-zinc-200"
               onClick={() => {
                 form.reset()
                 setEdit(false)
