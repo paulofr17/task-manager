@@ -7,7 +7,7 @@ import { HomeContent } from '@/app/(home)/homecontent'
 import { Navbar } from '@/components/layout/navbar'
 import { Sidebar } from '@/components/layout/sidebar'
 import prisma from '@/lib/prisma'
-import { BoardWithColumns, ProjectWithBoards } from '@/models/types'
+import { ProjectWithBoards } from '@/models/types'
 
 export default async function RootPage({
   searchParams,
@@ -15,10 +15,35 @@ export default async function RootPage({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const session = await getServerSession(authOptions)
+  const userList = await prisma.user.findMany()
+  const loggedUser = userList.find((user) => user.email === session?.user?.email)
   const activeTab = Array.isArray(searchParams.tab) ? 'Board' : searchParams.tab
   const projects: ProjectWithBoards[] = await prisma.project.findMany({
+    where: {
+      OR: [
+        {
+          id: {
+            in: loggedUser?.projectIds || [],
+          },
+        },
+        {
+          boards: {
+            some: {
+              id: {
+                in: loggedUser?.boardIds || [],
+              },
+            },
+          },
+        },
+      ],
+    },
     include: {
       boards: {
+        where: {
+          id: {
+            in: loggedUser?.boardIds || [],
+          },
+        },
         include: {
           columns: {
             orderBy: {
@@ -33,25 +58,6 @@ export default async function RootPage({
                   tasks: true,
                 },
               },
-            },
-          },
-        },
-      },
-    },
-  })
-  const boards: BoardWithColumns[] = await prisma.board.findMany({
-    include: {
-      columns: {
-        orderBy: {
-          order: 'asc',
-        },
-        include: {
-          issues: {
-            orderBy: {
-              order: 'asc',
-            },
-            include: {
-              tasks: true,
             },
           },
         },
@@ -74,13 +80,13 @@ export default async function RootPage({
   return (
     <div className="mx-auto flex h-screen max-w-[1920px] overflow-hidden pt-1">
       <Sidebar />
-      <Filter projects={projects} activeProject={activeProject} />
+      <Filter projects={projects} activeProject={activeProject} userList={userList} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar />
         {activeBoard ? (
           <HomeContent board={activeBoard} activeTab={activeTab || 'Board'} />
         ) : (
-          <p className="mx-auto mt-2 text-xl">Please select one project</p>
+          <p className="mx-auto mt-60 text-xl">Waiting for Board selection ...</p>
         )}
       </div>
     </div>

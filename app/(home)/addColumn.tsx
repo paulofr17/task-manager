@@ -15,14 +15,14 @@ interface AddColumnProps {
   boardId: string
 }
 
+const AddColumnSchema = z.object({
+  column: z.string().min(2, {
+    message: 'Column name must have at least 2 characters.',
+  }),
+})
+
 export function AddColumn({ boardId }: AddColumnProps) {
   const [edit, setEdit] = useState(false)
-
-  const AddColumnSchema = z.object({
-    column: z.string().min(2, {
-      message: 'Column name must have at least 2 characters.',
-    }),
-  })
 
   const form = useForm<z.infer<typeof AddColumnSchema>>({
     resolver: zodResolver(AddColumnSchema),

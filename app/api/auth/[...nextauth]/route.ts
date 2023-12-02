@@ -1,9 +1,14 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import NextAuth, { Account, NextAuthOptions, Profile, Session, User } from 'next-auth'
 import { compareSync } from 'bcrypt-ts'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
+import { JWT } from 'next-auth/jwt'
+import { AdapterUser } from 'next-auth/adapters'
+import { pages } from 'next/dist/build/templates/app-page'
+import error from 'next/error'
+import { profile } from 'console'
 
 export const authOptions: NextAuthOptions = {
   providers: [

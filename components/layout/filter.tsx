@@ -1,17 +1,19 @@
 'use client'
 
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { BoardSelection } from './boardSelection'
-import { ProjectSelection } from './projectSelection'
+import { BoardSelection } from '../../app/(home)/boardSelection'
+import { ProjectSelection } from '../../app/(home)/projectSelection'
 import { ProjectWithBoards } from '@/models/types'
 import { useState } from 'react'
+import { User } from '@prisma/client'
 
 interface FilterProps {
   projects: ProjectWithBoards[]
   activeProject: ProjectWithBoards | null | undefined
+  userList: User[]
 }
 
-export function Filter({ projects, activeProject }: FilterProps) {
+export function Filter({ projects, activeProject, userList }: FilterProps) {
   const [menuOpen, setMenuOpen] = useState(true)
 
   return (
@@ -25,8 +27,14 @@ export function Filter({ projects, activeProject }: FilterProps) {
             >
               <ChevronLeft className="h-[18px] w-[18px]" />
             </button>
-            <ProjectSelection projects={projects} />
-            {activeProject && <BoardSelection boards={activeProject.boards} />}
+            <ProjectSelection projects={projects} userList={userList} />
+            {activeProject && (
+              <BoardSelection
+                boards={activeProject.boards}
+                projectId={activeProject.id}
+                userList={userList}
+              />
+            )}
           </div>
         </div>
       ) : (
