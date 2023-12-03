@@ -40,9 +40,20 @@ export default async function RootPage({
     include: {
       boards: {
         where: {
-          id: {
-            in: loggedUser?.boardIds || [],
-          },
+          OR: [
+            {
+              project: {
+                userIds: {
+                  has: loggedUser?.id,
+                },
+              },
+            },
+            {
+              id: {
+                in: loggedUser?.boardIds || [],
+              },
+            },
+          ],
         },
         include: {
           columns: {
@@ -60,6 +71,7 @@ export default async function RootPage({
               },
             },
           },
+          users: true,
         },
       },
     },
@@ -84,7 +96,7 @@ export default async function RootPage({
       <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar />
         {activeBoard ? (
-          <HomeContent board={activeBoard} activeTab={activeTab || 'Board'} />
+          <HomeContent board={activeBoard} activeTab={activeTab || 'Board'} userList={userList} />
         ) : (
           <p className="mx-auto mt-60 text-xl">Waiting for Board selection ...</p>
         )}

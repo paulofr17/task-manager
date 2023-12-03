@@ -36,10 +36,10 @@ export function BoardSelection({ boards, projectId, userList }: BoardSelectionPr
       <Disclosure as="div" className="mt-2" defaultOpen>
         {({ open }) => (
           <>
-            <Disclosure.Button className="group flex w-full items-center justify-between rounded-lg py-2 pl-2 text-left text-sm font-semibold text-gray-700 hover:bg-gray-100 focus-visible:outline-none">
+            <Disclosure.Button className="group flex w-full items-center justify-between rounded-lg py-2 pl-2 text-left text-sm font-semibold text-zinc-700 hover:bg-gray-100 focus-visible:outline-none">
               <div className="flex gap-x-2">
                 <ChevronRight className={`${open ? 'rotate-90 transform' : ''} h-5 w-5`} />
-                <span>Boards</span>
+                <span>Boards ({boards.length})</span>
               </div>
               <a
                 className="mr-1 hidden hover:scale-110 hover:text-purple-650 group-hover:flex"
@@ -61,14 +61,14 @@ export function BoardSelection({ boards, projectId, userList }: BoardSelectionPr
             {/* List with project boards */}
             <Disclosure.Panel
               as="ol"
-              className="flex flex-col gap-[2px] px-2 pt-1 text-sm text-gray-500 focus-visible:outline-none"
+              className="flex flex-col gap-[2px] px-2 pt-1 focus-visible:outline-none"
             >
               {boards.map((board) => (
                 <li
                   key={board.id}
-                  className={`w-full rounded-lg py-2 pl-4 text-sm text-gray-700 hover:cursor-pointer hover:bg-gray-100 ${
+                  className={`w-full truncate rounded-lg py-2 pl-4 text-sm text-zinc-700 hover:cursor-pointer hover:overflow-auto hover:whitespace-break-spaces hover:bg-gray-100 ${
                     searchParams.get('board') === board.id && 'bg-gray-200 font-bold'
-                  } focus-visible:ring-offset-gray-1} truncate focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-650 focus-visible:ring-offset-2`}
+                  } focus-visible:ring-offset-gray-1} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-650 focus-visible:ring-offset-2`}
                   onClick={() => changeSelectedBoard(board.id)}
                 >
                   {board.name}

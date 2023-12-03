@@ -15,7 +15,6 @@ interface FilterProps {
 
 export function Filter({ projects, activeProject, userList }: FilterProps) {
   const [menuOpen, setMenuOpen] = useState(true)
-
   return (
     <>
       {menuOpen ? (

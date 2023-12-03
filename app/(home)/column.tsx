@@ -33,7 +33,7 @@ export function Column({ column, index, board }: ColumnProps) {
               <div
                 className={`${columnColor(
                   snapshot,
-                )} mb-auto flex w-72 flex-col gap-2 rounded-lg px-2 py-2`}
+                )} mb-auto flex w-60 flex-col gap-2 rounded-lg px-2 py-2`}
                 key={column.id}
                 {...provided.droppableProps}
                 ref={provided.innerRef}
