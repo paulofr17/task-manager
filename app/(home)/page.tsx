@@ -44,7 +44,7 @@ export default async function RootPage({
             {
               project: {
                 userIds: {
-                  has: loggedUser?.id,
+                  has: loggedUser?.id || '',
                 },
               },
             },
