@@ -17,7 +17,7 @@ export async function updateSubTask(formData: UpdateSubTaskType) {
     const result = UpdateSubTaskSchema.safeParse(formData)
 
     if (!result.success) {
-      return { error: result.error.message }
+      return { error: 'Invalid data provided' }
     }
 
     const subTask = await prisma.subTask.update({

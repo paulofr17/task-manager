@@ -17,7 +17,7 @@ export async function createSection(formData: NewSectionType) {
     const result = NewSectionSchema.safeParse(formData)
 
     if (!result.success) {
-      return { error: result.error.message }
+      return { error: 'Invalid data provided' }
     }
 
     const lastSectionOrder = await prisma.section.findFirst({

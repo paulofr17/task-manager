@@ -17,7 +17,7 @@ export async function createSubTask(formData: NewSubTaskType) {
     const result = NewSubTaskSchema.safeParse(formData)
 
     if (!result.success) {
-      return { error: result.error.message }
+      return { error: 'Invalid data provided' }
     }
 
     const subTask = await prisma.subTask.create({
