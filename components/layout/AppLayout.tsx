@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react'
 import { useWorkspaceContext } from '@/context/WorkspaceContext'
 import { useUserContext } from '@/context/UserContext'
 import { WorkspaceWithProjectsUsers } from '@/types/types'
-import { Sidebar } from './Sidebar'
-import { Navbar } from './Navbar'
+import { Sidebar } from '@/components/layout/Sidebar'
+import { Navbar } from '@/components/layout/Navbar'
 import { User } from '@prisma/client'
 
 interface AppLayoutProps {
