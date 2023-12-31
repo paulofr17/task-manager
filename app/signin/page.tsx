@@ -1,24 +1,19 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
-import * as z from 'zod'
+import { AiFillGithub } from 'react-icons/ai'
+import { FcGoogle } from 'react-icons/fc'
+import { signIn } from 'next-auth/react'
+import Link from 'next/link'
+import { toast } from 'sonner'
 
-import tm from '@/assets/tm.png'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
-import { loginSchema } from '@/lib/loginSchema'
-import { AiFillGithub } from 'react-icons/ai'
-import { FcGoogle } from 'react-icons/fc'
-import { toaster } from '@/lib/toaster'
-
-type FormData = z.infer<typeof loginSchema>
+import { UserLoginSchema, UserLoginType } from '@/actions/LoginUser/schema'
 
 export default function Signin() {
   const router = useRouter()
@@ -26,34 +21,33 @@ export default function Signin() {
     handleSubmit,
     register,
     formState: { errors, isSubmitting, isDirty, isValid },
-  } = useForm<FormData>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<UserLoginType>({
+    resolver: zodResolver(UserLoginSchema),
   })
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(formData: UserLoginType) {
     signIn('credentials', {
-      email: data.email,
-      password: data.password,
+      email: formData.email,
+      password: formData.password,
       redirect: false,
     }).then((response) => {
-      console.log(response)
       if (response?.error) {
-        toaster('error', response.error)
+        toast.error(response.error)
       } else {
-        toaster('success', 'Successfully signed in')
+        toast.success('Successfully signed in')
         router.push('/')
       }
     })
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center bg-gray-50">
+    <div className="flex h-screen w-screen flex-col items-center bg-muted dark:bg-zinc-900">
       <div className="flex min-h-full w-full flex-1 flex-col justify-center px-8">
-        <div className="mx-auto flex w-full max-w-md flex-col items-center space-y-6">
-          <Image src={tm.src} width={64} height={64} alt="Task Manager icon" />
-          <p className="text-xl font-semibold">Sign in to your account </p>
+        <div className="mx-auto flex w-full max-w-md flex-col items-center space-y-8">
+          <p className="text-4xl font-bold tracking-tight">Task Manager</p>
+          <p className="text-lg font-bold text-primary/90">Sign in to your account </p>
         </div>
-        <div className="mx-auto mt-8 w-full max-w-md rounded-lg border border-gray-200 bg-white p-10 shadow-sm">
+        <div className="mx-auto mt-8 w-full max-w-md rounded-lg border bg-card p-10 shadow-sm">
           <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-1">
               <Label htmlFor="email">Email address</Label>
@@ -61,7 +55,6 @@ export default function Signin() {
                 id="email"
                 type="text"
                 placeholder="abc@gmail.com"
-                className="focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-purple-650 focus-visible:ring-offset-0"
                 {...register('email', { required: true })}
               />
               {errors?.email && <p className="text-sm text-red-600">{errors?.email?.message}</p>}
@@ -72,7 +65,6 @@ export default function Signin() {
                 id="password"
                 type="password"
                 placeholder="Password"
-                className="focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-purple-650 focus-visible:ring-offset-0"
                 {...register('password', { required: true })}
               />
               {errors?.password && (
@@ -81,23 +73,20 @@ export default function Signin() {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="remember"
-                  className="border-gray-400 data-[state=checked]:border-purple-650 data-[state=checked]:bg-purple-650 data-[state=checked]:text-white"
-                />
+                <Checkbox id="remember" />
                 <label
                   htmlFor="remember"
-                  className="text-xs font-medium leading-none text-gray-500 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-xs font-medium leading-none text-muted-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Remember me
                 </label>
               </div>
-              <a href="#" className="text-xs font-medium leading-none text-purple-650">
+              <a href="#" className="text-xs font-medium leading-none">
                 Forgot password?
               </a>
             </div>
             <Button
-              className="h-8 bg-purple-650 text-xs font-semibold text-white hover:bg-purple-650/90"
+              className="h-8 text-xs font-semibold"
               type="submit"
               disabled={!isDirty || !isValid || isSubmitting}
             >
@@ -106,15 +95,15 @@ export default function Signin() {
           </form>
           <div className="relative mt-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-gray-200 dark:border-gray-400"></div>
             </div>
             <div className="relative flex justify-center text-sm font-normal">
-              <span className="bg-white px-4">Or continue with</span>
+              <span className="bg-card px-4">Or continue with</span>
             </div>
           </div>
           <div className="mt-6 flex w-full space-x-2">
             <button
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-zinc-400 bg-white p-1 text-black hover:bg-zinc-100"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-zinc-400 bg-white p-1 text-black hover:bg-zinc-300"
               onClick={() =>
                 signIn('google', {
                   email: '',
@@ -127,7 +116,8 @@ export default function Signin() {
               <span className="text-sm font-semibold">Google</span>
             </button>
             <button
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-800 p-1 text-white decoration-inherit hover:bg-zinc-800/80"
+              className="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-800 p-1 text-white 
+              decoration-inherit hover:bg-zinc-800/80 dark:bg-zinc-900 dark:hover:bg-zinc-800/80"
               onClick={() => {
                 signIn('github', { email: '', password: '', callbackUrl: '/' })
               }}
@@ -139,7 +129,7 @@ export default function Signin() {
         </div>
         <div className="mx-auto mt-8 text-sm">
           Not a member?{' '}
-          <Link className="text-purple-650" href="/signup">
+          <Link className="font-semibold text-zinc-800 dark:text-zinc-500" href="/signup">
             Create an account
           </Link>
         </div>

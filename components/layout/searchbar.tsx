@@ -60,16 +60,16 @@ export function SearchBar() {
           </CommandList>
         </Command>
       ) : (
-        <div className="group flex w-32 items-center justify-between rounded-xl border border-zinc-300 px-2 min-[400px]:w-44 sm:w-52 md:w-60">
+        <div className="group flex w-32 items-center justify-between rounded-xl border px-2 min-[400px]:w-44 sm:w-52 md:w-60">
           <input
-            className="w-[87%] border-none py-2 text-sm text-zinc-800 focus:outline-none"
+            className="w-[87%] border-none bg-background py-2 text-sm text-primary focus:outline-none"
             placeholder="Search"
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             autoComplete="on"
           ></input>
-          <Search size={18} className="text-zinc-300 group-hover:text-zinc-700" />
+          <Search size={18} className="text-primary group-hover:text-accent" />
         </div>
       )}
     </div>

@@ -11,7 +11,7 @@ model SubTask {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   description String
   completed   Boolean @default(false)
-  User        User?   @relation(fields: [userId], references: [id])
+  user        User?   @relation(fields: [userId], references: [id])
   userId      String? @db.ObjectId
   task        Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId      String  @db.ObjectId
@@ -20,44 +20,49 @@ model SubTask {
 model Task {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   description String
-  duration    String
+  dueDate     DateTime?
+  completed   Boolean   @default(false)
   order       Int
   priority    Priority
-  User        User?     @relation(fields: [userId], references: [id])
+  user        User?     @relation(fields: [userId], references: [id])
   userId      String?   @db.ObjectId
-  Column      Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
-  columnId    String    @db.ObjectId
-  SubTask     SubTask[]
+  section     Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId   String    @db.ObjectId
+  subTasks    SubTask[]
 }
 
-model Column {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  order   Int
-  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  boardId String @db.ObjectId
-  tasks   Task[]
+enum Priority {
+  High
+  Medium
+  Low
 }
 
-model Board {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+model Section {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  columns   Column[]
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId String   @db.ObjectId
+  order     Int
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String  @db.ObjectId
+  tasks     Task[]
 }
 
 model Project {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  boards      Board[]
+  privacy     Privacy
+  sections    Section[]
   users       User[]    @relation(fields: [userIds], references: [id])
   userIds     String[]  @db.ObjectId
-  WorkSpace   WorkSpace @relation(fields: [workSpaceId], references: [id])
-  workSpaceId String    @db.ObjectId
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String    @db.ObjectId
 }
 
-model WorkSpace {
+enum Privacy {
+  Public
+  Private
+}
+
+model Workspace {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   projects Project[]
@@ -69,17 +74,12 @@ model User {
   id           String      @id @default(auto()) @map("_id") @db.ObjectId
   email        String      @unique
   name         String
-  password     String
+  password     String?
+  image        String?
   tasks        Task[]
-  SubTask      SubTask[]
+  subTask      SubTask[]
   projects     Project[]   @relation(fields: [projectIds], references: [id])
   projectIds   String[]    @db.ObjectId
-  WorkSpace    WorkSpace[] @relation(fields: [workSpaceIds], references: [id])
+  workSpace    Workspace[] @relation(fields: [workSpaceIds], references: [id])
   workSpaceIds String[]    @db.ObjectId
-}
-
-enum Priority {
-  High
-  Medium
-  Low
 }
