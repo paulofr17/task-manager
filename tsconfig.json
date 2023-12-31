@@ -19,7 +19,6 @@
     "jsx": "preserve",
     "paths": {
       "@/*": ["*"],
-      "@/components/*": ["components/*"],
     },
     "plugins": [
       {
