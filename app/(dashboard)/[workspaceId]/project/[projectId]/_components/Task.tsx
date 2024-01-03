@@ -42,6 +42,7 @@ export function Task({ task, index }: TaskProps) {
     }
   }
   const dueDateColor = () => {
+    if (task.completed) return 'text-green-600'
     if (!task.dueDate) return 'text-muted-foreground'
     const today = new Date()
     const dueDate = new Date(task.dueDate)
