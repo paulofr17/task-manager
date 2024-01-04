@@ -12,6 +12,7 @@ import { AddSubTask } from './AddSubTask'
 import { TaskMenu } from './TaskMenu'
 import { AssignTask } from './AssignTask'
 import { SubTask } from './SubTask'
+import { TaskDescriptionForm } from './TaskDescriptionForm'
 
 interface TaskProps {
   task: TasksWithSubTasks
@@ -72,14 +73,7 @@ export function Task({ task, index }: TaskProps) {
             </div>
             <TaskMenu taskId={task.id} />
           </div>
-          <p
-            className={`line-clamp-3 break-all text-xs lg:text-sm ${
-              task.completed && 'line-through'
-            }`}
-            title={task.description}
-          >
-            {task.description}
-          </p>
+          <TaskDescriptionForm task={task} />
           <div className="flex h-7 justify-between">
             <div className="flex items-center gap-3">
               <button

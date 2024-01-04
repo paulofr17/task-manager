@@ -30,12 +30,11 @@ export async function updateTaskStatus(taskId: string, completed: boolean) {
   }
 }
 
-export async function updateTaskName(taskId: string, completed: boolean) {
+export async function updateTaskDescription(taskId: string, description: string) {
   try {
     const session = await getServerSession()
-
     if (!session?.user?.email) {
-      return { error: 'You must be logged in to change Task status...' }
+      return { error: 'You must be logged in to change Task description...' }
     }
 
     const task = await prisma.task.update({
@@ -43,7 +42,7 @@ export async function updateTaskName(taskId: string, completed: boolean) {
         id: taskId,
       },
       data: {
-        completed,
+        description,
       },
     })
 
