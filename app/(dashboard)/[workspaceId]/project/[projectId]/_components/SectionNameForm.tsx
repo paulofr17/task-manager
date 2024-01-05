@@ -30,6 +30,7 @@ export function SectionNameForm({ section }: SectionNameFormProps) {
       section.name = updatedSection.data.name
       toast.success(`Section name successfully updated to '${updatedSection.data.name}'`)
     } else {
+      setSectionName(section.name)
       toast.error(updatedSection.error || 'Error updating section')
     }
     setEditName(false)
@@ -71,7 +72,7 @@ export function SectionNameForm({ section }: SectionNameFormProps) {
         <Button
           variant={'ghost'}
           size={'sm'}
-          className="truncate px-1 text-sm font-medium"
+          className="truncate rounded-lg px-1 text-sm font-medium"
           onClick={enableEditName}
           title={section.name}
         >

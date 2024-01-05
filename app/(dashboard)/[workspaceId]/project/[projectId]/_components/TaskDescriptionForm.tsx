@@ -30,6 +30,7 @@ export function TaskDescriptionForm({ task }: TaskDescriptionFormProps) {
       task.description = updatedTask.data.description
       toast.success(`Task description successfully updated to '${updatedTask.data.description}'`)
     } else {
+      setDescription(task.description)
       toast.error(updatedTask.error || 'Error updating task')
     }
     setEdit(false)

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ProjectWithSections } from '@/types/types'
 import { Separator } from '@/components/ui/separator'
+import { ProjectNameForm } from './ProjectNameForm'
 
 interface ProjectHeaderProps {
   project: ProjectWithSections
@@ -20,7 +21,8 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
     <>
       <div className="flex items-center justify-between px-2 py-3">
         <div className="flex items-center">
-          <p className="text-xl font-semibold">{project.name}</p>
+          {/* <p className="text-xl font-semibold">{project.name}</p> */}
+          <ProjectNameForm project={project} />
           <Button variant={'ghost'} size={'icon'} className="ml-1 h-6 w-6" title="Project Actions">
             <ChevronDown className="h-4 w-4" />
           </Button>
