@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { ShareProjectSchema, ShareProjectType } from '@/actions/ShareProject/schema'
-import { shareProject } from '@/actions/ShareProject/action'
+import { ShareProjectSchema, ShareProjectType } from '@/actions/Project/ShareProject/schema'
+import { shareProject } from '@/actions/Project/ShareProject/action'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,

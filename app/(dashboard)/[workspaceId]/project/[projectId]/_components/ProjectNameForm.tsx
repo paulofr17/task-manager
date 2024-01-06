@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { ProjectWithSections } from '@/types/types'
-import { updateProjectName } from '@/actions/UpdateProject/action'
+import { updateProjectName } from '@/actions/Project/UpdateProject/action'
 
 interface ProjectNameFormProps {
   project: ProjectWithSections

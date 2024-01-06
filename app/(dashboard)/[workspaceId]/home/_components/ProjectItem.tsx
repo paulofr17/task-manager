@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { deleteProject } from '@/actions/DeleteProject/action'
+import { deleteProject } from '@/actions/Project/DeleteProject/action'
 
 interface ProjectItemProps {
   project: Project

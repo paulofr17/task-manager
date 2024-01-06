@@ -8,8 +8,8 @@ import { Plus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { NewSectionSchema, NewSectionType } from '@/actions/CreateSection/schema'
-import { createSection } from '@/actions/CreateSection/action'
+import { NewSectionSchema, NewSectionType } from '@/actions/Section/CreateSection/schema'
+import { createSection } from '@/actions/Section/CreateSection/action'
 
 interface AddColumnProps {
   boardId: string

@@ -4,6 +4,8 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -17,11 +19,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MemberSelection } from '@/components/shared/MemberSelection'
-import { NewWorkspaceSchema, NewWorkspaceType } from '@/actions/CreateWorkspace/schema'
-import { createWorkspace } from '@/actions/CreateWorkspace/action'
+import { NewWorkspaceSchema, NewWorkspaceType } from '@/actions/Workspace/CreateWorkspace/schema'
+import { createWorkspace } from '@/actions/Workspace/CreateWorkspace/action'
 import { useUserContext } from '@/context/UserContext'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 
 interface CreateWorkspaceProps {
   dialogOpen: boolean

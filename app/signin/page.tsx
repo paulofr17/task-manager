@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
-import { UserLoginSchema, UserLoginType } from '@/actions/LoginUser/schema'
+import { UserLoginSchema, UserLoginType } from '@/actions/User/LoginUser/schema'
 
 export default function Signin() {
   const router = useRouter()

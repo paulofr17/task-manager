@@ -11,8 +11,8 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { CreateUserSchema, CreateUserType } from '@/actions/CreateUser/schema'
-import { createUser } from '@/actions/CreateUser/action'
+import { CreateUserSchema, CreateUserType } from '@/actions/User/CreateUser/schema'
+import { createUser } from '@/actions/User/CreateUser/action'
 
 export default function Signup() {
   const {

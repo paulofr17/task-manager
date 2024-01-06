@@ -35,8 +35,8 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { useWorkspaceContext } from '@/context/WorkspaceContext'
-import { NewTaskSchema, NewTaskType } from '@/actions/CreateTask/schema'
-import { createTask } from '@/actions/CreateTask/action'
+import { NewTaskSchema, NewTaskType } from '@/actions/Task/CreateTask/schema'
+import { createTask } from '@/actions/Task/CreateTask/action'
 import { SectionWithTasks } from '@/types/types'
 import { cn } from '@/lib/utils'
 

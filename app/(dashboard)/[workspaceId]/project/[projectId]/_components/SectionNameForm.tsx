@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { SectionWithTasks } from '@/types/types'
-import { updateSectionName } from '@/actions/UpdateSection/action'
+import { updateSectionName } from '@/actions/Section/UpdateSection/action'
 
 interface SectionNameFormProps {
   section: SectionWithTasks

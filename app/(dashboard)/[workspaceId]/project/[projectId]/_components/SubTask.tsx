@@ -10,9 +10,9 @@ import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { UpdateSubTaskSchema, UpdateSubTaskType } from '@/actions/UpdateSubTask/schema'
-import { updateSubTask } from '@/actions/UpdateSubTask/action'
-import { deleteSubTask } from '@/actions/DeleteSubTask/action'
+import { UpdateSubTaskSchema, UpdateSubTaskType } from '@/actions/SubTask/UpdateSubTask/schema'
+import { updateSubTask } from '@/actions/SubTask/UpdateSubTask/action'
+import { deleteSubTask } from '@/actions/SubTask/DeleteSubTask/action'
 
 interface SubTaskProps {
   subTask: SubTask

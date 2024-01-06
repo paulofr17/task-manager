@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { deleteTask } from '@/actions/DeleteTask/action'
+import { deleteTask } from '@/actions/Task/DeleteTask/action'
 
 interface TaskMenuProps {
   taskId: string

@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { ShareWorkspaceSchema, ShareWorkspaceType } from '@/actions/ShareWorkspace/schema'
-import { shareWorkspace } from '@/actions/ShareWorkspace/action'
+import { ShareWorkspaceSchema, ShareWorkspaceType } from '@/actions/Workspace/ShareWorkspace/schema'
+import { shareWorkspace } from '@/actions/Workspace/ShareWorkspace/action'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,

@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { CreateWorkspace } from '@/components/shared/CreateWorkspace'
 import { useWorkspaceContext } from '@/context/WorkspaceContext'
-import { deleteWorkspace } from '@/actions/DeleteWorkspace/action'
+import { deleteWorkspace } from '@/actions/Workspace/DeleteWorkspace/action'
 import { toast } from 'sonner'
 
 const handleDeleteWorkspace = async (workspaceId: string) => {

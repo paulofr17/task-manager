@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { TasksWithSubTasks } from '@/types/types'
-import { updateTaskDescription } from '@/actions/UpdateTask/action'
+import { updateTaskDescription } from '@/actions/Task/UpdateTask/action'
 
 interface TaskDescriptionFormProps {
   task: TasksWithSubTasks

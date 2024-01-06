@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd'
 
-import { changeSectionsOrder } from '@/actions/ChangeSectionsOrder/action'
-import { changeTasksOrder } from '@/actions/ChangeTasksOrder/action'
+import { changeSectionsOrder } from '@/actions/Section/ChangeSectionsOrder/action'
+import { changeTasksOrder } from '@/actions/Task/ChangeTasksOrder/action'
 import { ProjectWithSections } from '@/types/types'
 import { AddSection } from './AddSection'
 import { Section } from './Section'

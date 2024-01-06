@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { deleteSection } from '@/actions/DeleteSection/action'
+import { deleteSection } from '@/actions/Section/DeleteSection/action'
 
 interface SectionMenuProps {
   section: SectionWithTasks

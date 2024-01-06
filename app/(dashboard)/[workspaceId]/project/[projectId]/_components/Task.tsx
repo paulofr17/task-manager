@@ -5,7 +5,7 @@ import { Draggable } from '@hello-pangea/dnd'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { updateTaskStatus } from '@/actions/UpdateTask/action'
+import { updateTaskStatus } from '@/actions/Task/UpdateTask/action'
 import { TasksWithSubTasks } from '@/types/types'
 import { Button } from '@/components/ui/button'
 import { AddSubTask } from './AddSubTask'

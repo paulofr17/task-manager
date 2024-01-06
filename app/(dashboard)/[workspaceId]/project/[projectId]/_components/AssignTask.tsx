@@ -17,7 +17,7 @@ import {
   CommandGroup,
   CommandItem,
 } from '@/components/ui/command'
-import { assignTask, unassignTask } from '@/actions/AssignTask/action'
+import { assignTask, unassignTask } from '@/actions/Task/AssignTask/action'
 import { TasksWithSubTasks } from '@/types/types'
 import { cn } from '@/lib/utils'
 

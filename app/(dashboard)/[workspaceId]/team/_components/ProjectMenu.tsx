@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ProjectShareForm } from '@/components/shared/ProjectShareForm'
 import { ProjectWithSections } from '@/types/types'
-import { deleteProject } from '@/actions/DeleteProject/action'
+import { deleteProject } from '@/actions/Project/DeleteProject/action'
 
 interface ProjectMenuProps {
   project: ProjectWithSections

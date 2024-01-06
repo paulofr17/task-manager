@@ -30,8 +30,8 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { NewProjectSchema, NewProjectType } from '@/actions/CreateProject/schema'
-import { createProject } from '@/actions/CreateProject/action'
+import { NewProjectSchema, NewProjectType } from '@/actions/Project/CreateProject/schema'
+import { createProject } from '@/actions/Project/CreateProject/action'
 
 interface CreateProjectProps {
   workspaceId: string
