@@ -81,7 +81,7 @@ export function WorkspaceDashboard({ workspace }: WorkspaceDashboardProps) {
               variant="ghost"
               size={'icon'}
               title={selectedProject === 'All' ? 'All Projects' : selectedProject?.name}
-              className=" flex w-44 items-center hover:bg-muted-foreground/30 focus-visible:ring-transparent focus-visible:ring-offset-0"
+              className="flex w-full items-center hover:bg-muted-foreground/30 focus-visible:ring-transparent focus-visible:ring-offset-0"
             >
               <span className="line-clamp-2 break-all">
                 {selectedProject === 'All' ? 'All Projects' : selectedProject?.name}
@@ -124,11 +124,11 @@ export function WorkspaceDashboard({ workspace }: WorkspaceDashboardProps) {
         </DropdownMenu>
         <Separator orientation="vertical" className="ml-1 h-8 bg-muted-foreground" />
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex min-w-[130px] items-center gap-1 pl-1">
         <p className="text-lg">{completedTaks}</p>
         <p>tasks Completed</p>
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex min-w-[100px] items-center gap-1">
         <p className="text-lg">{collaborators}</p>
         <p>collaborators</p>
       </div>

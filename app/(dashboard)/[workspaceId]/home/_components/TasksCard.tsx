@@ -96,12 +96,12 @@ export function TasksCard({ workspace }: TasksCardProps) {
                 <span className="truncate" title={task.description}>
                   {task.description}
                 </span>
-                <Badge variant={'default'} className="ml-auto h-6 w-40">
+                <Badge variant={'default'} className="ml-auto h-6 w-40 shrink-0">
                   <span className="truncate" title={task.project}>
                     {task.project}
                   </span>
                 </Badge>
-                <span className="w-9 truncate text-[10px] text-muted-foreground">
+                <span className="w-9 shrink-0 truncate text-[10px] text-muted-foreground">
                   {task.dueDate &&
                     new Date(task.dueDate).toLocaleString('en-us', {
                       month: 'short',

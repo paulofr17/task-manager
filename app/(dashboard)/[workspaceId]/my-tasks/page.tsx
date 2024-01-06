@@ -51,7 +51,7 @@ export default async function MyTasksPage({ params }: { params: { workspaceId: s
   }))
 
   return (
-    <div className="flex h-full flex-1 flex-col space-y-8 overflow-auto p-8">
+    <div className="flex h-full flex-1 flex-col space-y-8 overflow-auto px-2 py-6 sm:px-6">
       <div className="flex items-center justify-between space-y-2">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
