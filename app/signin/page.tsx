@@ -41,13 +41,13 @@ export default function Signin() {
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center bg-muted dark:bg-zinc-900">
-      <div className="flex min-h-full w-full flex-1 flex-col justify-center px-8">
-        <div className="mx-auto flex w-full max-w-md flex-col items-center space-y-8">
+    <div className="flex h-screen w-screen flex-col items-center overflow-auto bg-muted dark:bg-zinc-900">
+      <div className="flex w-full flex-1 flex-col justify-center gap-4 px-4 py-2 sm:gap-8 sm:px-8">
+        <div className="mx-auto flex w-full max-w-md flex-col items-center gap-3 sm:gap-6">
           <p className="text-4xl font-bold tracking-tight">Task Manager</p>
           <p className="text-lg font-bold text-primary/90">Sign in to your account </p>
         </div>
-        <div className="mx-auto mt-8 w-full max-w-md rounded-lg border bg-card p-10 shadow-sm">
+        <div className="mx-auto w-full max-w-md rounded-lg border bg-card p-6 shadow-sm sm:p-10">
           <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-1">
               <Label htmlFor="email">Email address</Label>
@@ -127,7 +127,7 @@ export default function Signin() {
             </button>
           </div>
         </div>
-        <div className="mx-auto mt-8 text-sm">
+        <div className="mx-auto text-sm">
           Not a member?{' '}
           <Link className="font-semibold text-zinc-800 dark:text-zinc-500" href="/signup">
             Create an account

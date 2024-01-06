@@ -38,14 +38,14 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center bg-muted dark:bg-zinc-900">
-      <div className="flex min-h-full w-full flex-1 flex-col justify-center px-8">
-        <div className="mx-auto flex w-full max-w-md flex-col items-center space-y-6">
+    <div className="flex h-screen w-screen flex-col items-center overflow-auto bg-muted dark:bg-zinc-900">
+      <div className="flex w-full flex-1 flex-col justify-center gap-4 px-4 py-2 sm:gap-8 sm:px-8">
+        <div className="mx-auto flex w-full max-w-md flex-col items-center gap-3 sm:gap-6">
           <p className="text-4xl font-bold tracking-tight">Task Manager</p>
           <p className="text-lg font-bold text-primary/90">Create your account</p>
         </div>
-        <div className="mx-auto mt-8 w-full max-w-md rounded-lg border bg-card p-10 shadow-sm">
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <div className="mx-auto w-full max-w-md rounded-lg border bg-card p-6 shadow-sm sm:p-10">
+          <form className="flex flex-col gap-4 sm:gap-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-1">
               <Label htmlFor="name">Name</Label>
               <Input
@@ -86,7 +86,7 @@ export default function Signup() {
               Sign Up
             </Button>
           </form>
-          <div className="relative mt-6">
+          <div className="relative mt-6 sm:mt-4">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200 dark:border-gray-400"></div>
             </div>
@@ -94,7 +94,7 @@ export default function Signup() {
               <span className="bg-card px-4">Or continue with</span>
             </div>
           </div>
-          <div className="mt-6 flex w-full space-x-2">
+          <div className="mt-4 flex w-full space-x-2 sm:mt-6">
             <button
               className="flex w-full items-center justify-center gap-2 rounded-md border border-zinc-400 bg-white p-1 text-black hover:bg-zinc-300"
               onClick={() => signIn('google', { email: '', password: '', callbackUrl: '/' })}
@@ -112,7 +112,7 @@ export default function Signup() {
             </button>
           </div>
         </div>
-        <div className="mx-auto mt-8 text-sm">
+        <div className="mx-auto text-sm">
           Already have an account?{' '}
           <Link className="font-semibold text-zinc-800 dark:text-zinc-500" href="/signin">
             Login here
