@@ -59,7 +59,7 @@ export default async function HomePage({ params }: { params: { workspaceId: stri
   }
 
   return (
-    <div className="flex w-full max-w-[1920px] flex-col gap-4 pt-6">
+    <div className="flex w-full max-w-[1920px] flex-col gap-4 overflow-auto py-4">
       <div className="mb-6 flex flex-col px-1 text-center text-primary">
         <p className="text-base font-medium">
           {new Date().toLocaleString('en-us', {

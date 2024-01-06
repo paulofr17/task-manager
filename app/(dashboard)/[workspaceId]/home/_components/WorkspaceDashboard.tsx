@@ -73,8 +73,8 @@ export function WorkspaceDashboard({ workspace }: WorkspaceDashboardProps) {
       : Array.from(new Set(selectedProject.users.map((user) => user.id))).length
 
   return (
-    <div className="mx-auto mt-4 flex h-16 w-full max-w-[500px] items-center justify-between rounded-full bg-accent px-4 text-xs text-primary">
-      <div className="flex items-center">
+    <div className="mx-auto mt-4 flex h-16 w-full max-w-[500px] items-center justify-between gap-2 rounded-full bg-accent px-4 text-xs text-primary sm:gap-4">
+      <div className="flex flex-1 items-center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -83,7 +83,7 @@ export function WorkspaceDashboard({ workspace }: WorkspaceDashboardProps) {
               title={selectedProject === 'All' ? 'All Projects' : selectedProject?.name}
               className="flex w-full items-center hover:bg-muted-foreground/30 focus-visible:ring-transparent focus-visible:ring-offset-0"
             >
-              <span className="line-clamp-2 break-all">
+              <span className="line-clamp-2 break-words">
                 {selectedProject === 'All' ? 'All Projects' : selectedProject?.name}
               </span>
               <ChevronDown className="ml-1 mt-1 h-4 w-4 shrink-0" />
@@ -124,11 +124,11 @@ export function WorkspaceDashboard({ workspace }: WorkspaceDashboardProps) {
         </DropdownMenu>
         <Separator orientation="vertical" className="ml-1 h-8 bg-muted-foreground" />
       </div>
-      <div className="flex min-w-[130px] items-center gap-1 pl-1">
+      <div className="flex items-center gap-1 pl-1">
         <p className="text-lg">{completedTaks}</p>
         <p>tasks Completed</p>
       </div>
-      <div className="flex min-w-[100px] items-center gap-1">
+      <div className="flex items-center gap-1">
         <p className="text-lg">{collaborators}</p>
         <p>collaborators</p>
       </div>
