@@ -19,9 +19,8 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
   const [showShareForm, setShowShareForm] = useState(false)
   return (
     <>
-      <div className="flex items-center justify-between px-2 py-3">
-        <div className="flex items-center">
-          {/* <p className="text-xl font-semibold">{project.name}</p> */}
+      <div className="flex w-full items-center justify-between px-1 py-3 sm:px-2">
+        <div className="flex items-center overflow-hidden px-1">
           <ProjectNameForm project={project} />
           <Button variant={'ghost'} size={'icon'} className="ml-1 h-6 w-6" title="Project Actions">
             <ChevronDown className="h-4 w-4" />

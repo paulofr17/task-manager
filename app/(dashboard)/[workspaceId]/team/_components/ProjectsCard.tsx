@@ -30,10 +30,12 @@ export function ProjectsCard({ projects, workspaceId }: ProjectsCardProps) {
             <Separator />
             <Link
               href={`/${project.workspaceId}/project/${project.id}}`}
-              className="my-1 flex h-14 w-full items-center justify-between rounded-md p-2 hover:bg-accent hover:text-accent-foreground"
+              className="my-1 flex h-14 w-full items-center justify-between gap-1 truncate rounded-md p-2 hover:bg-accent hover:text-accent-foreground"
             >
-              <p className="flex flex-col gap-[2px] text-base font-medium">
-                {project.name}
+              <p className="flex flex-col gap-[2px] truncate text-base font-medium">
+                <span className="truncate" title={project.name}>
+                  {project.name}
+                </span>
                 <span className="flex items-center gap-1 text-xs text-muted-foreground">
                   {project.privacy === 'Private' && <Lock size={14} />} {project.privacy}
                 </span>

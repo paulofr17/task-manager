@@ -19,7 +19,7 @@ export function SearchBar() {
   const [searchText, setSearchText] = useState('')
 
   return (
-    <div>
+    <div className="hidden sm:flex">
       {search ? (
         <Command className="rounded-lg border shadow-md">
           <CommandInput placeholder="Type a command or search..." />

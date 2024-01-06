@@ -66,17 +66,17 @@ export function ProjectNameForm({ project }: ProjectNameFormProps) {
           onKeyDown={onKeyDown}
           disabled={isSubmitting}
           maxLength={255}
-          className="h-6 p-0 px-2 py-1 text-xl font-semibold"
+          className="m-1 h-6 p-1 text-base font-semibold sm:text-xl"
         />
       ) : (
         <Button
           variant={'ghost'}
           size={'sm'}
-          className="flex h-fit w-fit justify-start px-2 py-1 text-left"
+          className="flex truncate px-2 py-1 text-left"
           onClick={enableEdit}
           title={project.name}
         >
-          <span className="truncate text-xl font-semibold">{project.name}</span>
+          <span className="truncate text-base font-semibold sm:text-xl">{project.name}</span>
         </Button>
       )}
     </>

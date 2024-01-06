@@ -16,11 +16,11 @@ export function WorkspaceHeader({ workspace }: WorkspaceHeaderProps) {
   const [showShareForm, setShowShareForm] = useState(false)
   return (
     <div
-      className="flex w-full items-center justify-between gap-4 px-2 py-3
+      className="flex w-full items-center justify-between gap-4 py-3 pl-4 pr-2
     "
     >
-      <div className="flex items-center">
-        <p className="line-clamp-2 truncate text-xl font-bold" title={workspace.name}>
+      <div className="flex items-center overflow-hidden">
+        <p className="truncate text-base font-bold sm:text-xl" title={workspace.name}>
           {workspace.name}
         </p>
         <Button variant={'ghost'} size={'icon'} className="ml-1 h-6 w-6" title="Workspace Actions">

@@ -14,7 +14,7 @@ interface NavbarProps {
 
 export function Navbar({ openSidebar, setOpenSidebar }: NavbarProps) {
   return (
-    <div className="flex h-14 shrink-0 items-center justify-between border-b-2 px-7 pl-8 md:px-2 lg:px-6">
+    <div className="flex h-14 shrink-0 items-center justify-between border-b-2 px-4 pl-7">
       <div className="flex items-center gap-4">
         <button onClick={() => setOpenSidebar(!openSidebar)}>
           <Menu className="h-6 w-6" />
