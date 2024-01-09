@@ -31,6 +31,20 @@ export default async function WorkspaceLayout({
     include: {
       users: true,
       projects: {
+        where: {
+          OR: [
+            {
+              users: {
+                some: {
+                  email: session.user.email,
+                },
+              },
+            },
+            {
+              privacy: 'Public',
+            },
+          ],
+        },
         include: {
           users: true,
           sections: {
