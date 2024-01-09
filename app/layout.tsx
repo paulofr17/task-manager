@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react'
 import { Inter } from 'next/font/google'
 import type { Metadata } from 'next'
 
@@ -31,7 +32,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             disableTransitionOnChange
           >
             <WorkspaceContextProvider>
-              <UserContextProvider>{children}</UserContextProvider>
+              <UserContextProvider>
+                {children}
+                <Analytics />
+              </UserContextProvider>
             </WorkspaceContextProvider>
           </ThemeProvider>
         </NextAuthSessionProvider>

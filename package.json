@@ -32,6 +32,7 @@
     "@tanstack/react-table": "^8.11.2",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
+    "@vercel/analytics": "^1.1.1",
     "autoprefixer": "10.4.14",
     "bcrypt-ts": "^4.0.0",
     "class-variance-authority": "^0.7.0",
