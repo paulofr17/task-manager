@@ -13,7 +13,7 @@ Join today and take control of your schedule like never before!
 
 <!-- DEMO -->
 ## Demo
-![image](https://github.com/paulofr17/task-manager/assets/28574271/be5a41e3-b8ac-4711-90a4-e5e23d0c6194)
+![Task Manager Demo](.github/images/demo.gif)
 
 <!-- ROADMAP -->
 ## Roadmap
