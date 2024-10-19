@@ -5,12 +5,15 @@ import { useForm } from 'react-hook-form'
 import { Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { SubTask } from '@prisma/client'
+import type { SubTask } from '@prisma/client'
 import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { UpdateSubTaskSchema, UpdateSubTaskType } from '@/actions/SubTask/UpdateSubTask/schema'
+import {
+  UpdateSubTaskSchema,
+  UpdateSubTaskType,
+} from '@/actions/SubTask/UpdateSubTask/schema'
 import { updateSubTask } from '@/actions/SubTask/UpdateSubTask/action'
 import { deleteSubTask } from '@/actions/SubTask/DeleteSubTask/action'
 
@@ -36,14 +39,17 @@ export function SubTask({ subTask }: SubTaskProps) {
   async function handleUpdateSubTask(formData: UpdateSubTaskType) {
     if (
       !formData.description ||
-      (formData.description === subTask.description && formData.completed === subTask.completed)
+      (formData.description === subTask.description &&
+        formData.completed === subTask.completed)
     ) {
       setValue('description', subTask.description)
       return
     }
     const updatedSubTask = await updateSubTask(formData)
     if (updatedSubTask.data) {
-      toast.success(`SubTask '${updatedSubTask.data?.description}' successfully updated`)
+      toast.success(
+        `SubTask '${updatedSubTask.data?.description}' successfully updated`,
+      )
     } else {
       toast.error('Error updating SubTask')
     }
@@ -52,7 +58,9 @@ export function SubTask({ subTask }: SubTaskProps) {
   async function handleDeleteSubTask() {
     const deletedSubTask = await deleteSubTask(subTask.id)
     if (deletedSubTask.data) {
-      toast.success(`SubTask '${deletedSubTask.data?.description}' successfully deleted`)
+      toast.success(
+        `SubTask '${deletedSubTask.data?.description}' successfully deleted`,
+      )
     } else {
       toast.error('Error deleting SubTask')
     }
