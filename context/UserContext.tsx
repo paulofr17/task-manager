@@ -10,9 +10,17 @@ type UserContext = {
 
 export const UserContext = createContext<UserContext | null>(null)
 
-export function UserContextProvider({ children }: { children: React.ReactNode }) {
+export function UserContextProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [userList, setUserList] = useState<User[]>([])
-  return <UserContext.Provider value={{ userList, setUserList }}>{children}</UserContext.Provider>
+  return (
+    <UserContext.Provider value={{ userList, setUserList }}>
+      {children}
+    </UserContext.Provider>
+  )
 }
 
 export function useUserContext() {

@@ -14,7 +14,9 @@ export async function shareWorkspace(formData: ShareWorkspaceType) {
 
     const result = ShareWorkspaceSchema.safeParse(formData)
     if (!result.success) {
-      return { error: 'Invalid data provided to share workspace with members...' }
+      return {
+        error: 'Invalid data provided to share workspace with members...',
+      }
     }
 
     const workspace = await prisma.workspace.update({

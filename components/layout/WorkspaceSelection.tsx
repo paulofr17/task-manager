@@ -1,7 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { CaretSortIcon, CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
+import {
+  CaretSortIcon,
+  CheckIcon,
+  PlusCircledIcon,
+} from '@radix-ui/react-icons'
 
 import { useWorkspaceContext } from '@/context/WorkspaceContext'
 
@@ -14,7 +18,11 @@ import {
   CommandItem,
   CommandSeparator,
 } from '@/components/ui/command'
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
@@ -22,7 +30,8 @@ import { CreateWorkspace } from '@/components/shared/CreateWorkspace'
 import { WorkspaceWithProjectsUsers } from '@/types/types'
 
 export function WorkspaceSelection() {
-  const { currentWorkspace, setCurrentWorkspace, workspaceList } = useWorkspaceContext()
+  const { currentWorkspace, setCurrentWorkspace, workspaceList } =
+    useWorkspaceContext()
   const [showNewWorkspace, setShowNewWorkspace] = useState(false)
   const [open, setOpen] = useState(false)
   const router = useRouter()
@@ -44,14 +53,17 @@ export function WorkspaceSelection() {
         <PopoverTrigger asChild>
           <Button
             role="combobox"
-            variant="outline"
+            variant="ghost"
+            size="sm"
             aria-expanded={open}
             aria-label="Select Workspace"
             title={currentWorkspace?.name || 'Select Workspace'}
-            className="w-[180px] justify-between"
+            className="w-[180px] justify-between border border-transparent px-2 text-sm font-medium hover:border-border hover:bg-muted/60"
           >
-            <span className="truncate">{currentWorkspace?.name || 'Select Workspace'}</span>
-            <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+            <span className="truncate">
+              {currentWorkspace?.name || 'Select Workspace'}
+            </span>
+            <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-60" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="z-[99999] w-[200px] p-0">
@@ -66,13 +78,18 @@ export function WorkspaceSelection() {
                     onSelect={() => handleSelectWorkspace(workspace)}
                     className="flex"
                   >
-                    <p className="line-clamp-3 break-all text-sm" title={workspace.name}>
+                    <p
+                      className="line-clamp-3 break-all text-sm"
+                      title={workspace.name}
+                    >
                       {workspace.name}
                     </p>
                     <CheckIcon
                       className={cn(
                         'ml-auto h-4 w-4 shrink-0',
-                        workspace.id === currentWorkspace?.id ? 'opacity-100' : 'opacity-0',
+                        workspace.id === currentWorkspace?.id
+                          ? 'opacity-100'
+                          : 'opacity-0',
                       )}
                     />
                   </CommandItem>
@@ -97,7 +114,10 @@ export function WorkspaceSelection() {
         </PopoverContent>
       </Popover>
       {showNewWorkspace && (
-        <CreateWorkspace dialogOpen={showNewWorkspace} setDialogOpen={setShowNewWorkspace} />
+        <CreateWorkspace
+          dialogOpen={showNewWorkspace}
+          setDialogOpen={setShowNewWorkspace}
+        />
       )}
     </>
   )

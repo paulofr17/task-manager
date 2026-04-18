@@ -1,5 +1,12 @@
-import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
-import type { DefaultSession, NextAuthOptions as NextAuthConfig } from 'next-auth'
+import type {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from 'next'
+import type {
+  DefaultSession,
+  NextAuthOptions as NextAuthConfig,
+} from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -43,13 +50,21 @@ export const config = {
         password: { label: 'password', type: 'password' },
       },
       async authorize(credentials) {
-        if (credentials?.email === undefined || credentials?.password === undefined) return null
+        if (
+          credentials?.email === undefined ||
+          credentials?.password === undefined
+        )
+          return null
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
           },
         })
-        if (user && user?.password && compareSync(credentials.password, user.password)) {
+        if (
+          user &&
+          user?.password &&
+          compareSync(credentials.password, user.password)
+        ) {
           return user
         }
         throw new Error('Invalid email or password')

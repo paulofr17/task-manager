@@ -31,13 +31,16 @@ export function SectionMenu({ section }: SectionMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={'ghost'} size={'icon'} className="h-6 w-6">
-          <MoreHorizontal size={18} />
+        <Button variant="ghost" size="icon-sm" className="h-6 w-6">
+          <MoreHorizontal size={16} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-24">
+      <DropdownMenuContent className="w-32">
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => handleDeleteSection(section.id)}>
+          <DropdownMenuItem
+            className="text-destructive focus:text-destructive"
+            onClick={() => handleDeleteSection(section.id)}
+          >
             <Trash2 className="mr-2 h-4 w-4" />
             <span>Delete</span>
           </DropdownMenuItem>

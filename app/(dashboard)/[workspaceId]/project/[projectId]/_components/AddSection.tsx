@@ -6,9 +6,11 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Plus } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { NewSectionSchema, NewSectionType } from '@/actions/Section/CreateSection/schema'
+import {
+  NewSectionSchema,
+  NewSectionType,
+} from '@/actions/Section/CreateSection/schema'
 import { createSection } from '@/actions/Section/CreateSection/action'
 
 interface AddColumnProps {
@@ -44,12 +46,12 @@ export function AddSection({ boardId }: AddColumnProps) {
 
   if (edit) {
     return (
-      <div className="mx-1 flex h-fit flex-col gap-1 pt-1">
+      <div className="mx-1 flex h-fit w-72 shrink-0 flex-col gap-1 rounded-xl border bg-card p-2 shadow-soft">
         <Input
           autoFocus
           type="text"
-          placeholder="Enter Section Name"
-          className="my-auto flex h-8 w-60"
+          placeholder="Enter section name"
+          className="h-9"
           maxLength={255}
           disabled={isSubmitting}
           {...register('sectionName', {
@@ -57,7 +59,9 @@ export function AddSection({ boardId }: AddColumnProps) {
           })}
         />
         {errors.sectionName && (
-          <p className="px-1 text-xs text-destructive">{errors.sectionName.message}</p>
+          <p className="px-1 text-xs text-destructive">
+            {errors.sectionName.message}
+          </p>
         )}
         <Input
           className="hidden"
@@ -70,16 +74,16 @@ export function AddSection({ boardId }: AddColumnProps) {
   }
 
   return (
-    <Button
-      variant={'outline'}
-      className="flex w-40 shrink-0 gap-2 font-semibold"
+    <button
+      type="button"
+      className="group flex h-full min-h-[120px] w-72 shrink-0 flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed bg-transparent p-3 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
       disabled={isSubmitting}
-      onClick={() => {
-        setEdit(true)
-      }}
+      onClick={() => setEdit(true)}
     >
-      <Plus size={20} />
-      Add Section
-    </Button>
+      <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted group-hover:bg-primary/10 group-hover:text-primary">
+        <Plus className="h-4 w-4" />
+      </div>
+      Add section
+    </button>
   )
 }

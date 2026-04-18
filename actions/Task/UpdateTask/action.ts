@@ -30,7 +30,10 @@ export async function updateTaskStatus(taskId: string, completed: boolean) {
   }
 }
 
-export async function updateTaskDescription(taskId: string, description: string) {
+export async function updateTaskDescription(
+  taskId: string,
+  description: string,
+) {
   try {
     const session = await getServerSession()
     if (!session?.user?.email) {

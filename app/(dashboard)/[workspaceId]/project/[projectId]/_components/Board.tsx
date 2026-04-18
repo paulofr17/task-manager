@@ -29,7 +29,11 @@ export function Board({ board }: BoardProps) {
     const { destination, source, type } = dropResult
 
     if (!destination) return
-    if (destination.droppableId === source.droppableId && destination.index === source.index) return
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    )
+      return
 
     if (type === 'task') onDragTask(dropResult)
     else if (type === 'section') onDragSection(dropResult)
@@ -44,8 +48,12 @@ export function Board({ board }: BoardProps) {
     const sections = [...boardState.sections]
 
     // Source and destination list
-    const sourceSection = sections.find((section) => section.id === source.droppableId)
-    const destSection = sections.find((section) => section.id === destination.droppableId)
+    const sourceSection = sections.find(
+      (section) => section.id === source.droppableId,
+    )
+    const destSection = sections.find(
+      (section) => section.id === destination.droppableId,
+    )
 
     if (!sourceSection || !destSection) {
       return
@@ -54,12 +62,14 @@ export function Board({ board }: BoardProps) {
     // Move to the same section
     if (source.droppableId === destination?.droppableId) {
       // Update order
-      sourceSection.tasks = reorder(sourceSection.tasks, source.index, destination.index).map(
-        (task, index) => ({
-          ...task,
-          order: index,
-        }),
-      )
+      sourceSection.tasks = reorder(
+        sourceSection.tasks,
+        source.index,
+        destination.index,
+      ).map((task, index) => ({
+        ...task,
+        order: index,
+      }))
       // Set UI state and update DB
       const newBoardState = { ...boardState, sections }
       setBoardState(newBoardState)
@@ -71,8 +81,14 @@ export function Board({ board }: BoardProps) {
       removed.sectionId = destSection.id
       destSection.tasks.splice(destination.index, 0, removed)
       // Update order
-      sourceSection.tasks = sourceSection.tasks.map((task, index) => ({ ...task, order: index }))
-      destSection.tasks = destSection.tasks.map((task, index) => ({ ...task, order: index }))
+      sourceSection.tasks = sourceSection.tasks.map((task, index) => ({
+        ...task,
+        order: index,
+      }))
+      destSection.tasks = destSection.tasks.map((task, index) => ({
+        ...task,
+        order: index,
+      }))
       // Set UI state and update DB
       const newBoardState = { ...boardState, sections }
       setBoardState(newBoardState)
@@ -85,9 +101,11 @@ export function Board({ board }: BoardProps) {
 
     if (!destination) return
 
-    const newSectionOrder = reorder(boardState.sections, source.index, destination.index).map(
-      (task, index) => ({ ...task, order: index }),
-    )
+    const newSectionOrder = reorder(
+      boardState.sections,
+      source.index,
+      destination.index,
+    ).map((task, index) => ({ ...task, order: index }))
     // Set UI state and update DB
     setBoardState({ ...boardState, sections: newSectionOrder })
     await changeSectionsOrder(newSectionOrder)
@@ -97,7 +115,7 @@ export function Board({ board }: BoardProps) {
       <Droppable droppableId="section" direction="horizontal" type="section">
         {(provided) => (
           <ol
-            className="flex h-full gap-1 overflow-auto p-2 sm:gap-2"
+            className="flex h-full gap-3 overflow-auto p-4"
             ref={provided.innerRef}
             {...provided.droppableProps}
           >

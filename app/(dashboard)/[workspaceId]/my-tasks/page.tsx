@@ -20,7 +20,11 @@ const getTaskStatus = (task: Task) => {
   return 'Upcoming'
 }
 
-export default async function MyTasksPage({ params }: { params: { workspaceId: string } }) {
+export default async function MyTasksPage({
+  params,
+}: {
+  params: { workspaceId: string }
+}) {
   const session = await getServerSession()
   if (!session) {
     return null
@@ -51,15 +55,14 @@ export default async function MyTasksPage({ params }: { params: { workspaceId: s
   }))
 
   return (
-    <div className="flex h-full flex-1 flex-col space-y-8 overflow-auto px-2 py-6 sm:px-6">
-      <div className="flex items-center justify-between space-y-2">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
-          <p className="text-muted-foreground">
-            Here&apos;s a list of your tasks in this workspace!
+    <div className="flex h-full flex-1 flex-col space-y-6 overflow-auto px-2 py-6 sm:px-6">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h2 className="text-3xl font-semibold tracking-tight">My Tasks</h2>
+          <p className="text-sm text-muted-foreground">
+            Every task assigned to you across this workspace.
           </p>
         </div>
-        <div className="flex items-center space-x-2"></div>
       </div>
       <DataTable data={myTasks || []} columns={columns} />
     </div>

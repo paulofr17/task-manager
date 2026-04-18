@@ -20,49 +20,51 @@ export default async function WorkspaceLayout({
 
   const userList: User[] = await prisma.user.findMany()
 
-  const workspaceList: WorkspaceWithProjectsUsers[] = await prisma.workspace.findMany({
-    where: {
-      users: {
-        some: {
-          email: session.user.email,
+  const workspaceList: WorkspaceWithProjectsUsers[] =
+    await prisma.workspace.findMany({
+      where: {
+        users: {
+          some: {
+            email: session.user.email,
+          },
         },
       },
-    },
-    include: {
-      users: true,
-      projects: {
-        where: {
-          OR: [
-            {
-              users: {
-                some: {
-                  email: session.user.email,
+      include: {
+        users: true,
+        projects: {
+          where: {
+            OR: [
+              {
+                users: {
+                  some: {
+                    email: session.user.email,
+                  },
                 },
               },
-            },
-            {
-              privacy: 'Public',
-            },
-          ],
-        },
-        include: {
-          users: true,
-          sections: {
-            include: {
-              tasks: {
-                include: {
-                  subTasks: true,
+              {
+                privacy: 'Public',
+              },
+            ],
+          },
+          include: {
+            users: true,
+            sections: {
+              include: {
+                tasks: {
+                  include: {
+                    subTasks: true,
+                  },
                 },
               },
             },
           },
         },
       },
-    },
-  })
+    })
 
   const currentWorkspace =
-    workspaceList.find((workspace) => workspace.id === params.workspaceId) || null
+    workspaceList.find((workspace) => workspace.id === params.workspaceId) ||
+    null
 
   return (
     <AppLayout

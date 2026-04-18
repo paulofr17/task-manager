@@ -1,47 +1,53 @@
 import { redirect } from 'next/navigation'
 
 import prisma from '@/lib/prisma'
-import { Separator } from '@/components/ui/separator'
 import { WorkspaceHeader } from './_components/WorkspaceHeader'
 import { ProjectsCard } from './_components/ProjectsCard'
 import { MembersCard } from './_components/MembersCard'
 import { WorkspaceWithProjectsUsers } from '@/types/types'
 
-export default async function TeamPage({ params }: { params: { workspaceId: string } }) {
-  const workspace: WorkspaceWithProjectsUsers | null = await prisma.workspace.findUnique({
-    where: {
-      id: params.workspaceId,
-    },
-    include: {
-      users: true,
-      projects: {
-        include: {
-          users: true,
-          sections: {
-            include: {
-              tasks: {
-                include: {
-                  subTasks: true,
+export default async function TeamPage({
+  params,
+}: {
+  params: { workspaceId: string }
+}) {
+  const workspace: WorkspaceWithProjectsUsers | null =
+    await prisma.workspace.findUnique({
+      where: {
+        id: params.workspaceId,
+      },
+      include: {
+        users: true,
+        projects: {
+          include: {
+            users: true,
+            sections: {
+              include: {
+                tasks: {
+                  include: {
+                    subTasks: true,
+                  },
                 },
               },
             },
           },
         },
       },
-    },
-  })
+    })
 
   if (!workspace) {
     redirect('/')
   }
 
   return (
-    <div className="mr-1 flex flex-col justify-center">
+    <div className="flex flex-1 flex-col overflow-auto">
       <WorkspaceHeader workspace={workspace} />
-      <Separator className="mr-1" />
-      <div className="mx-auto flex w-full max-w-[800px] flex-col">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-5 px-4 pb-8">
         <MembersCard workspace={workspace} />
-        <ProjectsCard workspaceId={workspace.id} projects={workspace.projects} />
+        <ProjectsCard
+          workspaceId={workspace.id}
+          projects={workspace.projects}
+        />
       </div>
     </div>
   )

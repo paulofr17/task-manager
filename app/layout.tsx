@@ -21,7 +21,11 @@ export const metadata: Metadata = {
     'Task Manager app designed to revolutionize the way users organize, prioritize, and accomplish their tasks efficiently',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>

@@ -1,8 +1,12 @@
 'use client'
 
-import { CheckIcon, PlusCircleIcon } from 'lucide-react'
+import { CheckIcon, UserPlus } from 'lucide-react'
 
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import {
   Command,
   CommandEmpty,
@@ -31,13 +35,21 @@ export function MemberSelection({
   currentUserId,
   users,
 }: MemberSelectionProps) {
+  const isActive = members?.size > 0
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="flex h-fit border-dashed py-2 text-xs">
-          <PlusCircleIcon className="mr-2 h-4 w-4 shrink-0" />
-          Members
-          {members?.size > 0 && (
+        <Button
+          variant={isActive ? 'soft' : 'outline'}
+          size="sm"
+          className={cn(
+            'min-h-9 flex h-auto w-full justify-start py-2 text-xs',
+            !isActive && 'border-dashed',
+          )}
+        >
+          <UserPlus className="mr-2 h-4 w-4 shrink-0" />
+          <span>{isActive ? 'Members' : 'Select members'}</span>
+          {isActive && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <div className="flex flex-wrap gap-1 text-xs">
@@ -57,7 +69,7 @@ export function MemberSelection({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] p-0" align="start">
+      <PopoverContent className="w-[260px] p-0" align="start">
         <Command>
           <CommandInput placeholder="Search members" />
           <CommandList>
@@ -71,7 +83,9 @@ export function MemberSelection({
                     key={user.id}
                     onSelect={() => {
                       const newMembers = new Set(members)
-                      newMembers.has(user.id) ? newMembers.delete(user.id) : newMembers.add(user.id)
+                      newMembers.has(user.id)
+                        ? newMembers.delete(user.id)
+                        : newMembers.add(user.id)
                       setMembers(newMembers)
                     }}
                   >
@@ -83,7 +97,7 @@ export function MemberSelection({
                           : 'opacity-50 [&_svg]:invisible',
                       )}
                     >
-                      <CheckIcon className="h-4 w-4" />
+                      <CheckIcon className="h-3.5 w-3.5" />
                     </div>
                     <span className="truncate text-xs" title={user.email}>
                       {user.email}
@@ -104,7 +118,7 @@ export function MemberSelection({
                     }
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    Clear selection
                   </CommandItem>
                 </CommandGroup>
               </>

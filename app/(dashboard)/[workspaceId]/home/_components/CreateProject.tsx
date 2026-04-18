@@ -1,22 +1,22 @@
 'use client'
 
+import { Plus } from 'lucide-react'
+import { useState } from 'react'
+
 import { CreateProjectForm } from '@/components/shared/CreateProjectForm'
 import { Button } from '@/components/ui/button'
-import { PlusCircleIcon } from 'lucide-react'
-import { useState } from 'react'
 
 export function CreateProject({ workspaceId }: { workspaceId: string }) {
   const [showCreateProject, setShowCreateProject] = useState(false)
   return (
     <>
       <Button
-        size={'sm'}
-        variant={'outline'}
-        className="flex justify-between gap-1"
+        size="sm"
+        variant="soft"
         onClick={() => setShowCreateProject(true)}
       >
-        <PlusCircleIcon className="h-4 w-4" />
-        <span className="text-xs">New Project</span>
+        <Plus className="h-4 w-4" />
+        New project
       </Button>
       {showCreateProject && (
         <CreateProjectForm

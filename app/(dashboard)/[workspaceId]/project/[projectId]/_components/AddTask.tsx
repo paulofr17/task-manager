@@ -32,7 +32,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { useWorkspaceContext } from '@/context/WorkspaceContext'
 import { NewTaskSchema, NewTaskType } from '@/actions/Task/CreateTask/schema'
@@ -77,16 +81,24 @@ export function AddTask({ section }: AddTaskProps) {
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-6 w-6">
-          <Plus size={18} />
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="h-6 w-6"
+          title="Add task"
+        >
+          <Plus size={16} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-w-sm">
+      <DialogContent className="w-full max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-center">Create Task</DialogTitle>
+          <DialogTitle>Create task</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleCreateTask)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleCreateTask)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="description"
@@ -137,7 +149,11 @@ export function AddTask({ section }: AddTaskProps) {
                 <FormItem>
                   <FormLabel>Priority</FormLabel>
                   <FormControl>
-                    <Select name="priority" onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      name="priority"
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select issue priority" />
@@ -170,13 +186,21 @@ export function AddTask({ section }: AddTaskProps) {
                             !field.value && 'text-muted-foreground',
                           )}
                         >
-                          {field.value ? format(field.value, 'PPP') : <span>Pick due date</span>}
+                          {field.value ? (
+                            format(field.value, 'PPP')
+                          ) : (
+                            <span>Pick due date</span>
+                          )}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                      />
                     </PopoverContent>
                   </Popover>
                   <FormMessage />
@@ -184,8 +208,13 @@ export function AddTask({ section }: AddTaskProps) {
               )}
             />
             <DialogFooter>
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Creating' : 'Create'}
+              <Button
+                variant="brand"
+                type="submit"
+                className="w-full"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? 'Creating…' : 'Create task'}
               </Button>
             </DialogFooter>
           </form>

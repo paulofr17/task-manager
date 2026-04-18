@@ -22,7 +22,9 @@ export async function createTask(formData: NewTaskType) {
     }
 
     // Check if section exists
-    const section = await prisma.section.findUnique({ where: { id: formData.section } })
+    const section = await prisma.section.findUnique({
+      where: { id: formData.section },
+    })
     if (!section) return { status: 'error' }
 
     // Get last task order

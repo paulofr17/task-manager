@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Users, UserCircle2 } from 'lucide-react'
+import { UserPlus, UserCircle2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,23 +13,40 @@ interface MembersCardProps {
   workspace: WorkspaceWithProjectsUsers
 }
 
+const HUES = [210, 260, 330, 150, 30, 190, 290, 100]
+
+function hueFromId(id: string) {
+  let h = 0
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0
+  return HUES[h % HUES.length]
+}
+
+function initials(name: string) {
+  return name
+    .split(' ')
+    .map((word) => word[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
+}
+
 export function MembersCard({ workspace }: MembersCardProps) {
   const [showShareForm, setShowShareForm] = useState(false)
   return (
-    <Card className="mx-4 mt-4">
-      <CardHeader>
-        <div className="flex h-6 items-center justify-between">
-          <CardTitle className="text-xl">{`Members (${workspace.users.length})`}</CardTitle>
-          <Button
-            size={'sm'}
-            variant={'outline'}
-            className="flex h-8 w-24 gap-2"
-            onClick={() => setShowShareForm(true)}
-          >
-            <Users size={18} className="" />
-            Share
-          </Button>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <div>
+          <CardTitle className="text-lg">Members</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            {workspace.users.length}{' '}
+            {workspace.users.length === 1 ? 'person' : 'people'} in this
+            workspace
+          </p>
         </div>
+        <Button size="sm" variant="soft" onClick={() => setShowShareForm(true)}>
+          <UserPlus className="mr-1 h-4 w-4" />
+          Invite
+        </Button>
         <WorkspaceShareForm
           workspace={workspace}
           dialogOpen={showShareForm}
@@ -37,20 +54,44 @@ export function MembersCard({ workspace }: MembersCardProps) {
         />
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 justify-center gap-y-4 px-2 sm:grid-cols-3">
-          {workspace.users.map((member) => (
-            <div key={member.id} className="flex items-center gap-2 text-center">
-              <Avatar title={member.name} className="h-8 w-8">
-                <AvatarImage src={member.image || ''} className="rounded-full" />
-                <AvatarFallback>
-                  <UserCircle2 className="h-8 w-8" />
-                </AvatarFallback>
-              </Avatar>
-              <p className="truncate text-xs font-medium" title={member.name}>
-                {member.name}
-              </p>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {workspace.users.map((member) => {
+            const hue = hueFromId(member.id)
+            return (
+              <div
+                key={member.id}
+                className="flex items-center gap-3 rounded-lg border bg-card p-3 transition-colors hover:bg-accent/40"
+              >
+                <Avatar title={member.name} className="h-10 w-10 shrink-0">
+                  <AvatarImage src={member.image || ''} />
+                  <AvatarFallback
+                    className="text-sm font-semibold text-white"
+                    style={{ background: `hsl(${hue} 70% 50%)` }}
+                  >
+                    {member.name ? (
+                      initials(member.name)
+                    ) : (
+                      <UserCircle2 className="h-6 w-6" />
+                    )}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className="truncate text-sm font-medium"
+                    title={member.name}
+                  >
+                    {member.name}
+                  </p>
+                  <p
+                    className="truncate text-xs text-muted-foreground"
+                    title={member.email}
+                  >
+                    {member.email}
+                  </p>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </CardContent>
     </Card>

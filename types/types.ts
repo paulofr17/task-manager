@@ -1,10 +1,19 @@
-import { User, Workspace, Project, Section, Task, SubTask } from '@prisma/client'
+import {
+  User,
+  Workspace,
+  Project,
+  Section,
+  Task,
+  SubTask,
+} from '@prisma/client'
 
 export type TasksWithSubTasks = Task & { subTasks: SubTask[] }
 
 export type SectionWithTasks = Section & { tasks: TasksWithSubTasks[] }
 
-export type ProjectWithSections = Project & { users: User[] } & { sections: SectionWithTasks[] }
+export type ProjectWithSections = Project & { users: User[] } & {
+  sections: SectionWithTasks[]
+}
 
 export type WorkspaceWithUsers = Workspace & { users: User[] }
 

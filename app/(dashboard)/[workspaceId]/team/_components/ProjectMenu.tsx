@@ -45,37 +45,32 @@ export function ProjectMenu({ project }: ProjectMenuProps) {
       )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant={'ghost'}
-            size={'icon'}
-            className="ml-2 h-8 w-8 hover:bg-muted-foreground/30"
-          >
-            <MoreHorizontal size={20} />
+          <Button variant="ghost" size="icon-sm" className="h-8 w-8">
+            <MoreHorizontal size={18} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-44">
-          <DropdownMenuLabel className="text-base">Manage Project</DropdownMenuLabel>
+        <DropdownMenuContent align="end" className="w-44">
+          <DropdownMenuLabel>Manage project</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem
-              className="flex gap-2"
               onClick={(event) => {
                 event.stopPropagation()
                 setShowProjectShareForm(true)
               }}
             >
-              <Users size={18} className="text-muted-foreground" />
-              <span className="text-sm font-medium">Share</span>
+              <Users className="mr-2 h-4 w-4" />
+              <span>Share</span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="flex gap-2"
+              className="text-destructive focus:text-destructive"
               onClick={(event) => {
                 event.stopPropagation()
                 handleDeleteProject(project.id)
               }}
             >
-              <Trash size={18} className="text-muted-foreground" />
-              <span className="text-sm font-medium">Delete</span>
+              <Trash className="mr-2 h-4 w-4" />
+              <span>Delete</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>

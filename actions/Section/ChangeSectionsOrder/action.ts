@@ -4,7 +4,9 @@ import prisma from '@/lib/prisma'
 import { SectionWithTasks } from '@/types/types'
 import { revalidatePath } from 'next/cache'
 
-export async function changeSectionsOrder(newSectionsOrder: SectionWithTasks[]) {
+export async function changeSectionsOrder(
+  newSectionsOrder: SectionWithTasks[],
+) {
   try {
     const transaction = newSectionsOrder.map((column) => {
       return prisma.section.update({

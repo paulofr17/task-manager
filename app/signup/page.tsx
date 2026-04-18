@@ -7,11 +7,15 @@ import { FcGoogle } from 'react-icons/fc'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { CheckSquare, Sparkles, Layers, Users2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { CreateUserSchema, CreateUserType } from '@/actions/User/CreateUser/schema'
+import {
+  CreateUserSchema,
+  CreateUserType,
+} from '@/actions/User/CreateUser/schema'
 import { createUser } from '@/actions/User/CreateUser/action'
 
 export default function Signup() {
@@ -38,85 +42,182 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center overflow-auto bg-muted dark:bg-zinc-900">
-      <div className="flex w-full flex-1 flex-col justify-center gap-4 px-4 py-2 sm:gap-8 sm:px-8">
-        <div className="mx-auto flex w-full max-w-md flex-col items-center gap-3 sm:gap-6">
-          <p className="text-4xl font-bold tracking-tight">Task Manager</p>
-          <p className="text-lg font-bold text-primary/90">Create your account</p>
+    <div className="grid min-h-screen w-full lg:grid-cols-2">
+      <div className="relative hidden overflow-hidden bg-brand-gradient lg:flex lg:flex-col lg:justify-between lg:p-12 lg:text-white">
+        <div className="absolute inset-0 bg-brand-radial opacity-80" />
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="bg-white/15 flex h-10 w-10 items-center justify-center rounded-lg backdrop-blur">
+            <CheckSquare className="h-5 w-5" />
+          </div>
+          <span className="text-lg font-semibold tracking-tight">
+            Task Manager
+          </span>
         </div>
-        <div className="mx-auto w-full max-w-md rounded-lg border bg-card p-6 shadow-sm sm:p-10">
-          <form className="flex flex-col gap-4 sm:gap-6" onSubmit={handleSubmit(onSubmit)}>
-            <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Paulo Ribeiro"
-                {...register('name', { required: true })}
-              />
-              {errors?.name && <p className="text-sm text-red-600">{errors?.name?.message}</p>}
+        <div className="relative z-10 flex flex-col gap-8">
+          <h1 className="max-w-md text-4xl font-semibold leading-tight tracking-tight">
+            Start shipping with your team in minutes.
+          </h1>
+          <div className="text-white/85 flex flex-col gap-5">
+            <div className="flex items-start gap-3">
+              <Layers className="mt-0.5 h-5 w-5 shrink-0" />
+              <div>
+                <p className="font-medium text-white">
+                  Projects, sections & tasks
+                </p>
+                <p className="text-sm">
+                  Organize work your way and keep momentum visible.
+                </p>
+              </div>
             </div>
-            <div className="space-y-1">
-              <Label htmlFor="email">Email address</Label>
-              <Input
-                id="email"
-                type="text"
-                placeholder="abc@gmail.com"
-                {...register('email', { required: true })}
-              />
-              {errors?.email && <p className="text-sm text-red-600">{errors?.email?.message}</p>}
+            <div className="flex items-start gap-3">
+              <Users2 className="mt-0.5 h-5 w-5 shrink-0" />
+              <div>
+                <p className="font-medium text-white">Invite your team</p>
+                <p className="text-sm">
+                  Share workspaces and collaborate in real time.
+                </p>
+              </div>
             </div>
-            <div className="space-y-1">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Password"
-                {...register('password', { required: true })}
-              />
-              {errors?.password && (
-                <p className="text-sm text-red-600">{errors?.password?.message}</p>
-              )}
-            </div>
-            <Button
-              className="h-8 text-xs font-semibold"
-              type="submit"
-              disabled={!isDirty || !isValid || isSubmitting}
-            >
-              Sign Up
-            </Button>
-          </form>
-          <div className="relative mt-6 sm:mt-4">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200 dark:border-gray-400"></div>
-            </div>
-            <div className="relative flex justify-center text-sm font-normal">
-              <span className="bg-card px-4">Or continue with</span>
+            <div className="flex items-start gap-3">
+              <Sparkles className="mt-0.5 h-5 w-5 shrink-0" />
+              <div>
+                <p className="font-medium text-white">Free to get started</p>
+                <p className="text-sm">
+                  No credit card. No setup. Just create and go.
+                </p>
+              </div>
             </div>
           </div>
-          <div className="mt-4 flex w-full space-x-2 sm:mt-6">
-            <button
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-zinc-400 bg-white p-1 text-black hover:bg-zinc-300"
-              onClick={() => signIn('google', { email: '', password: '', callbackUrl: '/' })}
-            >
-              <FcGoogle size={24}></FcGoogle>
-              <span className="text-sm font-semibold">Google</span>
-            </button>
-            <button
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-800 p-1 text-white 
-              decoration-inherit hover:bg-zinc-800/80 dark:bg-zinc-900 dark:hover:bg-zinc-800/80"
-              onClick={() => signIn('github', { email: '', password: '', callbackUrl: '/' })}
-            >
-              <AiFillGithub size={24}></AiFillGithub>
-              <span className="text-sm font-semibold">Github</span>
-            </button>
-          </div>
         </div>
-        <div className="mx-auto text-sm">
-          Already have an account?{' '}
-          <Link className="font-semibold text-zinc-800 dark:text-zinc-500" href="/signin">
-            Login here
-          </Link>
+        <p className="relative z-10 text-xs text-white/60">
+          © {new Date().getFullYear()} Task Manager
+        </p>
+      </div>
+
+      <div className="flex items-center justify-center bg-background px-4 py-10 sm:px-6">
+        <div className="w-full max-w-md">
+          <div className="mb-8 flex flex-col items-center gap-2 lg:hidden">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-gradient text-white shadow-soft">
+              <CheckSquare className="h-5 w-5" />
+            </div>
+            <p className="text-xl font-semibold tracking-tight">Task Manager</p>
+          </div>
+          <div className="rounded-xl border bg-card p-6 shadow-elevated sm:p-8">
+            <div className="mb-6 flex flex-col gap-1">
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Create your account
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Free forever for small teams.
+              </p>
+            </div>
+            <form
+              className="flex flex-col gap-5"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className="space-y-1.5">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Jane Doe"
+                  {...register('name', { required: true })}
+                />
+                {errors?.name && (
+                  <p className="text-xs text-destructive">
+                    {errors?.name?.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="text"
+                  placeholder="you@company.com"
+                  {...register('email', { required: true })}
+                />
+                {errors?.email && (
+                  <p className="text-xs text-destructive">
+                    {errors?.email?.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="At least 8 characters"
+                  {...register('password', { required: true })}
+                />
+                {errors?.password && (
+                  <p className="text-xs text-destructive">
+                    {errors?.password?.message}
+                  </p>
+                )}
+              </div>
+              <Button
+                variant="brand"
+                className="w-full"
+                type="submit"
+                disabled={!isDirty || !isValid || isSubmitting}
+              >
+                Sign Up
+              </Button>
+            </form>
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase tracking-wider">
+                <span className="bg-card px-3 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                variant="outline"
+                type="button"
+                className="gap-2"
+                onClick={() =>
+                  signIn('google', {
+                    email: '',
+                    password: '',
+                    callbackUrl: '/',
+                  })
+                }
+              >
+                <FcGoogle className="!h-5 !w-5" />
+                Google
+              </Button>
+              <Button
+                variant="outline"
+                type="button"
+                className="gap-2"
+                onClick={() =>
+                  signIn('github', {
+                    email: '',
+                    password: '',
+                    callbackUrl: '/',
+                  })
+                }
+              >
+                <AiFillGithub className="!h-5 !w-5" />
+                GitHub
+              </Button>
+            </div>
+          </div>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Already have an account?{' '}
+            <Link
+              className="font-medium text-primary hover:underline"
+              href="/signin"
+            >
+              Login here
+            </Link>
+          </p>
         </div>
       </div>
     </div>

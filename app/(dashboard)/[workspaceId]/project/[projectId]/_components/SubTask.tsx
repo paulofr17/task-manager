@@ -6,10 +6,10 @@ import { Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 import type { SubTask } from '@prisma/client'
-import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import {
   UpdateSubTaskSchema,
   UpdateSubTaskType,
@@ -67,38 +67,38 @@ export function SubTask({ subTask }: SubTaskProps) {
   }
 
   return (
-    <>
-      <Separator />
-      <div className="group flex items-center justify-between gap-2 p-[2px] text-xs text-primary hover:rounded-md hover:bg-muted">
-        <Input className="hidden" {...register('subTaskId')}></Input>
-        <Checkbox
-          checked={subTask.completed}
-          onCheckedChange={(value) => {
-            setValue('completed', value === true)
-            handleSubmit(handleUpdateSubTask)()
-          }}
-          disabled={isSubmitting}
-          {...register('completed')}
-        />
+    <div className="group flex items-center gap-2 rounded-md px-1 py-0.5 text-xs transition-colors hover:bg-muted/60">
+      <Input className="hidden" {...register('subTaskId')} />
+      <Checkbox
+        checked={subTask.completed}
+        onCheckedChange={(value) => {
+          setValue('completed', value === true)
+          handleSubmit(handleUpdateSubTask)()
+        }}
+        disabled={isSubmitting}
+        {...register('completed')}
+      />
 
-        <Input
-          className="h-6 rounded-sm border-0 p-1 text-xs group-hover:bg-muted"
-          disabled={isSubmitting}
-          {...register('description', {
-            onBlur: handleSubmit(handleUpdateSubTask),
-          })}
-        />
-        <Button
-          variant={'ghost'}
-          size={'sm'}
-          className="hidden h-6 justify-start p-0 text-xs hover:opacity-50 group-hover:block"
-          title="Delete SubTask"
-          disabled={isSubmitting}
-          onClick={() => handleDeleteSubTask()}
-        >
-          <Trash2 size={16} />
-        </Button>
-      </div>
-    </>
+      <Input
+        className={cn(
+          'h-6 flex-1 rounded-sm border-0 bg-transparent px-1 text-xs shadow-none focus-visible:ring-0 focus-visible:ring-offset-0',
+          subTask.completed && 'text-muted-foreground line-through',
+        )}
+        disabled={isSubmitting}
+        {...register('description', {
+          onBlur: handleSubmit(handleUpdateSubTask),
+        })}
+      />
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        className="h-6 w-6 opacity-0 group-hover:opacity-100"
+        title="Delete SubTask"
+        disabled={isSubmitting}
+        onClick={() => handleDeleteSubTask()}
+      >
+        <Trash2 size={14} />
+      </Button>
+    </div>
   )
 }

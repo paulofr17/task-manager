@@ -4,9 +4,9 @@ import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { TasksWithSubTasks } from '@/types/types'
 import { updateTaskDescription } from '@/actions/Task/UpdateTask/action'
+import { cn } from '@/lib/utils'
 
 interface TaskDescriptionFormProps {
   task: TasksWithSubTasks
@@ -28,7 +28,9 @@ export function TaskDescriptionForm({ task }: TaskDescriptionFormProps) {
     const updatedTask = await updateTaskDescription(task.id, description)
     if (updatedTask.data) {
       task.description = updatedTask.data.description
-      toast.success(`Task description successfully updated to '${updatedTask.data.description}'`)
+      toast.success(
+        `Task description successfully updated to '${updatedTask.data.description}'`,
+      )
     } else {
       setDescription(task.description)
       toast.error(updatedTask.error || 'Error updating task')
@@ -66,24 +68,24 @@ export function TaskDescriptionForm({ task }: TaskDescriptionFormProps) {
           onKeyDown={onKeyDown}
           disabled={isSubmitting}
           maxLength={255}
-          className="h-6 p-0 px-1 text-xs lg:text-sm"
+          className="h-7 px-2 text-sm"
         />
       ) : (
-        <Button
-          variant={'ghost'}
-          size={'sm'}
-          className="flex h-fit w-fit justify-start p-1 text-left"
+        <button
+          type="button"
+          className="-mx-1 w-full rounded-md px-1 py-0.5 text-left transition-colors hover:bg-muted/50"
           onClick={enableEdit}
           title={task.description}
         >
           <span
-            className={`line-clamp-3 break-words text-xs lg:text-sm ${
-              task.completed && 'line-through'
-            }`}
+            className={cn(
+              'line-clamp-3 break-words text-sm leading-snug',
+              task.completed && 'text-muted-foreground line-through',
+            )}
           >
             {task.description}
           </span>
-        </Button>
+        </button>
       )}
     </>
   )

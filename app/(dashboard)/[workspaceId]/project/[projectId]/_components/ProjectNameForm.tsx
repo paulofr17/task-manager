@@ -4,7 +4,6 @@ import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { ProjectWithSections } from '@/types/types'
 import { updateProjectName } from '@/actions/Project/UpdateProject/action'
 
@@ -28,7 +27,9 @@ export function ProjectNameForm({ project }: ProjectNameFormProps) {
     const updatedProject = await updateProjectName(project.id, name)
     if (updatedProject.data) {
       project.name = updatedProject.data.name
-      toast.success(`Project name successfully updated to '${updatedProject.data.name}'`)
+      toast.success(
+        `Project name successfully updated to '${updatedProject.data.name}'`,
+      )
     } else {
       setName(project.name)
       toast.error(updatedProject.error || 'Error updating project')
@@ -66,18 +67,17 @@ export function ProjectNameForm({ project }: ProjectNameFormProps) {
           onKeyDown={onKeyDown}
           disabled={isSubmitting}
           maxLength={255}
-          className="m-1 h-6 p-1 text-base font-semibold sm:text-xl"
+          className="h-8 px-2 text-lg font-semibold tracking-tight"
         />
       ) : (
-        <Button
-          variant={'ghost'}
-          size={'sm'}
-          className="flex truncate px-2 py-1 text-left"
+        <button
+          type="button"
+          className="truncate rounded-md px-2 py-1 text-left text-lg font-semibold tracking-tight transition-colors hover:bg-muted sm:text-xl"
           onClick={enableEdit}
           title={project.name}
         >
-          <span className="truncate text-base font-semibold sm:text-xl">{project.name}</span>
-        </Button>
+          <span className="truncate">{project.name}</span>
+        </button>
       )}
     </>
   )

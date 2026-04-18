@@ -19,7 +19,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MemberSelection } from '@/components/shared/MemberSelection'
-import { NewWorkspaceSchema, NewWorkspaceType } from '@/actions/Workspace/CreateWorkspace/schema'
+import {
+  NewWorkspaceSchema,
+  NewWorkspaceType,
+} from '@/actions/Workspace/CreateWorkspace/schema'
 import { createWorkspace } from '@/actions/Workspace/CreateWorkspace/action'
 import { useUserContext } from '@/context/UserContext'
 
@@ -28,12 +31,18 @@ interface CreateWorkspaceProps {
   setDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export function CreateWorkspace({ dialogOpen, setDialogOpen }: CreateWorkspaceProps) {
+export function CreateWorkspace({
+  dialogOpen,
+  setDialogOpen,
+}: CreateWorkspaceProps) {
   const router = useRouter()
   const { userList } = useUserContext()
   const { data: session } = useSession()
-  const currentUserId = userList.find((user) => user.email === session?.user?.email)?.id || ''
-  const [workspaceMembers, setWorkspaceMembers] = useState(new Set<string>([currentUserId]))
+  const currentUserId =
+    userList.find((user) => user.email === session?.user?.email)?.id || ''
+  const [workspaceMembers, setWorkspaceMembers] = useState(
+    new Set<string>([currentUserId]),
+  )
 
   async function handleNewWorkspace(formData: NewWorkspaceType) {
     const response = await createWorkspace(formData)
@@ -62,7 +71,10 @@ export function CreateWorkspace({ dialogOpen, setDialogOpen }: CreateWorkspacePr
     },
   })
 
-  if (JSON.stringify(Array.from(workspaceMembers)) !== JSON.stringify(getValues('members'))) {
+  if (
+    JSON.stringify(Array.from(workspaceMembers)) !==
+    JSON.stringify(getValues('members'))
+  ) {
     setValue('members', Array.from(workspaceMembers))
     trigger('members')
   }
@@ -71,32 +83,35 @@ export function CreateWorkspace({ dialogOpen, setDialogOpen }: CreateWorkspacePr
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Workspace</DialogTitle>
+          <DialogTitle>Create workspace</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(handleNewWorkspace)}>
-          <div className="space-y-4 py-2 pb-4">
-            <div className="space-y-1">
-              <Label htmlFor="workspaceName">Workspace name</Label>
-              <Input
-                id="workspaceName"
-                placeholder="Workspace or Team name"
-                {...register('workspaceName')}
-              />
-              {errors.workspaceName?.message && (
-                <p className="text-xs text-red-600">{errors.workspaceName?.message}</p>
-              )}
-            </div>
-            <div className="space-y-1">
-              <MemberSelection
-                members={workspaceMembers}
-                setMembers={setWorkspaceMembers}
-                currentUserId={currentUserId}
-                users={userList}
-              />
-              {errors.members?.message && (
-                <p className="text-xs text-red-600">{errors.members?.message}</p>
-              )}
-            </div>
+        <form onSubmit={handleSubmit(handleNewWorkspace)} className="space-y-5">
+          <div className="space-y-2">
+            <Label htmlFor="workspaceName">Workspace name</Label>
+            <Input
+              id="workspaceName"
+              placeholder="Workspace or team name"
+              {...register('workspaceName')}
+            />
+            {errors.workspaceName?.message && (
+              <p className="text-xs text-destructive">
+                {errors.workspaceName?.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label>Members</Label>
+            <MemberSelection
+              members={workspaceMembers}
+              setMembers={setWorkspaceMembers}
+              currentUserId={currentUserId}
+              users={userList}
+            />
+            {errors.members?.message && (
+              <p className="text-xs text-destructive">
+                {errors.members?.message}
+              </p>
+            )}
           </div>
           <DialogFooter>
             <DialogClose asChild>
@@ -104,8 +119,8 @@ export function CreateWorkspace({ dialogOpen, setDialogOpen }: CreateWorkspacePr
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Creating...' : 'Create'}
+            <Button type="submit" variant="brand" disabled={isSubmitting}>
+              {isSubmitting ? 'Creating…' : 'Create workspace'}
             </Button>
           </DialogFooter>
         </form>

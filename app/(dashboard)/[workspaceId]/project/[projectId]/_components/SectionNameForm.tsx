@@ -4,7 +4,6 @@ import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { SectionWithTasks } from '@/types/types'
 import { updateSectionName } from '@/actions/Section/UpdateSection/action'
 
@@ -28,7 +27,9 @@ export function SectionNameForm({ section }: SectionNameFormProps) {
     const updatedSection = await updateSectionName(section.id, sectionName)
     if (updatedSection.data) {
       section.name = updatedSection.data.name
-      toast.success(`Section name successfully updated to '${updatedSection.data.name}'`)
+      toast.success(
+        `Section name successfully updated to '${updatedSection.data.name}'`,
+      )
     } else {
       setSectionName(section.name)
       toast.error(updatedSection.error || 'Error updating section')
@@ -66,18 +67,17 @@ export function SectionNameForm({ section }: SectionNameFormProps) {
           onKeyDown={onKeyDown}
           disabled={isSubmitting}
           maxLength={255}
-          className="h-6 p-0 px-1 text-sm font-medium"
+          className="h-7 px-2 text-sm font-semibold"
         />
       ) : (
-        <Button
-          variant={'ghost'}
-          size={'sm'}
-          className="truncate rounded-lg px-1 text-sm font-medium"
+        <button
+          type="button"
+          className="min-w-0 truncate rounded-md px-1.5 py-1 text-left text-sm font-semibold transition-colors hover:bg-muted"
           onClick={enableEditName}
           title={section.name}
         >
           <span className="truncate">{section.name}</span>
-        </Button>
+        </button>
       )}
     </>
   )

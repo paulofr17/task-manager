@@ -30,7 +30,10 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { NewProjectSchema, NewProjectType } from '@/actions/Project/CreateProject/schema'
+import {
+  NewProjectSchema,
+  NewProjectType,
+} from '@/actions/Project/CreateProject/schema'
 import { createProject } from '@/actions/Project/CreateProject/action'
 
 interface CreateProjectProps {
@@ -39,7 +42,11 @@ interface CreateProjectProps {
   setDialogOpen: (open: boolean) => void
 }
 
-export function CreateProjectForm({ workspaceId, dialogOpen, setDialogOpen }: CreateProjectProps) {
+export function CreateProjectForm({
+  workspaceId,
+  dialogOpen,
+  setDialogOpen,
+}: CreateProjectProps) {
   const router = useRouter()
 
   async function handleNewProject(formData: NewProjectType) {
@@ -66,10 +73,13 @@ export function CreateProjectForm({ workspaceId, dialogOpen, setDialogOpen }: Cr
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen} modal={true}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Project</DialogTitle>
+          <DialogTitle>Create project</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleNewProject)} className="space-y-2">
+          <form
+            onSubmit={form.handleSubmit(handleNewProject)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="projectName"
@@ -77,7 +87,11 @@ export function CreateProjectForm({ workspaceId, dialogOpen, setDialogOpen }: Cr
                 <FormItem>
                   <FormLabel>Project name</FormLabel>
                   <FormControl>
-                    <Input id="projectName" placeholder="Project name" onChange={field.onChange} />
+                    <Input
+                      id="projectName"
+                      placeholder="Project name"
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -89,9 +103,15 @@ export function CreateProjectForm({ workspaceId, dialogOpen, setDialogOpen }: Cr
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Privacy</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
-                      <SelectTrigger className="line-clamp-1 w-full truncate" aria-label="Privacy">
+                      <SelectTrigger
+                        className="line-clamp-1 w-full truncate"
+                        aria-label="Privacy"
+                      >
                         <SelectValue placeholder="Select privacy option" />
                       </SelectTrigger>
                     </FormControl>
@@ -127,8 +147,12 @@ export function CreateProjectForm({ workspaceId, dialogOpen, setDialogOpen }: Cr
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Creating...' : 'Create'}
+              <Button
+                type="submit"
+                variant="brand"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? 'Creating…' : 'Create project'}
               </Button>
             </DialogFooter>
           </form>

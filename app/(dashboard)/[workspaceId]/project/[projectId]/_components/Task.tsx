@@ -8,6 +8,8 @@ import { toast } from 'sonner'
 import { updateTaskStatus } from '@/actions/Task/UpdateTask/action'
 import { TasksWithSubTasks } from '@/types/types'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 import { AddSubTask } from './AddSubTask'
 import { TaskMenu } from './TaskMenu'
 import { AssignTask } from './AssignTask'
@@ -20,109 +22,171 @@ interface TaskProps {
 }
 
 async function handleTaskCompletion(task: TasksWithSubTasks) {
-  // Update task completion
   const updatedTask = await updateTaskStatus(task.id, !task.completed)
-  // show toast based on response
-  updatedTask.data ? toast.success('Task updated successfully') : toast.error('Error updating Task')
+  updatedTask.data
+    ? toast.success('Task updated successfully')
+    : toast.error('Error updating Task')
+}
+
+type PriorityBadge =
+  | 'priority-low'
+  | 'priority-medium'
+  | 'priority-high'
+  | 'priority-urgent'
+  | 'soft'
+
+const priorityVariant = (p: string | null | undefined): PriorityBadge => {
+  switch (p) {
+    case 'High':
+      return 'priority-high'
+    case 'Medium':
+      return 'priority-medium'
+    case 'Low':
+      return 'priority-low'
+    default:
+      return 'soft'
+  }
+}
+
+const priorityEdge = (p: string | null | undefined) => {
+  switch (p) {
+    case 'High':
+      return 'bg-priority-high'
+    case 'Medium':
+      return 'bg-priority-medium'
+    case 'Low':
+      return 'bg-priority-low'
+    default:
+      return 'bg-border'
+  }
 }
 
 export function Task({ task, index }: TaskProps) {
   const [openSubtasks, setOpenSubtasks] = useState(false)
   const numberOfTasks = task.subTasks.length
-  const completedTaks = task.subTasks.filter((subtask) => subtask.completed).length
-  const priorityColor = () => {
-    switch (task.priority) {
-      case 'High':
-        return 'border-red-500 bg-red-300/10 text-red-600'
-      case 'Medium':
-        return 'border-yellow-500 bg-yellow-300/10 text-yellow-600'
-      case 'Low':
-        return 'border-green-500 bg-green-300/10 text-green-600'
-      default:
-        return 'border-blue-300 bg-blue-300/10 text-blue-700'
-    }
-  }
-  const dueDateColor = () => {
-    if (task.completed) return 'text-green-600'
-    if (!task.dueDate) return 'text-muted-foreground'
+  const completedTasks = task.subTasks.filter(
+    (subtask) => subtask.completed,
+  ).length
+  const allSubTasksDone = numberOfTasks > 0 && completedTasks === numberOfTasks
+
+  const dueDateState = () => {
+    if (task.completed) return 'done'
+    if (!task.dueDate) return 'none'
     const today = new Date()
     const dueDate = new Date(task.dueDate)
-    if (dueDate < today) return 'text-red-600'
-    // Check days difference
-    const daysDifference = Math.round((dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24))
-    if (daysDifference <= 3) return 'text-yellow-600'
-    return 'text-muted-foreground'
+    if (dueDate < today) return 'overdue'
+    const daysDifference = Math.round(
+      (dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24),
+    )
+    if (daysDifference <= 3) return 'soon'
+    return 'future'
   }
+
+  const dueClass = {
+    done: 'text-status-done',
+    overdue: 'text-status-blocked',
+    soon: 'text-status-progress',
+    future: 'text-muted-foreground',
+    none: 'text-muted-foreground',
+  }[dueDateState()]
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided) => (
         <li
-          className={`flex flex-col justify-stretch space-y-4 rounded-lg border bg-card p-3 ${
-            task.completed ? 'opacity-70 dark:opacity-50' : 'opacity-100'
-          }`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className="flex items-center justify-between">
-            <div
-              className={`${priorityColor()} h-5 w-14 items-center rounded-sm border text-center text-xs`}
-            >
-              {task.priority}
-            </div>
-            <TaskMenu taskId={task.id} />
-          </div>
-          <TaskDescriptionForm task={task} />
-          <div className="flex h-7 justify-between">
-            <div className="flex items-center gap-3">
-              <button
-                className={`flex items-center space-x-1 rounded-md border p-1 text-xs ${
-                  completedTaks === numberOfTasks
-                    ? 'border-green-500 bg-green-300/10 text-green-600 hover:border-green-600 hover:bg-green-300/30'
-                    : 'border-zinc-400 bg-white text-black hover:opacity-60'
-                }`}
-                onClick={() => setOpenSubtasks(!openSubtasks)}
+          <div
+            className={cn(
+              'group relative flex flex-col gap-3 overflow-hidden rounded-lg border bg-card p-3 shadow-soft hover:border-primary/30 hover:shadow-elevated',
+              task.completed && 'opacity-60',
+            )}
+          >
+            <span
+              className={cn(
+                'absolute left-0 top-0 h-full w-1',
+                priorityEdge(task.priority),
+              )}
+            />
+            <div className="flex items-center justify-between pl-1">
+              <Badge
+                variant={priorityVariant(task.priority)}
+                className="text-[10px]"
               >
-                <ListChecks size={15} />
-                <span>
-                  {completedTaks}/{numberOfTasks}
-                </span>
-              </button>
-              <AssignTask task={task} />
-              <Button
-                variant="link"
-                size="icon"
-                className="h-6 w-6"
-                onClick={() => handleTaskCompletion(task)}
-              >
-                <CheckCircle2
-                  className={`h-6 w-6 ${
-                    task.completed
-                      ? 'text-green-600 hover:opacity-40'
-                      : 'text-zinc-300 hover:text-green-600 dark:text-zinc-600 dark:hover:text-green-600'
-                  }`}
-                />
-              </Button>
+                {task.priority || 'None'}
+              </Badge>
+              <TaskMenu taskId={task.id} />
             </div>
-            <div className={`${dueDateColor()} flex items-center space-x-1 text-xs`}>
-              <span>
-                {task.dueDate?.toLocaleDateString('en-US', {
-                  day: '2-digit',
-                  month: 'short',
-                })}
-              </span>
-              <Clock size={14} />
+            <div className="pl-1">
+              <TaskDescriptionForm task={task} />
             </div>
+            <div className="flex items-center justify-between pl-1">
+              <div className="flex items-center gap-1.5">
+                {numberOfTasks > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setOpenSubtasks(!openSubtasks)}
+                    className={cn(
+                      'inline-flex h-6 items-center gap-1 rounded-md border px-1.5 text-[11px] font-medium transition-colors',
+                      allSubTasksDone
+                        ? 'border-status-done/40 bg-status-done-soft text-status-done-foreground'
+                        : 'bg-background hover:bg-muted',
+                    )}
+                  >
+                    <ListChecks size={13} />
+                    <span>
+                      {completedTasks}/{numberOfTasks}
+                    </span>
+                  </button>
+                )}
+                <AssignTask task={task} />
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="h-6 w-6"
+                  onClick={() => handleTaskCompletion(task)}
+                  title={
+                    task.completed ? 'Mark as incomplete' : 'Mark as complete'
+                  }
+                >
+                  <CheckCircle2
+                    className={cn(
+                      'h-5 w-5 transition-colors',
+                      task.completed
+                        ? 'text-status-done'
+                        : 'text-muted-foreground/40 hover:text-status-done',
+                    )}
+                  />
+                </Button>
+              </div>
+              {task.dueDate && (
+                <div
+                  className={cn(
+                    'flex items-center gap-1 text-[11px] font-medium',
+                    dueClass,
+                  )}
+                >
+                  <Clock size={12} />
+                  <span>
+                    {task.dueDate.toLocaleDateString('en-US', {
+                      day: '2-digit',
+                      month: 'short',
+                    })}
+                  </span>
+                </div>
+              )}
+            </div>
+            {openSubtasks && (
+              <div className="flex flex-col gap-1 pl-1 pt-1">
+                {task.subTasks.map((subtask) => (
+                  <SubTask key={subtask.id} subTask={subtask} />
+                ))}
+                <AddSubTask taskId={task.id} />
+              </div>
+            )}
           </div>
-          {openSubtasks && (
-            <div className="flex flex-col space-y-1">
-              {task.subTasks.map((subtask) => (
-                <SubTask key={subtask.id} subTask={subtask} />
-              ))}
-              <AddSubTask taskId={task.id} />
-            </div>
-          )}
         </li>
       )}
     </Draggable>

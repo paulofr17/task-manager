@@ -16,7 +16,12 @@ interface AppLayoutProps {
   userList: User[]
 }
 
-export function AppLayout({ children, currentWorkspace, workspaceList, userList }: AppLayoutProps) {
+export function AppLayout({
+  children,
+  currentWorkspace,
+  workspaceList,
+  userList,
+}: AppLayoutProps) {
   const { setCurrentWorkspace, setWorkspaceList } = useWorkspaceContext()
   const { setUserList } = useUserContext()
   const [openSidebar, setOpenSidebar] = useState(true)
@@ -34,11 +39,13 @@ export function AppLayout({ children, currentWorkspace, workspaceList, userList 
   }, [userList, setUserList])
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex h-full w-full flex-col bg-gradient-to-b from-background to-muted/40">
       <Navbar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
       <div className="flex h-full overflow-hidden">
         <Sidebar openSidebar={openSidebar} />
-        <main className="flex h-full w-full flex-col overflow-hidden">{children}</main>
+        <main className="flex h-full w-full flex-col overflow-hidden">
+          {children}
+        </main>
       </div>
     </div>
   )

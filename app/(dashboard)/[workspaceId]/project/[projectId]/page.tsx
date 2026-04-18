@@ -4,10 +4,16 @@ import { ProjectHeader } from './_components/ProjectHeader'
 import { Board } from './_components/Board'
 import prisma from '@/lib/prisma'
 
-export default async function ProjectPage({ params }: { params: { projectId: string } }) {
+export default async function ProjectPage({
+  params,
+}: {
+  params: { projectId: string }
+}) {
   const session = await getServerSession()
   const userList = await prisma.user.findMany()
-  const loggedUser = userList.find((user) => user.email === session?.user?.email)
+  const loggedUser = userList.find(
+    (user) => user.email === session?.user?.email,
+  )
 
   const project = await prisma.project.findMany({
     where: {
@@ -37,7 +43,9 @@ export default async function ProjectPage({ params }: { params: { projectId: str
     },
   })
 
-  const selectedProject = project.find((project) => project.id === params?.projectId)
+  const selectedProject = project.find(
+    (project) => project.id === params?.projectId,
+  )
 
   return (
     <>

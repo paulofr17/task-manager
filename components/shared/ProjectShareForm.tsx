@@ -5,7 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { ShareProjectSchema, ShareProjectType } from '@/actions/Project/ShareProject/schema'
+import {
+  ShareProjectSchema,
+  ShareProjectType,
+} from '@/actions/Project/ShareProject/schema'
 import { shareProject } from '@/actions/Project/ShareProject/action'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,10 +29,16 @@ interface ProjectShareFormProps {
   setDialogOpen: (open: boolean) => void
 }
 
-export function ProjectShareForm({ project, dialogOpen, setDialogOpen }: ProjectShareFormProps) {
+export function ProjectShareForm({
+  project,
+  dialogOpen,
+  setDialogOpen,
+}: ProjectShareFormProps) {
   const { userList } = useUserContext()
   const [projectMembers, setProjectMembers] = useState(new Set<string>([]))
-  const users = userList.filter((user) => project.users.find((u) => u.id === user.id) === undefined)
+  const users = userList.filter(
+    (user) => project.users.find((u) => u.id === user.id) === undefined,
+  )
 
   const {
     register,
@@ -50,7 +59,9 @@ export function ProjectShareForm({ project, dialogOpen, setDialogOpen }: Project
   async function handleShareProject(formData: ShareProjectType) {
     const response = await shareProject(formData)
     if (response.data) {
-      toast.success(`Project '${response.data.name}' shared with selected members`)
+      toast.success(
+        `Project '${response.data.name}' shared with selected members`,
+      )
     } else {
       toast.error(response.error || 'Error sharing Project')
     }
@@ -58,7 +69,10 @@ export function ProjectShareForm({ project, dialogOpen, setDialogOpen }: Project
     setProjectMembers(new Set<string>([]))
   }
 
-  if (JSON.stringify(Array.from(projectMembers)) !== JSON.stringify(getValues('members'))) {
+  if (
+    JSON.stringify(Array.from(projectMembers)) !==
+    JSON.stringify(getValues('members'))
+  ) {
     setValue('members', Array.from(projectMembers))
     trigger('members')
   }
@@ -73,31 +87,35 @@ export function ProjectShareForm({ project, dialogOpen, setDialogOpen }: Project
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Share Project</DialogTitle>
+          <DialogTitle>Share project</DialogTitle>
+          <p className="text-sm text-muted-foreground">
+            Invite workspace members to collaborate on{' '}
+            <span className="font-medium text-foreground">{project.name}</span>.
+          </p>
         </DialogHeader>
-        <form onSubmit={handleSubmit(handleShareProject)}>
-          <div className="space-y-4 py-2 pb-4">
-            <div className="space-y-1">
-              <MemberSelection
-                members={projectMembers}
-                setMembers={setProjectMembers}
-                currentUserId={undefined}
-                users={users}
-              />
-              {errors.members?.message && (
-                <p className="text-xs text-red-600">{errors.members?.message}</p>
-              )}
-            </div>
-            <input hidden {...register('projectId')} />
+        <form onSubmit={handleSubmit(handleShareProject)} className="space-y-5">
+          <div className="space-y-2">
+            <MemberSelection
+              members={projectMembers}
+              setMembers={setProjectMembers}
+              currentUserId={undefined}
+              users={users}
+            />
+            {errors.members?.message && (
+              <p className="text-xs text-destructive">
+                {errors.members?.message}
+              </p>
+            )}
           </div>
+          <input hidden {...register('projectId')} />
           <DialogFooter>
             <DialogClose asChild>
               <Button type="reset" variant="outline" onClick={() => reset()}>
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Sharing...' : 'Share'}
+            <Button type="submit" variant="brand" disabled={isSubmitting}>
+              {isSubmitting ? 'Sharing…' : 'Share project'}
             </Button>
           </DialogFooter>
         </form>

@@ -5,7 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { ShareWorkspaceSchema, ShareWorkspaceType } from '@/actions/Workspace/ShareWorkspace/schema'
+import {
+  ShareWorkspaceSchema,
+  ShareWorkspaceType,
+} from '@/actions/Workspace/ShareWorkspace/schema'
 import { shareWorkspace } from '@/actions/Workspace/ShareWorkspace/action'
 import { Button } from '@/components/ui/button'
 import {
@@ -56,7 +59,9 @@ export function WorkspaceShareForm({
   async function handleShareWorkspace(formData: ShareWorkspaceType) {
     const response = await shareWorkspace(formData)
     if (response.data) {
-      toast.success(`Workspace '${response.data.name}' shared with selected members`)
+      toast.success(
+        `Workspace '${response.data.name}' shared with selected members`,
+      )
     } else {
       toast.error(response.error || 'Error sharing workspace')
     }
@@ -64,7 +69,10 @@ export function WorkspaceShareForm({
     setWorkspaceMembers(new Set<string>([]))
   }
 
-  if (JSON.stringify(Array.from(workspaceMembers)) !== JSON.stringify(getValues('members'))) {
+  if (
+    JSON.stringify(Array.from(workspaceMembers)) !==
+    JSON.stringify(getValues('members'))
+  ) {
     setValue('members', Array.from(workspaceMembers))
     trigger('members')
   }
@@ -77,38 +85,43 @@ export function WorkspaceShareForm({
         setWorkspaceMembers(new Set<string>([]))
       }}
     >
-      {/* <DialogTrigger asChild>
-        <Button variant={'default'} size={'sm'} className="h-8 w-16">
-          Share
-        </Button>
-      </DialogTrigger> */}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Share Workspace</DialogTitle>
+          <DialogTitle>Invite to workspace</DialogTitle>
+          <p className="text-sm text-muted-foreground">
+            Add teammates to{' '}
+            <span className="font-medium text-foreground">
+              {workspace.name}
+            </span>
+            .
+          </p>
         </DialogHeader>
-        <form onSubmit={handleSubmit(handleShareWorkspace)}>
-          <div className="space-y-4 py-2 pb-4">
-            <div className="space-y-1">
-              <MemberSelection
-                members={workspaceMembers}
-                setMembers={setWorkspaceMembers}
-                currentUserId={undefined}
-                users={users}
-              />
-              {errors.members?.message && (
-                <p className="text-xs text-red-600">{errors.members?.message}</p>
-              )}
-            </div>
-            <input hidden {...register('workspaceId')} />
+        <form
+          onSubmit={handleSubmit(handleShareWorkspace)}
+          className="space-y-5"
+        >
+          <div className="space-y-2">
+            <MemberSelection
+              members={workspaceMembers}
+              setMembers={setWorkspaceMembers}
+              currentUserId={undefined}
+              users={users}
+            />
+            {errors.members?.message && (
+              <p className="text-xs text-destructive">
+                {errors.members?.message}
+              </p>
+            )}
           </div>
+          <input hidden {...register('workspaceId')} />
           <DialogFooter>
             <DialogClose asChild>
               <Button type="reset" variant="outline" onClick={() => reset()}>
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Sharing...' : 'Share'}
+            <Button type="submit" variant="brand" disabled={isSubmitting}>
+              {isSubmitting ? 'Inviting…' : 'Send invites'}
             </Button>
           </DialogFooter>
         </form>

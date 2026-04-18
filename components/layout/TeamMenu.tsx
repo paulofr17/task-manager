@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronRight, PlusCircle, Users } from 'lucide-react'
+import { MoreHorizontal, PlusCircle, Users } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -43,8 +43,12 @@ export function TeamMenu({ workspace }: TeamMenuProps) {
       )}
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size={'icon'} className="h-5 w-5 hover:bg-muted-foreground/30">
-            <ChevronRight className="h-4 w-4" />
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="h-6 w-6 opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100"
+          >
+            <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-52">
